@@ -1,8 +1,6 @@
-const fs = require('fs')
-const semver = require('semver')
-const humanizeDuration = require('humanize-duration')
+import fs from 'node:fs'
 
-const formatTimeRemaining = function (milliseconds, locale, i18next = require('i18next')) {
+function formatTimeRemaining (milliseconds, locale, i18next, humanizeDuration) {
   if (locale === 'pt-BR') {
     locale = 'pt'
   }
@@ -12,7 +10,7 @@ const formatTimeRemaining = function (milliseconds, locale, i18next = require('i
   })
 }
 
-const formatTimeIn = function (milliseconds, locale, i18next = require('i18next')) {
+function formatTimeIn (milliseconds, locale, i18next, humanizeDuration) {
   if (locale === 'pt-BR') {
     locale = 'pt'
   }
@@ -20,6 +18,23 @@ const formatTimeIn = function (milliseconds, locale, i18next = require('i18next'
     count: humanizeDuration(milliseconds,
       { round: true, delimiter: ' ', language: locale.replace('-', '_'), fallbacks: ['en'], units: ['d', 'h', 'm'] })
   })
+}
+
+function formatUnitAndValue (unit, value, i18next) {
+  if (unit === 'seconds') {
+    if (value < 60) {
+      return i18next.t('utils.seconds', { count: parseInt(value) })
+    } else {
+      const val = parseFloat((value / 60).toFixed(1))
+      if (val % 1 === 0) {
+        return i18next.t('utils.minutes', { count: parseInt(val) })
+      } else {
+        return i18next.t('utils.minutes', { count: parseFloat(val) })
+      }
+    }
+  } else {
+    return i18next.t(`utils.${unit}`, { count: parseInt(value) })
+  }
 }
 
 // does not consider `postponesLimit`
@@ -40,7 +55,7 @@ function minutesRemaining (milliseconds) {
   return Math.round(milliseconds / 60000.0)
 }
 
-function shouldShowNotificationTitle (platform, systemVersion) {
+function shouldShowNotificationTitle (platform, systemVersion, semver) {
   if (platform === 'win32' && semver.gte(semver.coerce(systemVersion), '10.0.19042')) {
     return false
   }
@@ -55,9 +70,10 @@ function insideFlatpak () {
   return fs.existsSync(flatpakInfoPath)
 }
 
-module.exports = {
+export {
   formatTimeRemaining,
   formatTimeIn,
+  formatUnitAndValue,
   canPostpone,
   canSkip,
   formatKeyboardShortcut,

@@ -6,11 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- Yiddish translations
+- Yiddish and Tamil translations
 
 ### Changed
 - remove flags in Welcome window
 - updated many translations
+- do not check for Quiet Hours on Windows (deprecated)
 
 ### Fixed
 - hide close/minimize actions on Break window on macOS
