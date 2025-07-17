@@ -27,6 +27,7 @@ import Command from './utils/commands.js'
 import { registerBreakShortcuts } from './utils/breakShortcuts.js'
 import defaultSettings from './utils/defaultSettings.js'
 import StatusMessages from './utils/statusMessages.js'
+import DisplayManager from './utils/displayManager.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -59,6 +60,7 @@ let breakIdeas
 let breakPlanner
 let appIcon = null
 let autostartManager = null
+let displayManager = null
 let processWin = null
 let microbreakWins = null
 let breakWins = null
@@ -272,6 +274,8 @@ async function initialize (isAppStart = true) {
     app
   })
 
+  displayManager = new DisplayManager(settings, log)
+
   startI18next()
   startProcessWin()
   createWelcomeWindow()
@@ -378,10 +382,6 @@ function startPowerMonitoring () {
   powerMonitor.on('unlock-screen', onResumeOrUnlock)
 }
 
-function numberOfDisplays () {
-  return screen.getAllDisplays().length
-}
-
 function closeWindows (windowArray) {
   for (const window of windowArray) {
     window.hide()
@@ -392,118 +392,6 @@ function closeWindows (windowArray) {
     window.close()
   }
   return null
-}
-
-function displaysX (displayID = -1, width = 800, fullscreen = false) {
-  let theScreen
-
-  if (!settings.get('allScreens')) {
-    if (settings.get('screen') === 'primary') {
-      theScreen = screen.getPrimaryDisplay()
-    } else if (settings.get('screen') === 'cursor') {
-      theScreen = screen.getDisplayNearestPoint(screen.getCursorScreenPoint())
-    } else {
-      displayID = parseInt(settings.get('screen'))
-    }
-  }
-
-  if (displayID === -1) {
-    theScreen = screen.getDisplayNearestPoint(screen.getCursorScreenPoint())
-  } else if (displayID >= numberOfDisplays() || displayID < 0) {
-    log.warn(`Stretchly: invalid displayID ${displayID} to displaysX`)
-    theScreen = screen.getDisplayNearestPoint(screen.getCursorScreenPoint())
-  } else {
-    const screens = screen.getAllDisplays()
-    theScreen = screens[displayID]
-  }
-  const bounds = theScreen.bounds
-  if (fullscreen) {
-    return Math.ceil(bounds.x)
-  } else {
-    return Math.ceil(bounds.x + ((bounds.width - width) / 2))
-  }
-}
-
-function displaysY (displayID = -1, height = 600, fullscreen = false) {
-  let theScreen
-
-  if (!settings.get('allScreens')) {
-    if (settings.get('screen') === 'primary') {
-      theScreen = screen.getPrimaryDisplay()
-    } else if (settings.get('screen') === 'cursor') {
-      theScreen = screen.getDisplayNearestPoint(screen.getCursorScreenPoint())
-    } else {
-      displayID = parseInt(settings.get('screen'))
-    }
-  }
-
-  if (displayID === -1) {
-    theScreen = screen.getDisplayNearestPoint(screen.getCursorScreenPoint())
-  } else if (displayID >= numberOfDisplays() || displayID < 0) {
-    log.warn(`Stretchly: invalid displayID ${displayID} to displaysY`)
-    theScreen = screen.getDisplayNearestPoint(screen.getCursorScreenPoint())
-  } else {
-    const screens = screen.getAllDisplays()
-    theScreen = screens[displayID]
-  }
-  const bounds = theScreen.bounds
-  if (fullscreen) {
-    return Math.ceil(bounds.y)
-  } else {
-    return Math.ceil(bounds.y + ((bounds.height - height) / 2))
-  }
-}
-
-function displaysWidth (displayID = -1) {
-  let theScreen
-
-  if (!settings.get('allScreens')) {
-    if (settings.get('screen') === 'primary') {
-      theScreen = screen.getPrimaryDisplay()
-    } else if (settings.get('screen') === 'cursor') {
-      theScreen = screen.getDisplayNearestPoint(screen.getCursorScreenPoint())
-    } else {
-      displayID = parseInt(settings.get('screen'))
-    }
-  }
-
-  if (displayID === -1) {
-    theScreen = screen.getDisplayNearestPoint(screen.getCursorScreenPoint())
-  } else if (displayID >= numberOfDisplays() || displayID < 0) {
-    log.warn(`Stretchly: invalid displayID ${displayID} to displaysWidth`)
-    theScreen = screen.getDisplayNearestPoint(screen.getCursorScreenPoint())
-  } else {
-    const screens = screen.getAllDisplays()
-    theScreen = screens[displayID]
-  }
-  const bounds = theScreen.bounds
-  return Math.ceil(bounds.width)
-}
-
-function displaysHeight (displayID = -1) {
-  let theScreen
-
-  if (!settings.get('allScreens')) {
-    if (settings.get('screen') === 'primary') {
-      theScreen = screen.getPrimaryDisplay()
-    } else if (settings.get('screen') === 'cursor') {
-      theScreen = screen.getDisplayNearestPoint(screen.getCursorScreenPoint())
-    } else {
-      displayID = parseInt(settings.get('screen'))
-    }
-  }
-
-  if (displayID === -1) {
-    theScreen = screen.getDisplayNearestPoint(screen.getCursorScreenPoint())
-  } else if (displayID >= numberOfDisplays() || displayID < 0) {
-    log.warn(`Stretchly: invalid displayID ${displayID} to displaysHeight`)
-    theScreen = screen.getDisplayNearestPoint(screen.getCursorScreenPoint())
-  } else {
-    const screens = screen.getAllDisplays()
-    theScreen = screens[displayID]
-  }
-  const bounds = theScreen.bounds
-  return Math.ceil(bounds.height)
 }
 
 function trayIconPath () {
@@ -567,8 +455,8 @@ function createWelcomeWindow (isAppStart = true) {
   if (settings.get('isFirstRun') && isAppStart) {
     const modalPath = 'file://' + join(__dirname, '/welcome.html')
     welcomeWin = new BrowserWindow({
-      x: displaysX(-1, 1000),
-      y: displaysY(-1, 750),
+      x: displayManager.getDisplayX(-1, 1000),
+      y: displayManager.getDisplayY(-1, 750),
       width: 1000,
       height: 750,
       show: false,
@@ -598,8 +486,8 @@ function createContributorSettingsWindow () {
   }
   const modalPath = 'file://' + join(__dirname, '/contributor-preferences.html')
   contributorPreferencesWin = new BrowserWindow({
-    x: displaysX(-1, 735),
-    y: displaysY(),
+    x: displayManager.getDisplayX(-1, 735),
+    y: displayManager.getDisplayY(),
     width: 735,
     show: false,
     autoHideMenuBar: true,
@@ -633,8 +521,8 @@ function createSyncPreferencesWindow () {
     width: 1000,
     height: 700,
     icon: windowIconPath(),
-    x: displaysX(),
-    y: displaysY(),
+    x: displayManager.getDisplayX(),
+    y: displayManager.getDisplayY(),
     backgroundColor: 'whitesmoke',
     webPreferences: {
       preload: join(__dirname, './electron-bridge.mjs'),
@@ -746,10 +634,10 @@ function startMicrobreak () {
       calculateBackgroundColor(settings.get('miniBreakColor'))]
   })
 
-  for (let localDisplayId = 0; localDisplayId < numberOfDisplays(); localDisplayId++) {
+  for (let localDisplayId = 0; localDisplayId < displayManager.getDisplayCount(); localDisplayId++) {
     const windowOptions = {
-      width: Number.parseInt(displaysWidth(localDisplayId) * settings.get('breakWindowWidth')),
-      height: Number.parseInt(displaysHeight(localDisplayId) * settings.get('breakWindowHeight')),
+      width: Math.floor(displayManager.getDisplayWidth(localDisplayId) * settings.get('breakWindowWidth')),
+      height: Math.floor(displayManager.getDisplayHeight(localDisplayId) * settings.get('breakWindowHeight')),
       autoHideMenuBar: true,
       icon: windowIconPath(),
       resizable: false,
@@ -773,13 +661,13 @@ function startMicrobreak () {
     }
 
     if (settings.get('fullscreen') && process.platform !== 'darwin') {
-      windowOptions.width = displaysWidth(localDisplayId)
-      windowOptions.height = displaysHeight(localDisplayId)
-      windowOptions.x = displaysX(localDisplayId, 0, true)
-      windowOptions.y = displaysY(localDisplayId, 0, true)
+      windowOptions.width = displayManager.getDisplayWidth(localDisplayId)
+      windowOptions.height = displayManager.getDisplayHeight(localDisplayId)
+      windowOptions.x = displayManager.getDisplayX(localDisplayId, 0, true)
+      windowOptions.y = displayManager.getDisplayY(localDisplayId, 0, true)
     } else if (!(settings.get('fullscreen') && process.platform === 'win32')) {
-      windowOptions.x = displaysX(localDisplayId, windowOptions.width, false)
-      windowOptions.y = displaysY(localDisplayId, windowOptions.height, false)
+      windowOptions.x = displayManager.getDisplayX(localDisplayId, windowOptions.width, false)
+      windowOptions.y = displayManager.getDisplayY(localDisplayId, windowOptions.height, false)
     }
 
     let microbreakWinLocal = new BrowserWindow(windowOptions)
@@ -798,7 +686,7 @@ function startMicrobreak () {
         microbreakWinLocal.showInactive()
       }
 
-      log.info(`Stretchly: showing window ${localDisplayId + 1} of ${numberOfDisplays()}`)
+      log.info(`Stretchly: showing window ${localDisplayId + 1} of ${displayManager.getDisplayCount()}`)
       if (process.platform === 'darwin') {
         if (showBreaksAsRegularWindows) {
           microbreakWinLocal.setFullScreen(settings.get('fullscreen'))
@@ -838,7 +726,7 @@ function startMicrobreak () {
     microbreakWins.push(microbreakWinLocal)
 
     if (!settings.get('allScreens')) {
-      if (numberOfDisplays() > 1) {
+      if (displayManager.getDisplayCount() > 1) {
         log.info('Stretchly: not showing on more Monitors as it is disabled.')
       }
       break
@@ -895,10 +783,10 @@ function startBreak () {
       calculateBackgroundColor(settings.get('mainColor'))]
   })
 
-  for (let localDisplayId = 0; localDisplayId < numberOfDisplays(); localDisplayId++) {
+  for (let localDisplayId = 0; localDisplayId < displayManager.getDisplayCount(); localDisplayId++) {
     const windowOptions = {
-      width: Number.parseInt(displaysWidth(localDisplayId) * settings.get('breakWindowWidth')),
-      height: Number.parseInt(displaysHeight(localDisplayId) * settings.get('breakWindowHeight')),
+      width: Math.floor(displayManager.getDisplayWidth(localDisplayId) * settings.get('breakWindowWidth')),
+      height: Math.floor(displayManager.getDisplayHeight(localDisplayId) * settings.get('breakWindowHeight')),
       autoHideMenuBar: true,
       icon: windowIconPath(),
       resizable: false,
@@ -922,13 +810,13 @@ function startBreak () {
     }
 
     if (settings.get('fullscreen') && process.platform !== 'darwin') {
-      windowOptions.width = displaysWidth(localDisplayId)
-      windowOptions.height = displaysHeight(localDisplayId)
-      windowOptions.x = displaysX(localDisplayId, 0, true)
-      windowOptions.y = displaysY(localDisplayId, 0, true)
+      windowOptions.width = displayManager.getDisplayWidth(localDisplayId)
+      windowOptions.height = displayManager.getDisplayHeight(localDisplayId)
+      windowOptions.x = displayManager.getDisplayX(localDisplayId, 0, true)
+      windowOptions.y = displayManager.getDisplayY(localDisplayId, 0, true)
     } else if (!(settings.get('fullscreen') && process.platform === 'win32')) {
-      windowOptions.x = displaysX(localDisplayId, windowOptions.width, false)
-      windowOptions.y = displaysY(localDisplayId, windowOptions.height, false)
+      windowOptions.x = displayManager.getDisplayX(localDisplayId, windowOptions.width, false)
+      windowOptions.y = displayManager.getDisplayY(localDisplayId, windowOptions.height, false)
     }
 
     let breakWinLocal = new BrowserWindow(windowOptions)
@@ -947,7 +835,7 @@ function startBreak () {
         breakWinLocal.showInactive()
       }
 
-      log.info(`Stretchly: showing window ${localDisplayId + 1} of ${numberOfDisplays()}`)
+      log.info(`Stretchly: showing window ${localDisplayId + 1} of ${displayManager.getDisplayCount()}`)
       if (process.platform === 'darwin') {
         if (showBreaksAsRegularWindows) {
           breakWinLocal.setFullScreen(settings.get('fullscreen'))
@@ -988,7 +876,7 @@ function startBreak () {
     breakWins.push(breakWinLocal)
 
     if (!settings.get('allScreens')) {
-      if (numberOfDisplays() > 1) {
+      if (displayManager.getDisplayCount() > 1) {
         log.info('Stretchly: not showing on more Monitors as it is disabled.')
       }
       break
@@ -1175,8 +1063,8 @@ function createPreferencesWindow () {
     width: 600,
     height: 530,
     maxHeight: Math.round(maxHeight),
-    x: displaysX(-1, 600),
-    y: displaysY(-1, 530),
+    x: displayManager.getDisplayX(-1, 600),
+    y: displayManager.getDisplayY(-1, 530),
     backgroundColor: '#EDEDED',
     webPreferences: {
       preload: join(__dirname, './preferences-preload.mjs'),
@@ -1563,8 +1451,8 @@ ipcMain.on('open-contributor-auth', function (event, provider) {
     width: 1000,
     height: 700,
     icon: windowIconPath(),
-    x: displaysX(),
-    y: displaysY(),
+    x: displayManager.getDisplayX(),
+    y: displayManager.getDisplayY(),
     backgroundColor: 'whitesmoke',
     webPreferences: {
       preload: join(__dirname, './electron-bridge.mjs'),
