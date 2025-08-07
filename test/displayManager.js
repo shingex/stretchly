@@ -19,15 +19,11 @@ vi.mock('electron', () => {
 describe('DisplayManager', function () {
   let displayManager
   let mockSettings
-  let mockLog
 
   beforeEach(function () {
     vi.clearAllMocks()
     mockSettings = {
       get: vi.fn()
-    }
-    mockLog = {
-      warn: vi.fn()
     }
   })
 
@@ -37,7 +33,7 @@ describe('DisplayManager', function () {
         if (key === 'allScreens') return true
         return null
       })
-      displayManager = new DisplayManager(mockSettings, mockLog)
+      displayManager = new DisplayManager(mockSettings)
     })
 
     it('centers window horizontally correctly', function () {
@@ -94,7 +90,7 @@ describe('DisplayManager', function () {
         if (key === 'allScreens') return true
         return null
       })
-      displayManager = new DisplayManager(mockSettings, mockLog)
+      displayManager = new DisplayManager(mockSettings)
     })
 
     it('getWindowPosition returns consistent windowed positioning', function () {
@@ -163,7 +159,7 @@ describe('DisplayManager', function () {
 
   describe('Settings Integration', function () {
     beforeEach(function () {
-      displayManager = new DisplayManager(mockSettings, mockLog)
+      displayManager = new DisplayManager(mockSettings)
     })
 
     it('uses cursor position when allScreens is true', function () {
@@ -213,12 +209,11 @@ describe('DisplayManager', function () {
         if (key === 'allScreens') return true
         return null
       })
-      displayManager = new DisplayManager(mockSettings, mockLog)
+      displayManager = new DisplayManager(mockSettings)
     })
 
-    it('handles invalid displayID by falling back and logging a warning', () => {
+    it('handles invalid displayID by falling back to cursor display', () => {
       const target = displayManager.getTargetDisplay(5)
-      expect(mockLog.warn).toHaveBeenCalledWith('Stretchly: invalid displayID 5, falling back to cursor display')
       expect(screen.getDisplayNearestPoint).toHaveBeenCalled()
       target.id.should.equal(0)
     })

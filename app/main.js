@@ -274,7 +274,7 @@ async function initialize (isAppStart = true) {
     app
   })
 
-  displayManager = new DisplayManager(settings, log)
+  displayManager = new DisplayManager(settings)
 
   startI18next()
   startProcessWin()

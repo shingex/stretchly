@@ -1,9 +1,9 @@
 import { screen } from 'electron'
+import log from 'electron-log/main.js'
 
 class DisplayManager {
-  constructor (settings, log) {
+  constructor (settings) {
     this.settings = settings
-    this.log = log
   }
 
   getDisplayCount () {
@@ -34,7 +34,7 @@ class DisplayManager {
     if (displayID === -1) {
       targetScreen = screen.getDisplayNearestPoint(screen.getCursorScreenPoint())
     } else if (displayID >= this.getDisplayCount() || displayID < 0) {
-      this.log.warn(`Stretchly: invalid displayID ${displayID}, falling back to cursor display`)
+      log.warn(`Stretchly: invalid displayID ${displayID}, falling back to cursor display`)
       targetScreen = screen.getDisplayNearestPoint(screen.getCursorScreenPoint())
     } else {
       const screens = screen.getAllDisplays()
