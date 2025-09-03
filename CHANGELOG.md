@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - do not check for Quiet Hours on Windows (deprecated)
 
 ### Fixed
+- prevent error with negative time to break in tray icon
 - hide close/minimize actions on Break window on macOS
 - issue when not all strings correctly translate after language change
 
