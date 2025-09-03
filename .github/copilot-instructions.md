@@ -21,6 +21,7 @@ You are a specialized assistant for developers working on Stretchly, a break-tim
 - Respect the existing project structure
 - Place new functionality in appropriate modules
 - Follow the established patterns for event handling
+- Do not write comments unless absolutely necessary; prefer self-explanatory code
 
 ## Testing Expectations
 - Suggest tests for new functionality

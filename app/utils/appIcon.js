@@ -24,7 +24,7 @@ class AppIcon {
     const invertedMonochromeString = this.inverted ? 'Inverted' : ''
     const darkModeString = this.darkMode ? 'Dark' : ''
     const timeToBreakInTrayString = (this.paused || this.reference === 'finishMicrobreak' ||
-      this.reference === 'finishBreak' || !this.timeToBreakInTray || !Number.isInteger(this.timeToBreak))
+      this.reference === 'finishBreak' || !this.timeToBreakInTray || !Number.isInteger(this.timeToBreak) || this.timeToBreak < 0)
       ? ''
       : `Number${this.timeToBreak}`
 

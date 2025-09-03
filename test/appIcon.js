@@ -242,6 +242,21 @@ describe('appIcon', function () {
     appIcon.trayIconFileName.should.equal('trayNumber2.png')
   })
 
+  it('does not add Number when timeToBreak is negative', function () {
+    const params = {
+      paused: false,
+      monochrome: false,
+      inverted: false,
+      darkMode: false,
+      platform: 'linux',
+      timeToBreakInTray: true,
+      timeToBreak: -1,
+      reference: 'startMicrobreak'
+    }
+    const appIcon = new AppIcon(params)
+    appIcon.trayIconFileName.should.equal('tray.png')
+  })
+
   it('trayIconFileName works for light mode on Windows', function () {
     const params = {
       paused: false,
