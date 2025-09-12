@@ -10,6 +10,9 @@ let eventsAttached = false
 window.onload = async (e) => {
   const bounds = await window.stretchly.getWindowBounds()
   const settings = await window.settings.currentSettings()
+  if (settings.disableAppUpdateFeatures) {
+    document.querySelector('#checkNewVersion').closest('div').classList.add('hidden')
+  }
 
   new HtmlTranslate(document).translate()
   setWindowHeight()
@@ -59,10 +62,10 @@ window.onload = async (e) => {
         postponesnumber, settingsfile, logsfile, doNotDisturb
       ] = await window.stretchly.showDebug()
       const debugInfo = document.querySelector('.debug > :first-child')
-      if (debugInfo.style.display === 'block') {
-        debugInfo.style.display = 'none'
+      if (!debugInfo.classList.contains('hidden')) {
+        debugInfo.classList.add('hidden')
       } else {
-        debugInfo.style.display = 'block'
+        debugInfo.classList.remove('hidden')
         document.querySelector('#reference').innerHTML = reference
         document.querySelector('#timeleft').innerHTML = timeleft
         document.querySelector('#breakNumber').innerHTML = breaknumber
@@ -227,10 +230,6 @@ window.onload = async (e) => {
     }
   })
 
-  if (!settings.checkNewVersion) {
-    document.querySelector('#notifyNewVersion').closest('div').style.display = 'none'
-  }
-
   setWindowHeight()
 
   document.querySelectorAll('.enabletype').forEach((element) => {
@@ -281,14 +280,16 @@ window.onload = async (e) => {
   })
 
   document.querySelector('.version').innerHTML = await window.stretchly.getVersion()
-  versionChecker.latest()
-    .then(version => {
-      document.querySelector('.latestVersion').innerHTML = version.replace('v', '')
-    })
-    .catch(exception => {
-      console.error(exception)
-      document.querySelector('.latestVersion').innerHTML = 'N/A'
-    })
+  if (!settings.disableAppUpdateFeatures) {
+    versionChecker.latest()
+      .then(version => {
+        document.querySelector('.latestVersion').innerHTML = version.replace('v', '')
+      })
+      .catch(exception => {
+        console.error(exception)
+        document.querySelector('.latestVersion').innerHTML = 'N/A'
+      })
+  }
 
   function setWindowHeight () {
     const classes = document.querySelector('body').classList
