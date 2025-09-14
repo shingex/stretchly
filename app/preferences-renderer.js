@@ -70,7 +70,7 @@ window.onload = async (e) => {
         document.querySelector('#timeleft').innerHTML = timeleft
         document.querySelector('#breakNumber').innerHTML = breaknumber
         document.querySelector('#postponesNumber').innerHTML = postponesnumber
-        document.querySelector('#settingsfile').innerHTML = settingsfile
+        document.querySelector('#settingsfile').innerHTML = settings.hidePreferencesFileLocation ? 'hidden' : settingsfile
         document.querySelector('#logsfile').innerHTML = logsfile
         document.querySelector('#donotdisturb').innerHTML = doNotDisturb
         document.querySelector('#node').innerHTML = await window.process.node()

@@ -384,6 +384,11 @@ If you want to disable functionality around app updates, set `disableAppUpdateFe
 
 This might be useful for corporate installations. 
 
+#### Hide location of preferences file in Debug info
+If you want to hide location of preferences file in Debug info, set `hidePreferencesFileLocation` to `true`. 
+
+This might be useful for corporate installations. 
+
 ## Contributor Preferences
 
 *Stretchly* is free but you can support it by contributing code, translations or money. You will be rewarded by getting access to **Contributor Preferences**, ability to **Sync Preferences**, chat on **Discord** and more!
