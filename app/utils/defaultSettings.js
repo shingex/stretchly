@@ -76,5 +76,6 @@ export default {
   resetBreaksShortcut: '',
   showTrayMenuInStrictMode: false,
   customPreferencesMessage: '',
-  disableAppUpdateFeatures: false
+  disableAppUpdateFeatures: false,
+  hidePreferencesFileLocation: false
 }

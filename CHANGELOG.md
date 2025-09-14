@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Yiddish and Tamil translations
 - advanced option to show custom message in Preferences
+- advanced option to hide location of Preferences file in Debug info
 - advanced option to disable app update features
 
 ### Changed
