@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - advanced option to show custom message in Preferences
 - advanced option to hide location of Preferences file in Debug info
 - advanced option to disable app update features
+- advanced option to hide Strict Mode preferences section
 
 ### Changed
 - remove flags in Welcome window

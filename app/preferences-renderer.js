@@ -14,6 +14,13 @@ window.onload = async (e) => {
     document.querySelector('#checkNewVersion').closest('div').classList.add('hidden')
   }
 
+  if (settings.hideStrictModePreferences) {
+    document.querySelectorAll('[data-strict-mode]').forEach(element => {
+      element.classList.add('hidden')
+    })
+    document.querySelector('#enablePostponeLong').closest('div').style.marginBottom = '56px'
+  }
+
   new HtmlTranslate(document).translate()
   setWindowHeight()
   setTimeout(() => { eventsAttached = true }, 500)

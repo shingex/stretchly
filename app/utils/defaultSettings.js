@@ -77,5 +77,6 @@ export default {
   showTrayMenuInStrictMode: false,
   customPreferencesMessage: '',
   disableAppUpdateFeatures: false,
-  hidePreferencesFileLocation: false
+  hidePreferencesFileLocation: false,
+  hideStrictModePreferences: false
 }

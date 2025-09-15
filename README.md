@@ -387,6 +387,11 @@ This might be useful for corporate installations.
 #### Hide location of preferences file in Debug info
 If you want to hide location of preferences file in Debug info, set `hidePreferencesFileLocation` to `true`. 
 
+This might be useful for corporate installations.
+
+#### Hide Strict Mode preferences
+If you want to hide Strict Mode preferences section from the Preferences window, set `hideStrictModePreferences` to `true`. 
+
 This might be useful for corporate installations. 
 
 ## Contributor Preferences
