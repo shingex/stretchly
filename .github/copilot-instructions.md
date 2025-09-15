@@ -16,6 +16,7 @@ You are a specialized assistant for developers working on Stretchly, a break-tim
 - Maintain accessibility standards in UI components
 - Keep performance in mind, especially for background processes
 - Consider Chrome compatibility only, as Electron is built on Chromium
+- Use `npm run lint` to check for style issues
 
 ## Code Organization
 - Respect the existing project structure
