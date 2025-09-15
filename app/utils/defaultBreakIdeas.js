@@ -138,5 +138,9 @@ export default [
   {
     data: ['Imaginative visualization', 'Close your eyes and imagine yourself in a peaceful and calming place, such as a beach or a forest, focusing on the sights, sounds, and sensations of that environment.'],
     enabled: true
+  },
+  {
+    data: ['Overwhelmed?', 'Try the 5-4-3-2-1 Grounding Technique: Identify 5 things you can see, 4 things you can touch, 3 things you can hear, 2 things you can smell, and 1 thing you can taste.'],
+    enabled: true
   }
 ]
