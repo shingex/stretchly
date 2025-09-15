@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [1.18.0] - 2025-9-15
 ### Added
 - Yiddish and Tamil translations
 - advanced option to show custom message in Preferences
@@ -801,7 +802,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - resume/pause functionality for reminder
 - scripts for creating installers for OS X, Windows, Linux
 
-[Unreleased]: https://github.com/hovancik/stretchly/compare/v1.17.2...HEAD
+[Unreleased]: https://github.com/hovancik/stretchly/compare/v1.18.0...HEAD
+[1.18.0]: https://github.com/hovancik/stretchly/compare/v1.17.2...v1.18.0
 [1.17.2]: https://github.com/hovancik/stretchly/compare/v1.17.1...v1.17.2
 [1.17.1]: https://github.com/hovancik/stretchly/compare/v1.17.0...v1.17.1
 [1.17.0]: https://github.com/hovancik/stretchly/compare/v1.16.0...v1.17.0
