@@ -15,5 +15,5 @@ The plan consists of a Markdown document that describes the implementation plan,
 * Requirements: A list of requirements for the feature or refactoring task.
 * Implementation Steps: A detailed list of steps to implement the feature or refactoring task.
 * Testing: A list of tests that need to be implemented to verify the feature or refactoring task.
-* Comments in code: Only if neccessary, when the code is not self-explanatory.
+* Comments in code: Do not add comments.
 

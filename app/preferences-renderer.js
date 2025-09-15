@@ -21,6 +21,12 @@ window.onload = async (e) => {
     document.querySelector('#enablePostponeLong').closest('div').style.marginBottom = '56px'
   }
 
+  if (settings.hidePreferencesFileLocation) {
+    document.querySelectorAll('[data-preferences-file]').forEach(element => {
+      element.classList.add('hidden')
+    })
+  }
+
   new HtmlTranslate(document).translate()
   setWindowHeight()
   setTimeout(() => { eventsAttached = true }, 500)
@@ -77,7 +83,7 @@ window.onload = async (e) => {
         document.querySelector('#timeleft').innerHTML = timeleft
         document.querySelector('#breakNumber').innerHTML = breaknumber
         document.querySelector('#postponesNumber').innerHTML = postponesnumber
-        document.querySelector('#settingsfile').innerHTML = settings.hidePreferencesFileLocation ? 'hidden' : settingsfile
+        document.querySelector('#settingsfile').innerHTML = settingsfile
         document.querySelector('#logsfile').innerHTML = logsfile
         document.querySelector('#donotdisturb').innerHTML = doNotDisturb
         document.querySelector('#node').innerHTML = await window.process.node()
