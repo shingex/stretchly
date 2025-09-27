@@ -2,10 +2,11 @@ name: Run tests
 
 on: [push, pull_request]
 
+permissions:
+  contents: read
+
 jobs:
   build:
-    permissions:
-      contents: read
     runs-on: ${{ matrix.os }}
 
     strategy:
