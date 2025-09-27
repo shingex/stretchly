@@ -5,6 +5,9 @@ on:
     branches:
       - release
 
+permissions:
+  contents: write
+
 env:
   USE_SYSTEM_FPM: true
 
