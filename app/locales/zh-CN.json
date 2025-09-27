@@ -183,13 +183,7 @@
     "minutes_other": "{{count}} 分",
     "hours_other": "{{count}} 时",
     "remaining": "还有 {{count}}",
-    "inAbout": "大约 {{count}}后",
-    "oclock_one": "{{count}} 点钟",
-    "seconds_one": "{{count}} 秒",
-    "hours_one": "{{count}} 时",
-    "none_one": "{{count}}",
-    "percent_one": "{{count}} %",
-    "minutes_one": "{{count}} 分"
+    "inAbout": "大约 {{count}}后"
   },
   "process": {
     "newVersionAvailable": "有新的版本！"
@@ -209,8 +203,7 @@
     "nextMiniBreak": "下次小憩",
     "afterMiniBreak_other": "{{count}} 次小憩后",
     "resuming": "继续",
-    "appExclusion": "应用程序排除规则",
-    "afterMiniBreak_one": "{{count}} 次小憩后"
+    "appExclusion": "应用程序排除规则"
   },
   "miniBreakIdeas": {
     "aaa": {
@@ -507,6 +500,10 @@
     "abi": {
       "text": "闭上眼睛，想象自己身处一个平静、令人放松的地方，比如海滩或森林，专注于那个环境中的景象、声音和感觉。",
       "title": "创造性想象"
+    },
+    "abj": {
+      "title": "压力太大了？",
+      "text": "试试 5-4-3-2-1 着陆法：找出你能看到的 5 样东西，你能摸到的 4 样东西，你能听到的 3 样东西，你能闻到的 2 样东西，和 1 样你可以尝到的东西。"
     }
   }
 }
