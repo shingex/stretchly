@@ -39,7 +39,7 @@ function exposeProcess () {
     node: () => process.versions.node,
     chrome: () => process.versions.chrome,
     electron: () => process.versions.electron,
-    windowsStore: () => process.versions.windowsStore,
+    windowsStore: () => process.windowsStore,
     getSystemVersion: () => process.getSystemVersion()
   })
 }
