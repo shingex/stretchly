@@ -33,13 +33,14 @@ function exposeBreaks (type) {
   })
 }
 
-function exposeProcess () {
-  contextBridge.exposeInMainWorld('process', {
+function exposeRuntime () {
+  contextBridge.exposeInMainWorld('runtime', {
     platform: () => process.platform,
     node: () => process.versions.node,
     chrome: () => process.versions.chrome,
     electron: () => process.versions.electron,
-    windowsStore: () => process.windowsStore,
+    windowsStore: () => utils.insideWindowsStore(),
+    snap: () => utils.insideSnap(),
     getSystemVersion: () => process.getSystemVersion()
   })
 }
@@ -121,6 +122,6 @@ export {
   exposeSemver,
   exposeSettings,
   exposeStretchly,
-  exposeProcess,
+  exposeRuntime,
   exposeUtils
 }

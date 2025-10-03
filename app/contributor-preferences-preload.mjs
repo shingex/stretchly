@@ -1,9 +1,9 @@
 import {
   exposeI18next,
-  exposeProcess,
+  exposeRuntime,
   exposeSettings
 } from './utils/context-bridge-exposers.js'
 
 exposeI18next()
-exposeProcess()
+exposeRuntime()
 exposeSettings()

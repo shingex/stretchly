@@ -70,6 +70,14 @@ function insideFlatpak () {
   return fs.existsSync(flatpakInfoPath)
 }
 
+function insideWindowsStore () {
+  return process.platform === 'win32' && !!process.windowsStore
+}
+
+function insideSnap () {
+  return !!process.env.SNAP
+}
+
 export {
   formatTimeRemaining,
   formatTimeIn,
@@ -79,5 +87,7 @@ export {
   formatKeyboardShortcut,
   minutesRemaining,
   shouldShowNotificationTitle,
-  insideFlatpak
+  insideFlatpak,
+  insideWindowsStore,
+  insideSnap
 }

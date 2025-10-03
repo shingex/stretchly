@@ -1,13 +1,13 @@
 import {
   exposeElectronApi,
   exposeI18next,
-  exposeProcess,
+  exposeRuntime,
   exposeSettings,
   exposeStretchly
 } from './utils/context-bridge-exposers.js'
 
 exposeElectronApi()
 exposeI18next()
-exposeProcess()
+exposeRuntime()
 exposeSettings()
 exposeStretchly()

@@ -1,6 +1,6 @@
 import defaultBreakIdeas from './defaultBreakIdeas.js'
 import defaultMicrobreakIdeas from './defaultMicrobreakIdeas.js'
-import { insideFlatpak } from './utils.js'
+import { insideFlatpak, insideWindowsStore, insideSnap } from './utils.js'
 
 export default {
   microbreakDuration: 20000,
@@ -39,7 +39,7 @@ export default {
   allScreens: true,
   useIdeasFromSettings: false,
   language: 'en',
-  notifyNewVersion: !insideFlatpak(),
+  notifyNewVersion: true,
   isFirstRun: true,
   posLatitude: 0.0,
   posLongitude: 0.0,
@@ -53,7 +53,7 @@ export default {
   endBreakShortcut: 'CmdOrCtrl+X',
   breakWindowWidth: 0.85,
   breakWindowHeight: 0.85,
-  checkNewVersion: !insideFlatpak(),
+  checkNewVersion: true,
   breakIdeas: defaultBreakIdeas,
   microbreakIdeas: defaultMicrobreakIdeas,
   showBreaksAsRegularWindows: false,
@@ -76,7 +76,7 @@ export default {
   resetBreaksShortcut: '',
   showTrayMenuInStrictMode: false,
   customPreferencesMessage: '',
-  disableAppUpdateFeatures: false,
+  disableAppUpdateFeatures: insideFlatpak() || insideWindowsStore() || insideSnap(),
   hidePreferencesFileLocation: false,
   hideStrictModePreferences: false
 }

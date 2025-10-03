@@ -2,7 +2,7 @@ import {
   exposeElectronApi,
   exposeGlobal,
   exposeI18next,
-  exposeProcess,
+  exposeRuntime,
   exposeSemver,
   exposeStretchly,
   exposeUtils
@@ -11,7 +11,7 @@ import {
 exposeElectronApi()
 exposeGlobal()
 exposeI18next()
-exposeProcess()
+exposeRuntime()
 exposeStretchly()
 exposeSemver()
 exposeUtils()
