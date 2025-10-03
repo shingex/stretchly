@@ -1,7 +1,7 @@
 import {
   exposeBreaks,
   exposeI18next,
-  exposeProcess,
+  exposeRuntime,
   exposeSettings,
   exposeStretchly,
   exposeUtils
@@ -9,7 +9,7 @@ import {
 
 exposeBreaks('long')
 exposeI18next()
-exposeProcess()
+exposeRuntime()
 exposeSettings()
 exposeStretchly()
 exposeUtils()

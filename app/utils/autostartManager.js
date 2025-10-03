@@ -15,7 +15,7 @@ class AutostartManager {
   setAutostartEnabled (value) {
     if (this.platform === 'linux') {
       value ? this._linuxAutoLaunch.enable() : this._linuxAutoLaunch.disable()
-    } else if (process.platform === 'win32' && process.windowsStore) {
+    } else if (this.platform === 'win32' && this.windowsStore) {
       value ? this._windowsStoreAutoLaunch.enable() : this._windowsStoreAutoLaunch.disable()
     } else {
       this.app.setLoginItemSettings({ openAtLogin: value })

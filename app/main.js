@@ -16,7 +16,7 @@ import { DateTime } from 'luxon'
 
 import {
   canPostpone, canSkip, formatTimeRemaining,
-  minutesRemaining
+  minutesRemaining, insideWindowsStore, insideFlatpak, insideSnap
 } from './utils/utils.js'
 import IdeasLoader from './utils/ideasLoader.js'
 import BreaksPlanner from './breaksPlanner.js'
@@ -235,6 +235,14 @@ async function initialize (isAppStart = true) {
           } else {
             log.info('Stretchly: not migrating showBreakActionsInStrictMode')
           }
+        },
+        '1.18.2': store => {
+          if (insideFlatpak() || insideWindowsStore() || insideSnap()) {
+            if (!store.get('disableAppUpdateFeatures')) {
+              store.set('disableAppUpdateFeatures', true)
+              log.info('Stretchly: setting disableAppUpdateFeatures to true because we are in Flatpak/Windows Store/Snap build')
+            }
+          }
         }
       },
       watch: true
@@ -270,7 +278,7 @@ async function initialize (isAppStart = true) {
 
   autostartManager = new AutostartManager({
     platform: process.platform,
-    windowsStore: process.windowsStore,
+    windowsStore: insideWindowsStore(),
     app
   })
 
@@ -1406,7 +1414,7 @@ ipcMain.handle('show-debug', (event) => {
   const doNotDisturb = breakPlanner.dndManager.isOnDnd
   let settingsFile = settings.path
   let logsFile = log.transports.file.getFile().path
-  if (process.windowsStore) {
+  if (insideWindowsStore()) {
     settingsFile = settingsFile.replace('Roaming', 'Local\\Packages\\33881JanHovancik.stretchly_24fg4m0zq65je\\LocalCache\\Roaming')
     logsFile = logsFile.replace('Roaming', 'Local\\Packages\\33881JanHovancik.stretchly_24fg4m0zq65je\\LocalCache\\Roaming')
   }

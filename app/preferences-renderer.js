@@ -86,11 +86,11 @@ window.onload = async (e) => {
         document.querySelector('#settingsfile').innerHTML = settingsfile
         document.querySelector('#logsfile').innerHTML = logsfile
         document.querySelector('#donotdisturb').innerHTML = doNotDisturb
-        document.querySelector('#node').innerHTML = await window.process.node()
-        document.querySelector('#chrome').innerHTML = await window.process.chrome()
-        document.querySelector('#electron').innerHTML = await window.process.electron()
-        document.querySelector('#platform').innerHTML = await window.process.platform()
-        document.querySelector('#windowsStore').innerHTML = await window.process.windowsStore() || false
+        document.querySelector('#node').innerHTML = await window.runtime.node()
+        document.querySelector('#chrome').innerHTML = await window.runtime.chrome()
+        document.querySelector('#electron').innerHTML = await window.runtime.electron()
+        document.querySelector('#platform').innerHTML = await window.runtime.platform()
+        document.querySelector('#windowsStore').innerHTML = await window.runtime.windowsStore() || false
       }
       setWindowHeight()
     }
