@@ -218,6 +218,8 @@ Here are the preferences editable via the app. If values in the app does not sui
 #### Editing Break ideas
 In the preferences file, change `useIdeasFromSettings: false,` to `useIdeasFromSettings: true,` and edit `breakIdeas` and `microbreakIdeas`.
 
+You can add lightweight HTML in custom ideas to highlight text or link to resources. Stretchly sanitizes these entries and keeps only `<a>`, `<b>`, and `<i>` tags with safe URLs so the break windows stay secure.
+
 Note that when a new *Stretchly* version with new break ideas is out, your custom ideas will not be overwritten. You can reset break ideas to the latest defaults when you "Restore defaults" from Preferences window.
 
 #### Editing Break notification interval [![Contributor Preferences](https://img.shields.io/badge/Contributor_Preferences-✔-success)](#contributor-preferences)

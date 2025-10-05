@@ -1,5 +1,6 @@
 import HtmlTranslate from './utils/htmlTranslate.js'
 import './platform.js'
+import sanitizeIdea from './utils/sanitizeIdea.js'
 
 window.onload = async (event) => {
   const [idea, started, duration, strictMode, postpone,
@@ -19,8 +20,15 @@ window.onload = async (event) => {
   document.querySelector('#postpone').onclick = async event =>
     await window.breaks.postponeBreak()
 
-  document.querySelector('.break-idea').textContent = idea[0]
-  document.querySelector('.break-text').textContent = idea[1]
+  document.querySelector('.break-idea').innerHTML = sanitizeIdea(idea[0])
+  document.querySelector('.break-text').innerHTML = sanitizeIdea(idea[1])
+
+  document.querySelectorAll('.break-idea a, .break-text a').forEach(link => {
+    link.onclick = (event) => {
+      event.preventDefault()
+      window.electronApi.openExternal(event.target.href)
+    }
+  })
 
   const progress = document.querySelector('#progress')
   const progressTime = document.querySelector('#progress-time')
