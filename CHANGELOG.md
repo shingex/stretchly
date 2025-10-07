@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - hide update features in Windows Store, Snap, Flatpak versions by default
+- migrate long break sound preference from `audio` to `longBreakAudio`
 
 ## [1.18.1] - 2025-9-27
 ### Fixed

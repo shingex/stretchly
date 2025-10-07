@@ -243,6 +243,17 @@ async function initialize (isAppStart = true) {
               log.info('Stretchly: setting disableAppUpdateFeatures to true because we are in Flatpak/Windows Store/Snap build')
             }
           }
+        },
+        '1.19.0': store => {
+          if (store.has('audio')) {
+            const legacyAudio = store.get('audio')
+            store.set('longBreakAudio', legacyAudio)
+            log.info(`Stretchly: migrating audio to longBreakAudio with value "${legacyAudio}"`)
+            store.delete('audio')
+            log.info('Stretchly: removing audio')
+          } else {
+            log.info('Stretchly: not migrating audio to longBreakAudio')
+          }
         }
       },
       watch: true
@@ -771,7 +782,7 @@ function startBreak () {
   nextIdea = null
 
   if (settings.get('breakStartSoundPlaying') && !settings.get('silentNotifications')) {
-    processWin.webContents.send('play-sound', settings.get('audio'), settings.get('volume'))
+    processWin.webContents.send('play-sound', settings.get('longBreakAudio'), settings.get('volume'))
   }
 
   ipcMain.handle('send-long-break-data', (event) => {
@@ -904,7 +915,7 @@ function breakComplete (shouldPlaySound, windows, breakType) {
     globalShortcut.unregister(settings.get('endBreakShortcut'))
   }
   if (shouldPlaySound && !settings.get('silentNotifications')) {
-    const audio = breakType === 'mini' ? 'miniBreakAudio' : 'audio'
+    const audio = breakType === 'mini' ? 'miniBreakAudio' : 'longBreakAudio'
     processWin.webContents.send('play-sound', settings.get(audio), settings.get('volume'))
   }
   if (process.platform === 'darwin') {
@@ -1349,7 +1360,7 @@ ipcMain.on('save-setting', function (event, key, value) {
     nativeTheme.themeSource = value
   }
 
-  if (key === 'audio') {
+  if (key === 'longBreakAudio') {
     settings.set('miniBreakAudio', value)
   }
 
