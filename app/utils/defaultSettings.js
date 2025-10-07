@@ -29,7 +29,7 @@ export default {
   transparentMode: false,
   blurredBackground: false,
   opacity: 0.9,
-  audio: 'crystal-glass',
+  longBreakAudio: 'crystal-glass',
   miniBreakAudio: 'crystal-glass',
   volume: 1,
   fullscreen: false,

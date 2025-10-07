@@ -202,7 +202,7 @@ Here are the preferences editable via the app. If values in the app does not sui
 - `mainColor` - theme color code (for Long Breaks),
 - `miniBreakColor` - theme color code (for Mini Breaks),
 - `transparentMode` - show break windows as transparent
-- `audio` - sound theme name (for Long Breaks)
+- `longBreakAudio` - sound theme name (for Long Breaks)
 - `miniBreakAudio` - sound theme name (for Mini Breaks)
 - `fullscreen` - show breaks in fullscreen mode
 - `ideas` - show break ideas
