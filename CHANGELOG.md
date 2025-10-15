@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Fixed
 - hide autostart option for Windows store
+- prevent memory issues where break windows were not closing correctly
 
 ### Changed
 - hide update features in Windows Store, Snap, Flatpak versions by default

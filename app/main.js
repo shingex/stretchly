@@ -76,6 +76,7 @@ let updateChecker
 let currentTrayIconPath = null
 let currentTrayMenuTemplate = null
 let trayUpdateIntervalObj = null
+let skipStrictCloseGuard = false // to allow window closing in strict mode when we want to close it
 
 log.initialize({ preload: true })
 
@@ -734,8 +735,8 @@ function startMicrobreak () {
     microbreakWinLocal.setAlwaysOnTop(!showBreaksAsRegularWindows, 'pop-up-menu')
     if (microbreakWinLocal) {
       microbreakWinLocal.on('close', (e) => {
+        if (skipStrictCloseGuard) return
         if (breakPlanner.scheduler.timeLeft > 0 && settings.get('microbreakStrictMode')) {
-          // FIXME this will still log when postponing break
           log.info('Stretchly: preventing closing break window as in strict mode')
           e.preventDefault()
         }
@@ -884,8 +885,8 @@ function startBreak () {
     breakWinLocal.setAlwaysOnTop(!showBreaksAsRegularWindows, 'pop-up-menu')
     if (breakWinLocal) {
       breakWinLocal.on('close', (e) => {
+        if (skipStrictCloseGuard) return
         if (breakPlanner.scheduler.timeLeft > 0 && settings.get('breakStrictMode')) {
-          // FIXME this will still log when postponing break
           log.info('Stretchly: preventing closing break window as in strict mode')
           e.preventDefault()
         }
@@ -922,7 +923,10 @@ function breakComplete (shouldPlaySound, windows, breakType) {
     // get focus on the last app
     Menu.sendActionToFirstResponder('hide:')
   }
-  return closeWindows(windows)
+  skipStrictCloseGuard = true
+  const result = closeWindows(windows)
+  skipStrictCloseGuard = false
+  return result
 }
 
 function finishMicrobreak (shouldPlaySound = true, shouldPlanNext = true) {
