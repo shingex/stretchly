@@ -183,13 +183,7 @@
     "minutes_other": "{{count}} 分",
     "hours_other": "{{count}} 時",
     "remaining": "還有 {{count}}",
-    "inAbout": "大約 {{count}}後",
-    "seconds_one": "{{count}} 秒",
-    "minutes_one": "{{count}} 分",
-    "none_one": "{{count}}",
-    "percent_one": "{{count}} %",
-    "oclock_one": "{{count}} 點鐘",
-    "hours_one": "{{count}} 時"
+    "inAbout": "大約 {{count}}後"
   },
   "process": {
     "newVersionAvailable": "有新版可用！"
@@ -209,8 +203,7 @@
     "nextMiniBreak": "下次小休息",
     "afterMiniBreak_other": "{{count}} 次小休息後",
     "resuming": "繼續",
-    "appExclusion": "App 排除規則",
-    "afterMiniBreak_one": "{{count}} 次小憩後"
+    "appExclusion": "App 排除規則"
   },
   "longBreakIdeas": {
     "aab": {
@@ -352,6 +345,10 @@
     "abi": {
       "title": "想像力視覺化",
       "text": "閉上眼睛，想像自己身處在一個寧靜和平的地方，例如海灘或森林，專注於那個環境中的景色、聲音和感覺。"
+    },
+    "abj": {
+      "title": "不堪重負？",
+      "text": "試試「5-4-3-2-1 接地法」：找出 5 樣您看得到的東西、4 樣您摸得到的東西、3 種您聽得到的聲音、2 種您聞得到的氣味，以及 1 種您嚐得到的味道。"
     }
   },
   "miniBreakIdeas": {
