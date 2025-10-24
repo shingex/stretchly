@@ -1,10 +1,10 @@
 import { isAllowedImageFilename, resolveLocalImage } from '../app/utils/imageResolver'
 import { beforeEach, afterEach } from 'vitest'
-import chai from 'chai'
+import { should as chaiShould } from 'chai'
 import { join } from 'path'
 import { existsSync, mkdirSync, writeFileSync, unlinkSync, rmSync } from 'node:fs'
 
-const should = chai.should()
+const should = chaiShould()
 
 describe('imageResolver', function () {
   const testDir = join(__dirname, 'test-images')
