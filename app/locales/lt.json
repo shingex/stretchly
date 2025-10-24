@@ -271,7 +271,7 @@
       "text": "Skirkite šiek tiek laiko pagalvoti apie tai, ką vertinate."
     },
     "aan": {
-      "text": "Nusišypsokite būdami gyvi."
+      "text": "Gyvybingai nusišypsokite."
     },
     "aao": {
       "text": "Tikrai ergonomiška darbo vieta yra tokia, nuo kurios reguliariai atsitraukiate."
@@ -304,7 +304,7 @@
       "text": "Ar jūsų dėmesys naudojamas protingai?"
     },
     "aba": {
-      "text": "Pakeiskite savo sėdėjimo pozą."
+      "text": "Pakeiskite savo sėdėjimo padėtį."
     },
     "abb": {
       "text": "Atskleiskite akis natūraliai šviesai."
@@ -513,6 +513,10 @@
     "abi": {
       "title": "Įsivaizdavimas",
       "text": "Užsimerkite ir įsivaizduokite save ramioje, raminančioje vietoje, pavyzdžiui, paplūdimyje ar miške, ir susitelkite į šios aplinkos vaizdus, garsus ir pojūčius."
+    },
+    "abj": {
+      "title": "Užvaldė emocijos?",
+      "text": "Išbandykite įsižeminimo pratimą „5-4-3-2-1“: pastebėkite 5 dalykus, kuriuos matote, 4 – paliečiamus, 3 – skleidžiančius garsą, 2 – kvepiančius ir vieną, kurį galėtumėte paragauti."
     }
   }
 }
