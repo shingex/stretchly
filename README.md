@@ -221,7 +221,6 @@ In the preferences file, change `useIdeasFromSettings: false,` to `useIdeasFromS
 Note that when a new *Stretchly* version with new break ideas is out, your custom ideas will not be overwritten. You can reset break ideas to the latest defaults when you "Restore defaults" from Preferences window.
 
 ##### Using HTML in Break Ideas
-
 You can use simple HTML formatting in custom break ideas to enhance their appearance:
 
 **Allowed HTML elements:**
@@ -255,15 +254,11 @@ Place your images in the `images` folder inside Stretchly's user data directory 
   }
 ]
 ```
-
 Supported image formats: PNG, JPEG, WebP, GIF. Only images from the local `images` folder are allowed - remote URLs will be blocked for security.
 
 Stretchly sanitizes all HTML to keep break windows secure by removing any unsupported tags or unsafe content.
 
-
-
 #### Editing Break notification interval [![Contributor Preferences](https://img.shields.io/badge/Contributor_Preferences-✔-success)](#contributor-preferences)
-
 In the preferences file, change `breakNotificationInterval: 30000,` to whatever value you want. 30000 is 30 seconds. Same goes for Mini Breaks.
 
 #### Editing sunrise time to pause breaks until morning
