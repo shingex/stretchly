@@ -1,6 +1,5 @@
 import HtmlTranslate from './utils/htmlTranslate.js'
 import './platform.js'
-import sanitizeIdea from './utils/sanitizeIdea.js'
 
 window.onload = async (event) => {
   const [idea, started, duration, strictMode, postpone,
@@ -20,13 +19,23 @@ window.onload = async (event) => {
   document.querySelector('#postpone').onclick = async event =>
     await window.breaks.postponeBreak()
 
-  document.querySelector('.break-idea').innerHTML = sanitizeIdea(idea[0])
-  document.querySelector('.break-text').innerHTML = sanitizeIdea(idea[1])
+  document.querySelector('.break-idea').innerHTML = window.breaks.sanitizeIdea(idea[0])
+  document.querySelector('.break-text').innerHTML = window.breaks.sanitizeIdea(idea[1])
 
-  document.querySelectorAll('.break-idea a, .break-text a').forEach(link => {
-    link.onclick = (event) => {
+  document.querySelectorAll('.break-idea a, .break-text a').forEach(a => {
+    a.onclick = (event) => {
       event.preventDefault()
-      window.electronApi.openExternal(event.target.href)
+      window.electronApi.openExternal(a.href)
+    }
+  })
+
+  document.querySelectorAll('.break-idea img, .break-text img').forEach(async img => {
+    const src = img.getAttribute('src') || ''
+    const resolved = await window.electronApi.resolveLocalImage(src)
+    if (resolved) {
+      img.src = resolved
+    } else {
+      img.remove()
     }
   })
 

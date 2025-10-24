@@ -4,8 +4,9 @@ import {
   powerMonitor
 } from 'electron'
 import { EventEmitter } from 'node:events'
-import { readFile, writeFile } from 'node:fs'
+import { readFile, writeFile, existsSync, mkdirSync } from 'node:fs'
 import { dirname, join } from 'path'
+import { resolveLocalImage } from './utils/imageResolver.js'
 import { fileURLToPath } from 'url'
 import i18next from 'i18next'
 import Backend from 'i18next-fs-backend'
@@ -281,6 +282,15 @@ async function initialize (isAppStart = true) {
     windowsStore: insideWindowsStore(),
     app
   })
+
+  const imagesDir = join(app.getPath('userData'), 'images')
+  if (!existsSync(imagesDir)) {
+    try {
+      mkdirSync(imagesDir, { recursive: true })
+    } catch (error) {
+      log.error('Stretchly: error creating images directory', error)
+    }
+  }
 
   displayManager = new DisplayManager(settings)
 
@@ -1414,9 +1424,11 @@ ipcMain.handle('show-debug', (event) => {
   const doNotDisturb = breakPlanner.dndManager.isOnDnd
   let settingsFile = settings.path
   let logsFile = log.transports.file.getFile().path
+  let imagesFolder = join(app.getPath('userData'), 'images')
   if (insideWindowsStore()) {
     settingsFile = settingsFile.replace('Roaming', 'Local\\Packages\\33881JanHovancik.stretchly_24fg4m0zq65je\\LocalCache\\Roaming')
     logsFile = logsFile.replace('Roaming', 'Local\\Packages\\33881JanHovancik.stretchly_24fg4m0zq65je\\LocalCache\\Roaming')
+    imagesFolder = imagesFolder.replace('Roaming', 'Local\\Packages\\33881JanHovancik.stretchly_24fg4m0zq65je\\LocalCache\\Roaming')
   }
   return [
     reference,
@@ -1425,7 +1437,8 @@ ipcMain.handle('show-debug', (event) => {
     postponesnumber,
     settingsFile,
     logsFile,
-    doNotDisturb
+    doNotDisturb,
+    imagesFolder
   ]
 })
 
@@ -1530,4 +1543,9 @@ ipcMain.on('set-window-size', (event, width, height) => {
 
 ipcMain.handle('get-version', (event) => {
   return app.getVersion()
+})
+
+ipcMain.handle('resolve-local-image', (event, filename) => {
+  const imagesPath = join(app.getPath('userData'), 'images')
+  return resolveLocalImage(imagesPath, filename)
 })
