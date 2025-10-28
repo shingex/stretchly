@@ -19,8 +19,25 @@ window.onload = async (event) => {
   document.querySelector('#postpone').onclick = async event =>
     await window.breaks.postponeBreak()
 
-  document.querySelector('.break-idea').textContent = idea[0]
-  document.querySelector('.break-text').textContent = idea[1]
+  document.querySelector('.break-idea').innerHTML = window.breaks.sanitizeIdea(idea[0])
+  document.querySelector('.break-text').innerHTML = window.breaks.sanitizeIdea(idea[1])
+
+  document.querySelectorAll('.break-idea a, .break-text a').forEach(a => {
+    a.onclick = (event) => {
+      event.preventDefault()
+      window.electronApi.openExternal(a.href)
+    }
+  })
+
+  document.querySelectorAll('.break-idea img, .break-text img').forEach(async img => {
+    const src = img.getAttribute('src') || ''
+    const resolved = await window.electronApi.resolveLocalImage(src)
+    if (resolved) {
+      img.src = resolved
+    } else {
+      img.remove()
+    }
+  })
 
   const progress = document.querySelector('#progress')
   const progressTime = document.querySelector('#progress-time')

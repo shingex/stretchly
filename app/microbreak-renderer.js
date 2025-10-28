@@ -19,7 +19,24 @@ window.onload = async (event) => {
   document.querySelector('#postpone').onclick = async event =>
     await window.breaks.postponeBreak()
 
-  document.querySelector('.microbreak-idea').textContent = idea
+  document.querySelector('.microbreak-idea').innerHTML = window.breaks.sanitizeIdea(idea)
+
+  document.querySelectorAll('.microbreak-idea a').forEach(a => {
+    a.onclick = (event) => {
+      event.preventDefault()
+      window.electronApi.openExternal(a.href)
+    }
+  })
+
+  document.querySelectorAll('.microbreak-idea img').forEach(async img => {
+    const src = img.getAttribute('src') || ''
+    const resolved = await window.electronApi.resolveLocalImage(src)
+    if (resolved) {
+      img.src = resolved
+    } else {
+      img.remove()
+    }
+  })
 
   const progress = document.querySelector('#progress')
   const progressTime = document.querySelector('#progress-time')

@@ -2,11 +2,13 @@ import semver from 'semver'
 import humanizeDuration from 'humanize-duration'
 import { contextBridge, ipcRenderer, shell } from 'electron'
 import * as utils from './utils.js'
+import sanitizeIdea from './sanitizeIdea.js'
 
 function exposeElectronApi () {
   contextBridge.exposeInMainWorld('electronApi', {
     openExternal: (path) => shell.openExternal(path),
-    openPath: (path) => shell.openPath(path)
+    openPath: (path) => shell.openPath(path),
+    resolveLocalImage: (filename) => ipcRenderer.invoke('resolve-local-image', filename)
   })
 }
 
@@ -29,7 +31,8 @@ function exposeBreaks (type) {
     sendBreakData: () => ipcRenderer.invoke(`send-${type}-break-data`),
     finishBreak: () => ipcRenderer.send(`finish-${type}-break`, false),
     postponeBreak: () => ipcRenderer.send(`postpone-${type}-break`),
-    signalLoaded: () => ipcRenderer.send(`${type}-break-loaded`)
+    signalLoaded: () => ipcRenderer.send(`${type}-break-loaded`),
+    sanitizeIdea: (value) => sanitizeIdea(value)
   })
 }
 

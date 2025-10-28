@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- allow to show some HTML in breaks
+
 ### Fixed
 - hide autostart option for Windows store
 - prevent memory issues where break windows were not closing correctly
