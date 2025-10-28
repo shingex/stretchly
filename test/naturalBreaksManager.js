@@ -4,6 +4,13 @@ import NaturalBreaksManager from '../app/utils/naturalBreaksManager'
 import Store from 'electron-store'
 import defaultSettings from '../app/utils/defaultSettings'
 import { unlink } from 'node:fs'
+import { vi } from 'vitest'
+
+vi.mock('electron', () => ({
+  powerMonitor: {
+    getSystemIdleTime: () => 0
+  }
+}))
 
 describe('naturalBreaksManager', function () {
   let settings = null
