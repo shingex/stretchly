@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - allow to show some HTML in breaks
 - advanced option for manual finish mode for breaks (breaks are only finished after user's interaction)
+- advanced option to set preferred sound to be played at the beggining of breaks
 
 ### Fixed
 - hide autostart option for Windows store
