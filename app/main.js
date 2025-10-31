@@ -674,7 +674,10 @@ function startMicrobreak () {
   nextIdea = null
 
   if (!settings.get('silentNotifications')) {
-    processWin.webContents.send('play-sound', settings.get('miniBreakStartSound'), settings.get('volume'))
+    const sound = settings.get('miniBreakStartSound')
+    if (sound !== 'silence') {
+      processWin.webContents.send('play-sound', sound, settings.get('volume'))
+    }
   }
 
   ipcMain.handle('send-mini-break-data', (event) => {
@@ -826,7 +829,10 @@ function startBreak () {
   nextIdea = null
 
   if (!settings.get('silentNotifications')) {
-    processWin.webContents.send('play-sound', settings.get('longBreakStartSound'), settings.get('volume'))
+    const sound = settings.get('longBreakStartSound')
+    if (sound !== 'silence') {
+      processWin.webContents.send('play-sound', sound, settings.get('volume'))
+    }
   }
 
   ipcMain.handle('send-long-break-data', (event) => {
