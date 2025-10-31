@@ -28,7 +28,8 @@
   "break": {
     "postpone": "Postpone this break",
     "skip": "Skip this break",
-    "title": "Time to take a break!"
+    "title": "Time to take a break!",
+    "finish": "Finish this break"
   },
   "preferences": {
     "title": "Stretchly Preferences",
@@ -176,6 +177,7 @@
   },
   "utils": {
     "remaining": "{{count}} remaining",
+    "elapsed": "{{count}} elapsed",
     "inAbout": "in about {{count}}",
     "none_one": "{{count}}",
     "none_other": "{{count}}",

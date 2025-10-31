@@ -42,37 +42,61 @@ window.onload = async (event) => {
   const progressTime = document.querySelector('#progress-time')
   const postponeElement = document.querySelector('#postpone')
   const closeElement = document.querySelector('#close')
+  const manualFinishElement = document.querySelector('#finish')
   const mainColor = await window.settings.get('mainColor')
   document.body.classList.add(mainColor.substring(1))
   document.body.style.backgroundColor = backgroundColor
 
   document.querySelectorAll('.tiptext').forEach(async tt => {
     const keyboardShortcut = await window.settings.get('endBreakShortcut')
-    tt.innerHTML = await window.utils.formatKeyboardShortcut(keyboardShortcut)
+    tt.innerHTML = window.utils.formatKeyboardShortcut(keyboardShortcut)
   })
 
-  window.setInterval(async () => {
-    if (await window.settings.get('currentTimeInBreaks')) {
-      document.querySelector('.breaks > :last-child').innerHTML =
-      (new Date()).toLocaleTimeString()
-    }
-    if (Date.now() - started < duration) {
-      const passedPercent = (Date.now() - started) / duration * 100
-      if (await window.utils.canPostpone(postpone, passedPercent, postponePercent)) {
-        postponeElement.classList.remove('hidden')
-      } else {
-        postponeElement.classList.add('hidden')
-      }
+  let manualAwaiting = false
 
-      if (await window.utils.canSkip(strictMode, postpone, passedPercent, postponePercent)) {
-        closeElement.classList.remove('hidden')
-      } else {
-        closeElement.classList.add('hidden')
+  const locale = await window.settings.get('language')
+
+  manualFinishElement.onclick = async () => {
+    await window.breaks.finishBreak()
+  }
+
+  setInterval(async () => {
+    if (await window.settings.get('currentTimeInBreaks')) {
+      document.querySelector('.breaks > :last-child').innerHTML = (new Date()).toLocaleTimeString()
+    }
+    const now = Date.now()
+    const passed = now - started
+    if (!manualAwaiting) {
+      if (passed < duration) {
+        const passedPercent = passed / duration * 100
+        if (window.utils.canPostpone(postpone, passedPercent, postponePercent)) {
+          postponeElement.classList.remove('hidden')
+        } else {
+          postponeElement.classList.add('hidden')
+        }
+        if (window.utils.canSkip(strictMode, postpone, passedPercent, postponePercent)) {
+          closeElement.classList.remove('hidden')
+        } else {
+          closeElement.classList.add('hidden')
+        }
+        progress.value = (100 - passedPercent) * progress.max / 100
+        progressTime.innerHTML = await window.utils.formatTimeRemaining(duration - passed, locale)
       }
-      progress.value = (100 - passedPercent) * progress.max / 100
-      progressTime.innerHTML = await window.utils.formatTimeRemaining(Math.trunc(duration - Date.now() + started),
-        await window.settings.get('language'))
+    } else {
+      progressTime.innerHTML = await window.utils.formatElapsedDuration(passed, locale)
     }
   }, 100)
+
+  window.breaks.onEnterManualAwait(async (which) => {
+    if (which !== 'microbreak' || manualAwaiting) return
+    manualAwaiting = true
+    progress.value = 0
+    progressTime.classList.remove('hidden')
+    postponeElement.classList.add('hidden')
+    closeElement.classList.add('hidden')
+    manualFinishElement.classList.remove('hidden')
+    progressTime.innerHTML = await window.utils.formatElapsedDuration(Date.now() - started, locale)
+  })
+
   await window.breaks.signalLoaded()
 }

@@ -274,9 +274,21 @@ async function initialize (isAppStart = true) {
     breakPlanner.on('startMicrobreakNotification', () => { startMicrobreakNotification() })
     breakPlanner.on('startBreakNotification', () => { startBreakNotification() })
     breakPlanner.on('startMicrobreak', () => { startMicrobreak() })
-    breakPlanner.on('finishMicrobreak', (shouldPlaySound, shouldPlanNext) => { finishMicrobreak(shouldPlaySound, shouldPlanNext) })
+    breakPlanner.on('finishMicrobreak', (shouldPlaySound, shouldPlanNext) => {
+      if (settings.get('miniBreakManualFinish')) {
+        enterMiniBreakManualContinuation(shouldPlaySound)
+        return
+      }
+      finishMicrobreak(shouldPlaySound, shouldPlanNext)
+    })
     breakPlanner.on('startBreak', () => { startBreak() })
-    breakPlanner.on('finishBreak', (shouldPlaySound, shouldPlanNext) => { finishBreak(shouldPlaySound, shouldPlanNext) })
+    breakPlanner.on('finishBreak', (shouldPlaySound, shouldPlanNext) => {
+      if (settings.get('longBreakManualFinish')) {
+        enterLongBreakManualContinuation(shouldPlaySound)
+        return
+      }
+      finishBreak(shouldPlaySound, shouldPlanNext)
+    })
     breakPlanner.on('resumeBreaks', () => { resumeBreaks() })
     breakPlanner.on('updateToolTip', function () {
       updateTray()
@@ -649,17 +661,20 @@ function startMicrobreak () {
 
   ipcMain.handle('send-mini-break-data', (event) => {
     const startTime = Date.now()
-    if (!strictMode || postponable) {
-      if (settings.get('endBreakShortcut') !== '') {
-        globalShortcut.register(settings.get('endBreakShortcut'), () => {
-          const passedPercent = (Date.now() - startTime) / breakDuration * 100
-          if (canPostpone(postponable, passedPercent, postponableDurationPercent)) {
-            postponeMicrobreak()
-          } else if (canSkip(strictMode, postponable, passedPercent, postponableDurationPercent)) {
-            finishMicrobreak(false)
-          }
-        })
-      }
+    const shortcut = settings.get('endBreakShortcut')
+    if (shortcut) {
+      globalShortcut.register(shortcut, () => {
+        const passedPercent = (Date.now() - startTime) / breakDuration * 100
+        if (passedPercent >= 100) {
+          finishMicrobreak(false)
+          return
+        }
+        if (canPostpone(postponable, passedPercent, postponableDurationPercent)) {
+          postponeMicrobreak()
+        } else if (canSkip(strictMode, postponable, passedPercent, postponableDurationPercent)) {
+          finishMicrobreak(false)
+        }
+      })
     }
     return [idea, startTime, breakDuration, strictMode,
       postponable, postponableDurationPercent,
@@ -798,17 +813,20 @@ function startBreak () {
 
   ipcMain.handle('send-long-break-data', (event) => {
     const startTime = Date.now()
-    if (!strictMode || postponable) {
-      if (settings.get('endBreakShortcut') !== '') {
-        globalShortcut.register(settings.get('endBreakShortcut'), () => {
-          const passedPercent = (Date.now() - startTime) / breakDuration * 100
-          if (canPostpone(postponable, passedPercent, postponableDurationPercent)) {
-            postponeBreak()
-          } else if (canSkip(strictMode, postponable, passedPercent, postponableDurationPercent)) {
-            finishBreak(false)
-          }
-        })
-      }
+    const shortcut = settings.get('endBreakShortcut')
+    if (shortcut) {
+      globalShortcut.register(shortcut, () => {
+        const passedPercent = (Date.now() - startTime) / breakDuration * 100
+        if (passedPercent >= 100) {
+          finishBreak(false)
+          return
+        }
+        if (canPostpone(postponable, passedPercent, postponableDurationPercent)) {
+          postponeBreak()
+        } else if (canSkip(strictMode, postponable, passedPercent, postponableDurationPercent)) {
+          finishBreak(false)
+        }
+      })
     }
     return [idea, startTime, breakDuration, strictMode,
       postponable, postponableDurationPercent,
@@ -938,6 +956,28 @@ function breakComplete (shouldPlaySound, windows, breakType) {
   skipStrictCloseGuard = false
   return result
 }
+
+function enterManualAwaitPhase (type, shouldPlaySound) {
+  const isMini = type === 'mini'
+  const manualSettingKey = isMini ? 'miniBreakManualFinish' : 'longBreakManualFinish'
+  if (!settings.get(manualSettingKey)) return
+  if (shouldPlaySound && !settings.get('silentNotifications')) {
+    const audioKey = isMini ? 'miniBreakAudio' : 'longBreakAudio'
+    processWin.webContents.send('play-sound', settings.get(audioKey), settings.get('volume'))
+  }
+  const wins = isMini ? microbreakWins : breakWins
+  if (wins) {
+    wins.forEach(w => {
+      if (w && !w.isDestroyed()) {
+        w.webContents.send('enter-manual-await', isMini ? 'microbreak' : 'break')
+      }
+    })
+  }
+  log.info('Stretchly: entering manual finish phase (' + (isMini ? 'Mini' : 'Long') + ' Break)')
+}
+
+const enterMiniBreakManualContinuation = (shouldPlaySound) => enterManualAwaitPhase('mini', shouldPlaySound)
+const enterLongBreakManualContinuation = (shouldPlaySound) => enterManualAwaitPhase('long', shouldPlaySound)
 
 function finishMicrobreak (shouldPlaySound = true, shouldPlanNext = true) {
   microbreakWins = breakComplete(shouldPlaySound, microbreakWins, 'mini')

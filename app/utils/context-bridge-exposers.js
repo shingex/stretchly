@@ -32,6 +32,7 @@ function exposeBreaks (type) {
     finishBreak: () => ipcRenderer.send(`finish-${type}-break`, false),
     postponeBreak: () => ipcRenderer.send(`postpone-${type}-break`),
     signalLoaded: () => ipcRenderer.send(`${type}-break-loaded`),
+    onEnterManualAwait: (callback) => ipcRenderer.on('enter-manual-await', (_e, which) => callback(which)),
     sanitizeIdea: (value) => sanitizeIdea(value)
   })
 }
@@ -105,6 +106,9 @@ function exposeUtils () {
     formatKeyboardShortcut: utils.formatKeyboardShortcut,
     formatTimeRemaining: async (milliseconds, locale) => {
       return utils.formatTimeRemaining(milliseconds, locale, i18n, humanizeDuration)
+    },
+    formatElapsedDuration: async (milliseconds, locale) => {
+      return utils.formatElapsedDuration(milliseconds, locale, i18n, humanizeDuration)
     },
     formatUnitAndValue: (unit, value) => {
       return utils.formatUnitAndValue(unit, value, i18n)

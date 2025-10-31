@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - allow to show some HTML in breaks
+- advanced option for manual finish mode for breaks (breaks are only finished after user's interaction)
 
 ### Fixed
 - hide autostart option for Windows store

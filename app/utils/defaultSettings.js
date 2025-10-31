@@ -78,5 +78,7 @@ export default {
   customPreferencesMessage: '',
   disableAppUpdateFeatures: insideFlatpak() || insideWindowsStore() || insideSnap(),
   hidePreferencesFileLocation: false,
-  hideStrictModePreferences: false
+  hideStrictModePreferences: false,
+  miniBreakManualFinish: false,
+  longBreakManualFinish: false
 }
