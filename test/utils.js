@@ -1,4 +1,4 @@
-import { formatTimeRemaining, formatTimeIn, canSkip, canPostpone, formatKeyboardShortcut, minutesRemaining, shouldShowNotificationTitle, formatUnitAndValue } from '../app/utils/utils'
+import { formatTimeRemaining, formatElapsedDuration, formatTimeIn, canSkip, canPostpone, formatKeyboardShortcut, minutesRemaining, shouldShowNotificationTitle, formatUnitAndValue } from '../app/utils/utils'
 import { beforeAll, afterAll, vi } from 'vitest'
 import 'chai/register-should'
 import i18next from 'i18next'
@@ -20,6 +20,7 @@ describe('Times formatters', function () {
   })
 
   it('formats "remaining" milliseconds into correct format', function () {
+    formatTimeRemaining(-800, 'en', i18next, humanizeDuration).should.equal('1 second remaining')
     formatTimeRemaining(800, 'en', i18next, humanizeDuration).should.equal('1 second remaining')
     formatTimeRemaining(1000, 'en', i18next, humanizeDuration).should.equal('1 second remaining')
     formatTimeRemaining(1001, 'en', i18next, humanizeDuration).should.equal('1 second remaining')
@@ -38,7 +39,26 @@ describe('Times formatters', function () {
     formatTimeRemaining(7180001, 'en', i18next, humanizeDuration).should.equal('1 hour 59 minutes 40 seconds remaining')
   })
 
+  it('formats elapsed milliseconds into correct format', function () {
+    formatElapsedDuration(-800, 'en', i18next, humanizeDuration).should.equal('1 second elapsed')
+    formatElapsedDuration(800, 'en', i18next, humanizeDuration).should.equal('1 second elapsed')
+    formatElapsedDuration(1000, 'en', i18next, humanizeDuration).should.equal('1 second elapsed')
+    formatElapsedDuration(1001, 'en', i18next, humanizeDuration).should.equal('1 second elapsed')
+    formatElapsedDuration(2000, 'en', i18next, humanizeDuration).should.equal('2 seconds elapsed')
+    formatElapsedDuration(59001, 'en', i18next, humanizeDuration).should.equal('59 seconds elapsed')
+    formatElapsedDuration(60001, 'en', i18next, humanizeDuration).should.equal('1 minute elapsed')
+    formatElapsedDuration(118001, 'en', i18next, humanizeDuration).should.equal('1 minute 58 seconds elapsed')
+    formatElapsedDuration(119001, 'en', i18next, humanizeDuration).should.equal('1 minute 59 seconds elapsed')
+    formatElapsedDuration(120000, 'en', i18next, humanizeDuration).should.equal('2 minutes elapsed')
+    formatElapsedDuration(120001, 'en', i18next, humanizeDuration).should.equal('2 minutes elapsed')
+    formatElapsedDuration(3600000, 'en', i18next, humanizeDuration).should.equal('1 hour elapsed')
+    formatElapsedDuration(3600001, 'en', i18next, humanizeDuration).should.equal('1 hour elapsed')
+    formatElapsedDuration(7080001, 'en', i18next, humanizeDuration).should.equal('1 hour 58 minutes elapsed')
+    formatElapsedDuration(7180001, 'en', i18next, humanizeDuration).should.equal('1 hour 59 minutes 40 seconds elapsed')
+  })
+
   it('formats "in" milliseconds into correct format', function () {
+    formatTimeIn(-800, 'en', i18next, humanizeDuration).should.equal('in about 0 minutes')
     formatTimeIn(800, 'en', i18next, humanizeDuration).should.equal('in about 0 minutes')
     formatTimeIn(58001, 'en', i18next, humanizeDuration).should.equal('in about 1 minute')
     formatTimeIn(60001, 'en', i18next, humanizeDuration).should.equal('in about 1 minute')

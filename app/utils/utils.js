@@ -10,6 +10,16 @@ function formatTimeRemaining (milliseconds, locale, i18next, humanizeDuration) {
   })
 }
 
+function formatElapsedDuration (milliseconds, locale, i18next, humanizeDuration) {
+  if (locale === 'pt-BR') {
+    locale = 'pt'
+  }
+  return i18next.t('utils.elapsed', {
+    count: humanizeDuration(milliseconds,
+      { round: true, delimiter: ' ', language: locale.replace('-', '_'), fallbacks: ['en'] })
+  })
+}
+
 function formatTimeIn (milliseconds, locale, i18next, humanizeDuration) {
   if (locale === 'pt-BR') {
     locale = 'pt'
@@ -80,6 +90,7 @@ function insideSnap () {
 
 export {
   formatTimeRemaining,
+  formatElapsedDuration,
   formatTimeIn,
   formatUnitAndValue,
   canPostpone,

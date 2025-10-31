@@ -298,6 +298,16 @@ If you'd like to disable the shortcut, set value to empty string `""`.
 
 Default value is `CmdOrCtrl+X`.
 
+#### Manual finish break mode
+If you want breaks to wait for you to finish them manually instead of automatically when the countdown reaches zero, set:
+
+```
+"miniBreakManualFinish": true,
+"longBreakManualFinish": true
+```
+
+Once enabled, the break behaves normally until it reaches 100%, then the window switches to showing elapsed time since the break started. You must press the Finish button or use the `endBreakShortcut` to close the break.
+
 #### Toggle Breaks Shortcut
 
 Toggling between Pause Breaks and running breaks.
