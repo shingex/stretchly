@@ -256,6 +256,24 @@ async function initialize (isAppStart = true) {
           } else {
             log.info('Stretchly: not migrating audio to longBreakAudio')
           }
+          if (store.has('microbreakStartSoundPlaying')) {
+            const val = store.get('microbreakStartSoundPlaying') ? store.get('miniBreakAudio') : 'silence'
+            store.set('miniBreakStartSound', val)
+            log.info(`Stretchly: migrating microbreakStartSoundPlaying to miniBreakStartSound with value "${val}"`)
+            store.delete('microbreakStartSoundPlaying')
+            log.info('Stretchly: removing microbreakStartSoundPlaying')
+          } else {
+            log.info('Stretchly: not migrating microbreakStartSoundPlaying')
+          }
+          if (store.has('breakStartSoundPlaying')) {
+            const val = store.get('breakStartSoundPlaying') ? store.get('longBreakAudio') : 'silence'
+            store.set('longBreakStartSound', val)
+            log.info(`Stretchly: migrating breakStartSoundPlaying to longBreakStartSound with value "${val}"`)
+            store.delete('breakStartSoundPlaying')
+            log.info('Stretchly: removing breakStartSoundPlaying')
+          } else {
+            log.info('Stretchly: not migrating breakStartSoundPlaying')
+          }
         }
       },
       watch: true
@@ -655,8 +673,11 @@ function startMicrobreak () {
   const idea = nextIdea || (settings.get('ideas') ? microbreakIdeas.randomElement : [''])
   nextIdea = null
 
-  if (settings.get('microbreakStartSoundPlaying') && !settings.get('silentNotifications')) {
-    processWin.webContents.send('play-sound', settings.get('miniBreakAudio'), settings.get('volume'))
+  if (!settings.get('silentNotifications')) {
+    const sound = settings.get('miniBreakStartSound')
+    if (sound !== 'silence') {
+      processWin.webContents.send('play-sound', sound, settings.get('volume'))
+    }
   }
 
   ipcMain.handle('send-mini-break-data', (event) => {
@@ -807,8 +828,11 @@ function startBreak () {
   const idea = nextIdea ? (nextIdea.map((val, index) => val || defaultNextIdea[index])) : defaultNextIdea
   nextIdea = null
 
-  if (settings.get('breakStartSoundPlaying') && !settings.get('silentNotifications')) {
-    processWin.webContents.send('play-sound', settings.get('longBreakAudio'), settings.get('volume'))
+  if (!settings.get('silentNotifications')) {
+    const sound = settings.get('longBreakStartSound')
+    if (sound !== 'silence') {
+      processWin.webContents.send('play-sound', sound, settings.get('volume'))
+    }
   }
 
   ipcMain.handle('send-long-break-data', (event) => {
