@@ -171,7 +171,6 @@
     "paused": "หยุด",
     "dndMode": "อยู่ในโหมดห้ามรบกวน",
     "appExclusion": "แอพที่ได้รับยกเว้น",
-    "afterMiniBreak_one": "หลังจากการพักสั้นอีก {{count}} ครั้ง",
     "afterMiniBreak_other": "หลังจากการพักสั้นอีก {{count}} ครั้ง",
     "resuming": "ทำต่อ",
     "nextMiniBreak": "การพักสั้นครั้งหน้า",
@@ -249,6 +248,6 @@
     "newVersionAvailable": "เวอร์ชันใหม่ออกมาแล้ว!"
   },
   "utils": {
-    "none_one": "{{count}}"
+    "none_other": ""
   }
 }
