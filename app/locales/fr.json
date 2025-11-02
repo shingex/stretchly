@@ -137,7 +137,7 @@
     "postponeFor": "Reporter de :",
     "maxPostpones": "Nombre de reports maximum :",
     "longBreaks": "Grandes pauses :",
-    "pauseUntilMoring": "Suspendre jusqu'au matin :",
+    "pauseUntilMorning": "Suspendre jusqu'au matin :",
     "pauseUntil": "Suspendre jusqu'à :",
     "pauseUntilMorningInfo": "Spécifiez jusqu'à quelle heure « Suspendre jusqu'au matin » doit suspendre les pauses.",
     "welcomeWindow": "Écran de bienvenue :",

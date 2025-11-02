@@ -136,7 +136,7 @@
     "postponeFor": "연기 시간:",
     "maxPostpones": "최대 연기 횟수:",
     "longBreaks": "긴 휴식:",
-    "pauseUntilMoring": "아침까지 일시 중지:",
+    "pauseUntilMorning": "아침까지 일시 중지:",
     "pauseUntil": "다음 시간까지 일시 중지:",
     "pauseUntilMorningInfo": "'아침까지 일시 중지'가 몇 시까지 일시 중지되어야 하는지 지정합니다.",
     "welcomeWindow": "환영 창:",

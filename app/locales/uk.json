@@ -155,7 +155,7 @@
     "showWelcomeWindow": "Показувати вікно привітання під час наступного запуску",
     "pauseUntilMorningInfo": "Оберіть, до якої години буде діяти \"Відкласти до ранку\".",
     "pauseUntil": "Відкласти до:",
-    "pauseUntilMoring": "Відкласти до ранку:",
+    "pauseUntilMorning": "Відкласти до ранку:",
     "longBreaks": "Довгі перерви:",
     "maxPostpones": "Разів не більше, ніж:",
     "postponeFor": "Відкласти на:",

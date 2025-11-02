@@ -127,15 +127,15 @@ When you run *Stretchly* for the first time, you are presented with a Welcome wi
 
 <img src="minibreak.png" height="340">
 
-By default, there is a 20 second Mini Break every 10 minutes and a 5 minute Long Break every 30 minutes (after 2 Mini Breaks).
+By default, there is a 20 second Mini break every 10 minutes and a 5 minute Long break every 30 minutes (after 2 Mini breaks).
 
 <img src="longbreak.png" height="340">
 
-You'll be notified 10 seconds before a Mini Break (and 30 seconds before a Long Break) so that you can prepare to pause your work.
+You'll be notified 10 seconds before a Mini break (and 30 seconds before a Long break) so that you can prepare to pause your work.
 
 <img src="notification.png" height="90">
 
-When a break starts, you can postpone it once for 2 minutes (Mini Breaks) or 5 minutes (Long Breaks). Then, after a specific time interval passes, you can skip the break. Both actions are available by clicking on the link at the bottom of window or by using the `Ctrl/Cmd + X` keyboard shortcut.
+When a break starts, you can postpone it once for 2 minutes (Mini breaks) or 5 minutes (Long breaks). Then, after a specific time interval passes, you can skip the break. Both actions are available by clicking on the link at the bottom of window or by using the `Ctrl/Cmd + X` keyboard shortcut.
 
 <img src="skip.png" height="340">
 
@@ -183,27 +183,27 @@ Some of the extra preferences are available in Contributor Preferences for [Cont
 
 Preferences marked with ![Not Reliable](https://img.shields.io/badge/Not_Reliable-β-yellow) might not work correctly and might break *Stretchly*. Use at own risk.
 
-**Note:** Before 1.0, Mini Breaks and Long Breaks were called Microbreaks and Breaks, respectively. To keep the upgrade smooth they still use that name in preferences file and in code.
+**Note:** Before 1.0, Mini breaks and Long breaks were called Microbreaks and Breaks, respectively. To keep the upgrade smooth they still use that name in preferences file and in code.
 
 #### Preferences editable in the app
 
 Here are the preferences editable via the app. If values in the app does not suite your style, you could edit them maually:
 
-- `microbreakDuration` - duration of Mini Break (ms)
-- `microbreakInterval` - interval of Mini Break (ms)
-- `breakDuration` - duration of Long Break (ms)
-- `breakInterval` - interval of Long Break (Mini Breaks)
-- `breakNotification` - show notification before Mini Break
-- `microbreakNotification` - show notification before Long Break
-- `microbreak` - enable Mini Breaks
-- `break` - enable Long Breaks
-- `microbreakStrictMode` - enable strict mode for Mini Breaks
-- `breakStrictMode` - enable strict mode for Long Breaks
-- `mainColor` - theme color code (for Long Breaks),
-- `miniBreakColor` - theme color code (for Mini Breaks),
+- `microbreakDuration` - duration of Mini break (ms)
+- `microbreakInterval` - interval of Mini break (ms)
+- `breakDuration` - duration of Long break (ms)
+- `breakInterval` - interval of Long break (Mini breaks)
+- `breakNotification` - show notification before Mini break
+- `microbreakNotification` - show notification before Long break
+- `microbreak` - enable Mini breaks
+- `break` - enable Long breaks
+- `microbreakStrictMode` - enable strict mode for Mini breaks
+- `breakStrictMode` - enable strict mode for Long breaks
+- `mainColor` - theme color code (for Long breaks),
+- `miniBreakColor` - theme color code (for Mini breaks),
 - `transparentMode` - show break windows as transparent
-- `longBreakAudio` - sound theme name (for Long Breaks)
-- `miniBreakAudio` - sound theme name (for Mini Breaks)
+- `longBreakAudio` - sound theme name (for Long breaks)
+- `miniBreakAudio` - sound theme name (for Mini breaks)
 - `fullscreen` - show breaks in fullscreen mode
 - `ideas` - show break ideas
 - `naturalBreaks` - monitor idle time
@@ -259,7 +259,7 @@ Supported image formats: PNG, JPEG, WebP, GIF. Only images from the local `image
 Stretchly sanitizes all HTML to keep break windows secure by removing any unsupported tags or unsafe content.
 
 #### Editing Break notification interval [![Contributor Preferences](https://img.shields.io/badge/Contributor_Preferences-✔-success)](#contributor-preferences)
-In the preferences file, change `breakNotificationInterval: 30000,` to whatever value you want. 30000 is 30 seconds. Same goes for Mini Breaks.
+In the preferences file, change `breakNotificationInterval: 30000,` to whatever value you want. 30000 is 30 seconds. Same goes for Mini breaks.
 
 #### Editing sunrise time to pause breaks until morning
 In the preferences file you can set the `morningHour` setting to pause until that hour today or the next day
@@ -280,10 +280,10 @@ In the preferences file, set `notifyNewVersion: false,` to disable new version n
 To configure the sound when a break starts, set for example `"miniBreakStartSound": "crystal-glass"`. Same for `longBreakStartSound`. Accepted values: `silence`, `crystal-glass`, `wind-chime`, `tic-toc`, `reverie`. Setting the value to `silence` means no sound will be played.
 
 #### Different sound for Mini and Long breaks
-To play different sound for Mini Breaks, set `miniBreakAudio` to desired value (`crystal-glass`, `silence`, `tic-toc`, `wind-chime`).
+To play different sound for Mini breaks, set `miniBreakAudio` to desired value (`crystal-glass`, `silence`, `tic-toc`, `wind-chime`).
 
 #### Different color theme for Mini and Long breaks
-To have different theme for Mini Breaks, set `miniBreakColor` to desired value, ie `#123456`.
+To have different theme for Mini breaks, set `miniBreakColor` to desired value, ie `#123456`.
 
 #### Natural breaks inactivity time [![Contributor Preferences](https://img.shields.io/badge/Contributor_Preferences-✔-success)](#contributor-preferences)
 In the preferences file, set `naturalBreaksInactivityResetTime` to your preferred value (in milliseconds greater than than 20000ms). This is an idle time length, after which *Stretchly* breaks will be paused until the user resumes activity.

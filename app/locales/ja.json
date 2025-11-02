@@ -143,7 +143,7 @@
     "postponeFor": "延期時間:",
     "maxPostpones": "最大延期回数:",
     "longBreaks": "休憩:",
-    "pauseUntilMoring": "朝まで一時停止:",
+    "pauseUntilMorning": "朝まで一時停止:",
     "pauseUntil": "〜まで一時停止:",
     "pauseUntilMorningInfo": "「朝まで一時停止」とは何時までかを設定する。",
     "opacityTheme": "テーマ透過:",

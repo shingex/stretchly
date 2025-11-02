@@ -24,7 +24,7 @@
   <screenshots>
     <screenshot type="default">
       <image>https://hovancik.net/stretchly/img/flathub/minibreak.png</image>
-      <caption>Stretchly Mini Break screen</caption>
+      <caption>Stretchly Mini break screen</caption>
     </screenshot>
     <screenshot>
       <image>https://hovancik.net/stretchly/img/flathub/welcome.png</image>
@@ -173,8 +173,8 @@
         <ul>
           <li>new break ideas</li>
           <li>ability to open Preferences window from command line</li>
-          <li>advanced option to set different sounds for Mini and Long Breaks</li>
-          <li>advanced option to set different color theme for Mini and Long Breaks</li>
+          <li>advanced option to set different sounds for Mini and Long breaks</li>
+          <li>advanced option to set different color theme for Mini and Long breaks</li>
         </ul>
         <p>Fixed</p>
         <ul>

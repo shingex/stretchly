@@ -152,7 +152,7 @@
     "customIdeasInfo": "يمكنك إضافة أفكار للإستراحات عن طريق تحرير ملف configuration (للمستخدمين المتقدمين)",
     "useIdeasFromSettings": "إستعمل أفكار للإستراحات من ملف خارجي",
     "cursor": "تتبّع المؤشر",
-    "pauseUntilMoring": "توقيف حتى الصباح:",
+    "pauseUntilMorning": "توقيف حتى الصباح:",
     "pauseUntilMorningInfo": "تحديد ساعة محددة ل \"توقيف حتى الصباح\".",
     "pauseAfter": "توقيف بعد:",
     "breakWindowSizeInfo": "كم النسبة المراد إخفاؤها من قبل شاشة الإستراحة؟",
