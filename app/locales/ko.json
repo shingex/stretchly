@@ -177,17 +177,11 @@
   "utils": {
     "remaining": "{{count}} 남음",
     "inAbout": "약 {{count}} 후",
-    "none_one": "{{count}}",
     "none_other": "{{count}}",
-    "percent_one": "{{count}} 퍼센트",
     "percent_other": "{{count}} 퍼센트",
-    "oclock_one": "{{count}} 시",
     "oclock_other": "{{count}} 시",
-    "seconds_one": "{{count}}초",
     "seconds_other": "{{count}}초",
-    "minutes_one": "{{count}}분",
     "minutes_other": "{{count}}분",
-    "hours_one": "{{count}}시간",
     "hours_other": "{{count}}시간"
   },
   "process": {
@@ -207,7 +201,6 @@
     "appExclusion": "앱 제외 규칙",
     "nextLongBreak": "다음 긴 휴식",
     "nextMiniBreak": "다음 짧은 휴식",
-    "afterMiniBreak_one": "짧은 휴식 {{count}}회 후",
     "afterMiniBreak_other": "짧은 휴식 {{count}}회 후",
     "resuming": "재개 중"
   },
