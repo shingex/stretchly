@@ -138,7 +138,7 @@
     "postponeFor": "延后多久：",
     "maxPostpones": "最大延后次数：",
     "longBreaks": "休息：",
-    "pauseUntilMoring": "暂停至早晨：",
+    "pauseUntilMorning": "暂停至早晨：",
     "pauseUntil": "暂停至：",
     "pauseUntilMorningInfo": "指定「暂停至早晨」的具体时间。",
     "welcomeWindow": "欢迎窗口：",

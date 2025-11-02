@@ -1,12 +1,12 @@
 {
   "main": {
     "toolTipHeader": "Stretchly - Pamätá si prestávky za vás",
-    "microbreakIn": "Mini Prestávka za $t(utils.seconds, {'count': {{seconds}} })",
-    "breakIn": "Dlhá Prestávka za $t(utils.seconds, {'count': {{seconds}} })",
+    "microbreakIn": "Mini prestávka za $t(utils.seconds, {'count': {{seconds}} })",
+    "breakIn": "Dlhá prestávka za $t(utils.seconds, {'count': {{seconds}} })",
     "resumingBreaks": "Obnovenie prestávok",
     "downloadLatestVersion": "Stiahnuť najnovšiu verziu",
-    "toBreak": "Dlhú Prestávku",
-    "toMicrobreak": "Mini Prestávku",
+    "toBreak": "Dlhú prestávku",
+    "toMicrobreak": "Mini prestávku",
     "skipToTheNext": "Preskočiť na ďalšiu",
     "resume": "Pokračovať v prestávkach",
     "pause": "Prerušiť prestávky",
@@ -29,7 +29,8 @@
   "break": {
     "postpone": "Posunúť prestávku na neskôr",
     "skip": "Preskočiť túto prestávku",
-    "title": "Čas na prestávku!"
+    "title": "Čas na prestávku!",
+    "finish": "Dokončiť túto prestávku"
   },
   "preferences": {
     "title": "Nastavenia Stretchly",
@@ -53,22 +54,22 @@
       "restoreDefaults": "Obnoviť pôvodné nastavenia"
     },
     "schedule": {
-      "miniBreaks": "Mini Prestávky:",
-      "miniBreaksInfo": "Mini Prestávky sú kratšie a častejšie prestávky, ktoré vám umožnia oddýchnuť si, natiahnuť sa a relaxovať.",
-      "enableMiniBreaks": "Povoliť Mini Prestávky",
+      "miniBreaks": "Mini prestávky:",
+      "miniBreaksInfo": "Mini prestávky sú kratšie a častejšie prestávky, ktoré vám umožnia oddýchnuť si, natiahnuť sa a relaxovať.",
+      "enableMiniBreaks": "Povoliť Mini prestávky",
       "breakFor": "Dopriať si prestávku:",
       "every": "Každých:",
-      "showNotificationBeforeMiniBreak": "Ukázať upozornenie pred začiatkom Mini Prestávky",
-      "enablePostponeMini": "Umožniť posunutie Mini Prestávky",
-      "longBreaks": "Dlhé Prestávky:",
-      "longBreaksInfo": "Dlhé Prestávky nie sú také časté, ale za to trvajú dlhšie, čím umožnia lepšie si odpočinúť od vašej práce.",
-      "enableLongBreaks": "Povoliť Dlhé Prestávky",
-      "showNotificationBeforeLongBreak": "Ukázať upozornenie pred začiatkom Dlhej Prestávky",
-      "enablePostponeLong": "Umožniť posunutie Dlhej Prestávky",
-      "strictMode": "Prísny Režim:",
+      "showNotificationBeforeMiniBreak": "Ukázať upozornenie pred začiatkom Mini prestávky",
+      "enablePostponeMini": "Umožniť posunutie Mini prestávky",
+      "longBreaks": "Dlhé prestávky:",
+      "longBreaksInfo": "Dlhé prestávky nie sú také časté, ale trvajú dlhšie, čím umožnia lepší odpočinok od práce.",
+      "enableLongBreaks": "Povoliť Dlhé prestávky",
+      "showNotificationBeforeLongBreak": "Ukázať upozornenie pred začiatkom Dlhej prestávky",
+      "enablePostponeLong": "Umožniť posunutie Dlhej prestávky",
+      "strictMode": "Prísny režim:",
       "strictModeInfo": "V Prísnom Režime vám nebude umožnené preskočiť prestávku a vylepší tak vašu disciplínu.",
-      "enableStrictMini": "Zapnúť Prísny Režim pre Mini Prestávky",
-      "enableStrictLong": "Zapnúť Prísny Režim pre Dlhé Prestávky",
+      "enableStrictMini": "Zapnúť Prísny režim pre Mini prestávky",
+      "enableStrictLong": "Zapnúť Prísny režim pre Dlhé prestávky",
       "cantDisableBoth": "Nie je možné nepovoliť obe druhy prestávok"
     },
     "theme": {
@@ -84,6 +85,7 @@
       "crystalGlass": "Sklíčka dotykov",
       "windChime": "Zvonkohra",
       "ticToc": "Tik tak",
+      "silence": "Ticho",
       "menubarIcon": "Ikonka:",
       "colour": "Farebná",
       "monochrome": "Čiernobiela",
@@ -124,21 +126,21 @@
     "title": "Nastavenia pre prispievateľov",
     "notifications": "Upozornenie na prestávku:",
     "notificationsInfo": "Systémová notifikácia zobrazená krátko pred prestávkou, ktorá vám umožní sa lepšie pripraviť na prestávku.",
-    "beforeLongBreak": "Dlhá Prestávka:",
-    "beforeMiniBreak": "Mini Prestávka:",
+    "beforeLongBreak": "Dlhá prestávka:",
+    "beforeMiniBreak": "Mini prestávka:",
     "newVersion": "Nová verzia:",
     "newVersionNotification": "Upozorni na novú verziu",
     "customIdeas": "Vlastné nápady na prestávky:",
-    "customIdeasInfo": "Umožnuje použitie vlastných nápadov na prestávky editovaním konfiguračného súbora. (Pre pokročilých používateľov)",
+    "customIdeasInfo": "Umožňuje použitie vlastných nápadov na prestávky editovaním konfiguračného súbora. (Pre pokročilých používateľov)",
     "useIdeasFromSettings": "Použi nápady na prestávky z konfiguračného súbora",
     "breakPostpone": "Posunutie prestávok:",
     "breakPostponeInfo": "Ak je povolené v hlavných nastaveniach, môžete posunúť prestávku. Nasledujúce nastavenia vám umožnia nastaviť kedy, na ako dlho a koľko krát je možné posunúť prestávku.",
-    "miniBreaks": "Mini Prestávky:",
+    "miniBreaks": "Mini prestávky:",
     "postponableFor": "Môže sa posunúť:",
     "postponeFor": "Posunie sa o:",
     "maxPostpones": "Maximum posunutí:",
-    "longBreaks": "Dlhé Prestávky:",
-    "pauseUntilMoring": "Prerušenie do rána:",
+    "longBreaks": "Dlhé prestávky:",
+    "pauseUntilMorning": "Prerušenie do rána:",
     "pauseUntil": "Prerušiť do:",
     "pauseUntilMorningInfo": "Špecifikujte hodinu pre 'Prerušiť do rána'.",
     "welcomeWindow": "Úvodná obrazovka:",
@@ -152,10 +154,10 @@
     "breakWindowHeight": "Výška:",
     "sounds": "Zvuky:",
     "volume": "Hlasitosť:",
-    "miniBreakStartSound": "Prehraj koncový zvuk aj na začiatku Mini Prestávky",
-    "longBreakStartSound": "Prehraj koncový zvuk aj na začiatku Dlhej Prestávky",
+    "miniBreakStartSound": "Prehraj koncový zvuk aj na začiatku Mini prestávky",
+    "longBreakStartSound": "Prehraj koncový zvuk aj na začiatku Dlhej prestávky",
     "naturalBreaks": "Prirodzené prestávky:",
-    "naturalBreaksInfo": "Ak je povolené sledovanie neaktívneho času v hlavných nastaveniach, môžte určit po akom čase by sa mali prerušiť prestávky.",
+    "naturalBreaksInfo": "Ak je povolené sledovanie neaktívneho času v hlavných nastaveniach, môžete určiť po akom čase by sa mali prerušiť prestávky.",
     "pauseAfter": "Prerušiť po:",
     "appearance": "Téma:",
     "light": "Svetlá",
@@ -163,12 +165,12 @@
     "system": "Nasleduj systém",
     "showBreaksAsRegularWindowsTitle": "Správanie ako obyčajné okno:",
     "showBreaksAsRegularWindows": "Ukáž prestávky ako obyčajné okná",
-    "showBreaksAsRegularWindowsInfo": "Ak povolené, okno prestávky sa začne správať ako obyčajné okno: nebude stále navrchu, bude môcť byť označené a objavý sa v panele úloh.",
+    "showBreaksAsRegularWindowsInfo": "Ak povolené, okno prestávky sa začne správať ako obyčajné okno: nebude stále navrchu, bude môcť byť označené a objaví sa v panele úloh.",
     "cursor": "Nasleduj kurzor",
     "primary": "Hlavný monitor",
     "showOnMonitor": "Ukázať Prestávky na",
-    "screenInfo": "Ak je zobrazenie prestávok na všetkých monitoroch vypnuté, môžte si vybrať na ktorom monitore by sa prestávka mala objaviť.",
-    "screen": "Minitor pre Prestávky:",
+    "screenInfo": "Ak je zobrazenie prestávok na všetkých monitoroch vypnuté, môžete si vybrať na ktorom monitore by sa prestávka mala objaviť.",
+    "screen": "Monitor pre prestávky:",
     "showTimeToBreakInTray": "Ukázať čas do ďalšej prestávky v ikone",
     "timeToBreakInTray": "Čas do prestávky",
     "showCurrentTimeInBreaks": "Ukázať aktuálny lokálny čas v okne Prestávky",
@@ -196,7 +198,8 @@
     "minutes_other": "{{count}} minút",
     "hours_one": "{{count}} hodinu",
     "hours_few": "{{count}} hodiny",
-    "hours_other": "{{count}} hodín"
+    "hours_other": "{{count}} hodín",
+    "elapsed": "{{count}} od začiatku"
   },
   "process": {
     "newVersionAvailable": "Je dostupná nová verzia!"
@@ -212,11 +215,11 @@
     "paused": "Prerušené",
     "indefinitely": "Na neurčito",
     "dndMode": "Režim Nerušiť",
-    "nextLongBreak": "Ďalšia Dlhá Prestávka",
-    "nextMiniBreak": "Ďalšia Mini Prestávka",
-    "afterMiniBreak_one": "po {{count}} Mini Prestávke",
-    "afterMiniBreak_few": "po {{count}} Mini Prestávkach",
-    "afterMiniBreak_other": "po {{count}} Mini Prestávkach",
+    "nextLongBreak": "Ďalšia Dlhá prestávka",
+    "nextMiniBreak": "Ďalšia Mini prestávka",
+    "afterMiniBreak_one": "po {{count}} Mini prestávke",
+    "afterMiniBreak_few": "po {{count}} Mini prestávkach",
+    "afterMiniBreak_other": "po {{count}} Mini prestávkach",
     "resuming": "Obnovenie prestávok",
     "appExclusion": "Výnimka aplikácie"
   },
@@ -410,7 +413,7 @@
     },
     "aam": {
       "title": "Ovocie",
-      "text": "Urobte si čas a zjedzte ovocie. Ṕomaly. Všimnite si chuť, textúru, čerstvosť."
+      "text": "Urobte si čas a zjedzte ovocie. Pomaly. Všimnite si chuť, textúru, čerstvosť."
     },
     "aat": {
       "title": "Zápästie a predlaktie",
@@ -447,6 +450,10 @@
     "abh": {
       "title": "Pomalé dýchanie",
       "text": "Vznikajúci výskum naznačuje potenciál pre použitie kontrolovaných techník pomalého dýchania ako prostriedku na optimalizáciu fyziologických parametrov, ktoré sa zdajú byť spojené so zdravím a dlhovekosťou."
+    },
+    "abj": {
+      "title": "Pod tlakom?",
+      "text": "Skúste uzemňovaciu techniku 5-4-3-2-1: Nájdite 5 vecí, ktoré vidíte, 4 veci, ktorých sa môžete dotknúť, 3 veci, ktoré počujete, 2 veci, ktoré cítite, a 1 vec, ktorú môžete ochutnať."
     },
     "aae": {
       "title": "Žmurkanie",

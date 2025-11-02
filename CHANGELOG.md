@@ -130,8 +130,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - new break ideas
 - ability to open Preferences window from command line
-- advanced option to set different sounds for Mini and Long Breaks
-- advanced option to set different color theme for Mini and Long Breaks
+- advanced option to set different sounds for Mini and Long breaks
+- advanced option to set different color theme for Mini and Long breaks
 
 ## Fixed
 - error when checking for new version fails
@@ -377,7 +377,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - updated German translation
 - updated Polish translation
 - updated Chinese translations
-- bigger range for Mini Break duration
+- bigger range for Mini break duration
 - preferences navigation menu visible when scrolling down
 
 ## [1.0.0] - 2020-07-18

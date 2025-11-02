@@ -129,7 +129,7 @@ if (!gotTheLock) {
         break
 
       case 'mini': {
-        log.info('Stretchly: skip to Mini Break (requested by second instance)')
+        log.info('Stretchly: skip to Mini break (requested by second instance)')
         const delay = cmd.waitToMs()
         if (delay === -1) {
           log.error('Stretchly: error parsing wait interval to ms because of invalid value')
@@ -141,7 +141,7 @@ if (!gotTheLock) {
       }
 
       case 'long': {
-        log.info('Stretchly: skip to Long Break (requested by second instance)')
+        log.info('Stretchly: skip to Long break (requested by second instance)')
         const delay = cmd.waitToMs()
         if (delay === -1) {
           log.error('Stretchly: error parsing wait interval to ms because of invalid value')
@@ -624,14 +624,14 @@ function checkVersion () {
 
 function startMicrobreakNotification () {
   showNotification(i18next.t('main.microbreakIn', { seconds: settings.get('microbreakNotificationInterval') / 1000 }))
-  log.info('Stretchly: showing Mini Break notification')
+  log.info('Stretchly: showing Mini break notification')
   breakPlanner.nextBreakAfterNotification()
   updateTray()
 }
 
 function startBreakNotification () {
   showNotification(i18next.t('main.breakIn', { seconds: settings.get('breakNotificationInterval') / 1000 }))
-  log.info('Stretchly: showing Long Break notification')
+  log.info('Stretchly: showing Long break notification')
   breakPlanner.nextBreakAfterNotification()
   updateTray()
 }
@@ -655,7 +655,7 @@ function getBlurredBackgroundWindowOptions () {
 function startMicrobreak () {
   // don't start another break if break running
   if (microbreakWins) {
-    log.warn('Stretchly: Mini Break already running, not starting Mini Break')
+    log.warn('Stretchly: Mini break already running, not starting Mini break')
     return
   }
 
@@ -747,7 +747,7 @@ function startMicrobreak () {
     })
 
     ipcMain.once('mini-break-loaded', () => {
-      log.info('Stretchly: Mini Break window loaded')
+      log.info('Stretchly: Mini break window loaded')
       if (showBreaksAsRegularWindows) {
         microbreakWinLocal.show()
       } else {
@@ -766,7 +766,7 @@ function startMicrobreak () {
       }
       if (localDisplayId === 0) {
         breakPlanner.emit('microbreakStarted', true)
-        log.info('Stretchly: starting Mini Break')
+        log.info('Stretchly: starting Mini break')
       }
       if (!settings.get('fullscreen') && process.platform !== 'darwin') {
         setTimeout(() => {
@@ -809,7 +809,7 @@ function startMicrobreak () {
 
 function startBreak () {
   if (breakWins) {
-    log.warn('Stretchly: Long Break already running, not starting Long Break')
+    log.warn('Stretchly: Long break already running, not starting Long break')
     return
   }
 
@@ -902,7 +902,7 @@ function startBreak () {
     })
 
     ipcMain.once('long-break-loaded', () => {
-      log.info('Stretchly: Long Break window loaded')
+      log.info('Stretchly: Long break window loaded')
       if (showBreaksAsRegularWindows) {
         breakWinLocal.show()
       } else {
@@ -921,7 +921,7 @@ function startBreak () {
       }
       if (localDisplayId === 0) {
         breakPlanner.emit('breakStarted', true)
-        log.info('Stretchly: starting Long Break')
+        log.info('Stretchly: starting Long break')
       }
 
       if (!settings.get('fullscreen') && process.platform !== 'darwin') {
@@ -1005,7 +1005,7 @@ const enterLongBreakManualContinuation = (shouldPlaySound) => enterManualAwaitPh
 
 function finishMicrobreak (shouldPlaySound = true, shouldPlanNext = true) {
   microbreakWins = breakComplete(shouldPlaySound, microbreakWins, 'mini')
-  log.info(`Stretchly: finishing Mini Break (shouldPlanNext: ${shouldPlanNext})`)
+  log.info(`Stretchly: finishing Mini break (shouldPlanNext: ${shouldPlanNext})`)
   if (shouldPlanNext) {
     breakPlanner.nextBreak()
   } else {
@@ -1016,7 +1016,7 @@ function finishMicrobreak (shouldPlaySound = true, shouldPlanNext = true) {
 
 function finishBreak (shouldPlaySound = true, shouldPlanNext = true) {
   breakWins = breakComplete(shouldPlaySound, breakWins, 'long')
-  log.info(`Stretchly: finishing Long Break (shouldPlanNext: ${shouldPlanNext})`)
+  log.info(`Stretchly: finishing Long break (shouldPlanNext: ${shouldPlanNext})`)
   if (shouldPlanNext) {
     breakPlanner.nextBreak()
   } else {
@@ -1028,14 +1028,14 @@ function finishBreak (shouldPlaySound = true, shouldPlanNext = true) {
 function postponeMicrobreak () {
   microbreakWins = breakComplete(false, microbreakWins, 'mini')
   breakPlanner.postponeCurrentBreak()
-  log.info('Stretchly: postponing Mini Break')
+  log.info('Stretchly: postponing Mini break')
   updateTray()
 }
 
 function postponeBreak () {
   breakWins = breakComplete(false, breakWins, 'long')
   breakPlanner.postponeCurrentBreak()
-  log.info('Stretchly: postponing Long Break')
+  log.info('Stretchly: postponing Long break')
   updateTray()
 }
 
@@ -1048,10 +1048,10 @@ function skipToMicrobreak (delay) {
   }
   if (delay) {
     breakPlanner.skipToMicrobreak(delay)
-    log.info(`Stretchly: skipping to Mini Break in ${delay}ms`)
+    log.info(`Stretchly: skipping to Mini break in ${delay}ms`)
   } else {
     breakPlanner.skipToMicrobreak()
-    log.info('Stretchly: skipping to Mini Break')
+    log.info('Stretchly: skipping to Mini break')
   }
   updateTray()
 }
@@ -1065,10 +1065,10 @@ function skipToBreak (delay) {
   }
   if (delay) {
     breakPlanner.skipToBreak(delay)
-    log.info(`Stretchly: skipping to Long Break in ${delay}ms`)
+    log.info(`Stretchly: skipping to Long break in ${delay}ms`)
   } else {
     breakPlanner.skipToBreak()
-    log.info('Stretchly: skipping to Long Break')
+    log.info('Stretchly: skipping to Long break')
   }
   updateTray()
 }

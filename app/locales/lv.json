@@ -21,7 +21,7 @@
     "welcomeWindow": "Sveicinājuma logs:",
     "pauseUntilMorningInfo": "Norādiet stundu, līdz kurai 'Apstādināt līdz rītam' apstādināt pārtraukumus.",
     "pauseUntil": "Apstādināt līdz:",
-    "pauseUntilMoring": "Apstādināt līdz rītam:",
+    "pauseUntilMorning": "Apstādināt līdz rītam:",
     "naturalBreaks": "Dabīgie pātraukumi:",
     "longBreakStartSound": "Atskaņot pārtraukumu beigu skaņu arī Garā pārtraukuma sākumā",
     "miniBreakStartSound": "Atskaņot pārtraukumu beigu skaņu arī Īsā pārtraukuma sākumā",

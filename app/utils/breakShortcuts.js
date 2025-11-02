@@ -41,11 +41,11 @@ function onShortcut ({ name, settings, log, breakPlanner, functions }) {
       }
       break
     case 'skipToNextMiniBreakShortcut':
-      log.info('Stretchly: skipping to next Mini Break by shortcut')
+      log.info('Stretchly: skipping to next Mini break by shortcut')
       functions.skipToMicrobreak()
       break
     case 'skipToNextLongBreakShortcut':
-      log.info('Stretchly: skipping to next Long Break by shortcut')
+      log.info('Stretchly: skipping to next Long break by shortcut')
       functions.skipToBreak()
       break
     case 'resetBreaksShortcut':

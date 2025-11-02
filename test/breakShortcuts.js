@@ -145,7 +145,7 @@ describe('pauseBreaksShortcut', () => {
           log
         })
 
-        expect(log.info).toHaveBeenCalledWith('Stretchly: skipping to next Long Break by shortcut')
+        expect(log.info).toHaveBeenCalledWith('Stretchly: skipping to next Long break by shortcut')
         expect(skipToBreak).toHaveBeenCalled()
         expect(pauseBreaks).not.toHaveBeenCalled()
       })
@@ -165,7 +165,7 @@ describe('pauseBreaksShortcut', () => {
           log
         })
 
-        expect(log.info).toHaveBeenCalledWith('Stretchly: skipping to next Mini Break by shortcut')
+        expect(log.info).toHaveBeenCalledWith('Stretchly: skipping to next Mini break by shortcut')
         expect(skipToMicrobreak).toHaveBeenCalled()
         expect(pauseBreaks).not.toHaveBeenCalled()
       })
