@@ -186,19 +186,25 @@
   },
   "utils": {
     "remaining": "{{count}} rămase",
-    "oclock_other": "{{count}} oră",
     "oclock_one": "{{count}} oră",
+    "oclock_few": "",
+    "oclock_other": "{{count}} oră",
     "seconds_one": "{{count}} secunde",
+    "seconds_few": "",
+    "seconds_other": "{{count}} secunde",
     "percent_one": "{{count}} la sută",
+    "percent_few": "",
+    "percent_other": "{{count}} la sută",
     "inAbout": "in aproape {{count}}",
     "none_one": "{{count}}",
-    "percent_other": "{{count}} la sută",
-    "seconds_other": "{{count}} secunde",
-    "hours_one": "{{count}} ora",
-    "minutes_other": "{{count}} minute",
-    "hours_other": "{{count}} ore",
+    "none_few": "",
     "none_other": "{{count}}",
-    "minutes_one": "{{count}} minute"
+    "hours_one": "{{count}} ora",
+    "hours_few": "",
+    "hours_other": "{{count}} ore",
+    "minutes_one": "{{count}} minute",
+    "minutes_few": "",
+    "minutes_other": "{{count}} minute"
   },
   "statusMessages": {
     "indefinitely": "Pe termen nelimitat",
@@ -209,6 +215,7 @@
     "nextMiniBreak": "Următoarea pauză scurtă",
     "appExclusion": "Regula de excludere a aplicației",
     "afterMiniBreak_one": "după {{count}} pauza scurtă",
+    "afterMiniBreak_few": "",
     "afterMiniBreak_other": "după {{count}} pauze scurte"
   },
   "miniBreakIdeas": {
