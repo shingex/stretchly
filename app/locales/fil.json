@@ -200,8 +200,8 @@
     "nextMiniBreak": "Susunod na Mabilisang Pahinga",
     "appExclusion": "Panuntunan sa pagbubukod ng app",
     "resuming": "Ipinagpapatuloy",
-    "afterMiniBreak_other": "pagkatapos ng {{count}} na Mabilisang Pahinga",
-    "afterMiniBreak_one": "pagkatapos ng {{count}} na Mabilisang Pahinga"
+    "afterMiniBreak_one": "pagkatapos ng {{count}} na Mabilisang Pahinga",
+    "afterMiniBreak_other": "pagkatapos ng {{count}} na Mabilisang Pahinga"
   },
   "miniBreakIdeas": {
     "aaa": {
