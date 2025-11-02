@@ -28,7 +28,8 @@
   "break": {
     "postpone": "Отлагане на почивката",
     "skip": "Пропускане на почивката",
-    "title": "Време е за почивка!"
+    "title": "Време е за почивка!",
+    "finish": "Завършване на тази почивка"
   },
   "preferences": {
     "title": "Предпочитания на Stretchly",
@@ -189,7 +190,8 @@
     "hours_one": "{{count}} час",
     "hours_other": "{{count}} часа",
     "remaining": "Остават {{count}}",
-    "inAbout": "след около {{count}}"
+    "inAbout": "след около {{count}}",
+    "elapsed": "Изминали са {{count}}"
   },
   "process": {
     "newVersionAvailable": "Налична е нова версия!"
