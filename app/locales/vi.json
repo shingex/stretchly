@@ -184,9 +184,8 @@
     "indefinitely": "Vô thời hạn",
     "dndMode": "\"Không làm phiền\" đang bật",
     "nextLongBreak": "Khoảng Giải lao dài tiếp theo",
-    "afterMiniBreak_one": "sau {{count}} Khoảng Giải lao ngắn",
-    "paused": "Đã tạm dừng",
     "afterMiniBreak_other": "sau {{count}} Khoảng Giải lao ngắn",
+    "paused": "Đã tạm dừng",
     "appExclusion": "Quy tắc loại trừ ứng dụng",
     "nextMiniBreak": "Khoảng Giải lao ngắn tiếp theo",
     "resuming": "Đang tiếp tục"
@@ -490,19 +489,13 @@
   },
   "utils": {
     "hours_other": "{{count}} giờ",
-    "hours_one": "{{count}} giờ",
     "inAbout": "trong khoảng {{count}}",
     "remaining": "{{count}} còn lại",
     "percent_other": "{{count}} phần trăm",
-    "none_one": "{{count}}",
-    "oclock_one": "{{count}} giờ",
-    "oclock_other": "{{count}} giờ",
-    "seconds_one": "{{count}} giây",
-    "seconds_other": "{{count}} giây",
-    "minutes_one": "{{count}} phút",
-    "minutes_other": "{{count}} phút",
     "none_other": "{{count}}",
-    "percent_one": "{{count}} phần trăm"
+    "oclock_other": "{{count}} giờ",
+    "seconds_other": "{{count}} giây",
+    "minutes_other": "{{count}} phút"
   },
   "process": {
     "newVersionAvailable": "Có phiên bản mới!"
