@@ -29,7 +29,8 @@
   "break": {
     "postpone": "Odložit tuto přestávku",
     "skip": "Přeskočit tuto přestávku",
-    "title": "Čas na přestávku!"
+    "title": "Čas na přestávku!",
+    "finish": "Dokončit tuto přestávku"
   },
   "preferences": {
     "title": "Nastavení Stretchly",

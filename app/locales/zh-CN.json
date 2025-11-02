@@ -28,7 +28,8 @@
   "break": {
     "postpone": "延后此次休息",
     "skip": "跳过此次休息",
-    "title": "该休息一下了！"
+    "title": "该休息一下了！",
+    "finish": "完成本次休息"
   },
   "preferences": {
     "title": "Stretchly 偏好设置",
@@ -183,7 +184,8 @@
     "minutes_other": "{{count}} 分",
     "hours_other": "{{count}} 时",
     "remaining": "还有 {{count}}",
-    "inAbout": "大约 {{count}}后"
+    "inAbout": "大约 {{count}}后",
+    "elapsed": "已经过去了 {{count}}"
   },
   "process": {
     "newVersionAvailable": "有新的版本！"
