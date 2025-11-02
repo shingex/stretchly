@@ -91,7 +91,6 @@
     "indefinitely": "Tanpa batas",
     "paused": "Dijeda",
     "appExclusion": "Aturan pengecualian",
-    "afterMiniBreak_one": "setelah {{count}} Istirahat Mini",
     "afterMiniBreak_other": "setelah {{count}} Istirahat Mini"
   },
   "welcome": {
@@ -115,15 +114,9 @@
     "none": "{{count}}",
     "percent_other": "{{count}} persen",
     "none_other": "{{count}}",
-    "none_one": "{{count}}",
-    "percent_one": "{{count}} persen",
-    "oclock_one": "jam {{count}}",
     "oclock_other": "jam {{count}}",
-    "seconds_one": "{{count}} detik",
     "seconds_other": "{{count}} detik",
-    "minutes_one": "{{count}} menit",
     "minutes_other": "{{count}} menit",
-    "hours_one": "{{count}} jam",
     "hours_other": "{{count}} jam"
   },
   "contributorPreferences": {
