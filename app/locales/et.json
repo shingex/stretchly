@@ -446,8 +446,8 @@
     "indefinitely": "Määramata ajaks",
     "appExclusion": "Rakenduse välistamise reegel",
     "nextLongBreak": "Järgmine suur paus",
-    "afterMiniBreak_other": "pärast {{count}} väikest pausi",
     "afterMiniBreak_one": "pärast {{count}} väikest pausi",
+    "afterMiniBreak_other": "pärast {{count}} väikest pausi",
     "nextMiniBreak": "Järgmine väike paus",
     "dndMode": "Režiim 'Mitte segada' on sisse lülitatud"
   },
@@ -479,19 +479,19 @@
   },
   "utils": {
     "percent_one": "{{count}} protsenti",
-    "hours_other": "{{count}} tundi",
     "percent_other": "{{count}} protsenti",
     "hours_one": "{{count}} tund",
+    "hours_other": "{{count}} tundi",
     "minutes_one": "{{count}} minut",
     "minutes_other": "{{count}} minutit",
     "seconds_one": "{{count}} sekund",
-    "oclock_other": "{{count}} kell",
     "seconds_other": "{{count}} sekundit",
+    "oclock_one": "{{count}} kell",
+    "oclock_other": "{{count}} kell",
+    "none_one": "{{count}}",
     "none_other": "{{count}}",
     "inAbout": "umbes {{count}}",
-    "remaining": "{{count}} jäänud",
-    "none_one": "{{count}}",
-    "oclock_one": "{{count}} kell"
+    "remaining": "{{count}} jäänud"
   },
   "welcome": {
     "getStarted": "Alusta",
