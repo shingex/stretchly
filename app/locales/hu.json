@@ -28,7 +28,8 @@
   "break": {
     "postpone": "Szünet elhalasztása",
     "skip": "Szünet kihagyása",
-    "title": "Itt az ideje szünetet tartani!"
+    "title": "Itt az ideje szünetet tartani!",
+    "finish": "Szünet befejezése"
   },
   "preferences": {
     "title": "Stretchly Beállítások",
@@ -88,7 +89,8 @@
       "invertedMonochrome": "Fordított egyszínű",
       "snowWhite": "Hófehér",
       "transparentMode": "Áttetszőség bekapcsolása",
-      "reverie": "Álmodozás"
+      "reverie": "Álmodozás",
+      "silence": "Csend"
     },
     "about": {
       "tagline": "A szünet emlékeztető alkalmazás",
@@ -139,8 +141,8 @@
     "showWelcomeWindow": "Üdvözlő ablak megjelenítése a következő indításkor",
     "sounds": "Hangok:",
     "volume": "Hangerő:",
-    "miniBreakStartSound": "Hang lejátszása a Rövid szünetek kezdetekor is",
-    "longBreakStartSound": "Hang lejátszása a Hosszú szünetek kezdetekor is",
+    "miniBreakStartSound": "Hang a Rövid szünetek kezdetekor",
+    "longBreakStartSound": "Hang a Hosszú szünetek kezdetekor",
     "naturalBreaks": "Természetes szünetek:",
     "naturalBreaksInfo": "Ha a Távollét naplózása engedélyezve van a Beállítások ablakban, itt megadhatod, hogy mennyi idő eltelte után legyen a visszaszámlálás szüneteltetve.",
     "pauseAfter": "Szüneteltetés ezután:",
@@ -189,7 +191,8 @@
     "hours_one": "{{count}} óra",
     "hours_other": "{{count}} óra",
     "remaining": "{{count}} van hátra",
-    "inAbout": "kb {{count}} múlva"
+    "inAbout": "kb {{count}} múlva",
+    "elapsed": "{{count}} eltelt"
   },
   "process": {
     "newVersionAvailable": "Új verzió érhető el!"
@@ -507,6 +510,10 @@
     "abf": {
       "title": "Tenyerezés",
       "text": "Asztalnál ülve könyökölj az asztalra, annak széléhez közel. Engedd a testsúlyodat előre és takard el a szemeidet a kezeiddel. Hunyd le a szemed és lélegezz lassan az orrodon keresztül egy pár másodpercig. Folytasd a mély lélegzetvételeket."
+    },
+    "abj": {
+      "title": "Túlterhelt?",
+      "text": "Próbáld ki az 5-4-3-2-1 technikát: Nevezz meg 5 dolgot, amit láthatsz, 4 dolgot, amit megtapinthatsz, 3 dolgot, amit hallhatsz, 2 dolgot, amit megszagolhatsz, és 1 dolgot, amit megízlelhetsz."
     }
   }
 }
