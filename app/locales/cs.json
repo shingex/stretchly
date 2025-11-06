@@ -21,7 +21,7 @@
     "areYouSure": "Tato akce obnoví původní nastavení a všechny vaše změny budou ztraceny.",
     "continue": "Pokračovat",
     "cancel": "Zrušit",
-    "preferences": "Nastavení",
+    "preferences": "Předvolby",
     "contributorPreferences": "Nastavení pro přispěvatele",
     "syncPreferences": "Synchronizace nastavení",
     "warning": "Tím se obnoví původní nastavení aplikace a všechna vaše nastavení budou ztracena."
@@ -209,7 +209,7 @@
     "breakTimeReminderApp": "Pamatuje na přestávky za vás",
     "viewTutorial": "Zhlédnout Tutoriál",
     "openPreferences": "Otevřít Nastavení",
-    "getStarted": "Pokračovat"
+    "getStarted": "Začínáme"
   },
   "statusMessages": {
     "paused": "Přerušeny",
@@ -220,7 +220,7 @@
     "afterMiniBreak_one": "po {{count}} Mini přestávce",
     "afterMiniBreak_few": "po {{count}} Mini přestávkách",
     "afterMiniBreak_other": "po {{count}} Mini přestávkách",
-    "resuming": "Obnovení přestávek",
+    "resuming": "Obnovování",
     "appExclusion": "Pravidlo pro vyloučení aplikace"
   },
   "miniBreakIdeas": {
