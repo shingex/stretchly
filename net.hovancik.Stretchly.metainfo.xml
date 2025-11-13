@@ -36,6 +36,27 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="1.19.0" date="2025-11-13">
+      <description>
+        <p>Added</p>
+        <ul>
+          <li>allow showing limited HTML in breaks</li>
+          <li>advanced option for manual finish mode (user must finish break)</li>
+          <li>advanced option to set preferred sound at beginning of breaks</li>
+        </ul>
+        <p>Fixed</p>
+        <ul>
+          <li>hide autostart option for Windows Store build</li>
+          <li>memory issue where break windows were not closing correctly</li>
+        </ul>
+        <p>Changed</p>
+        <ul>
+          <li>update features hidden by default in Windows Store, Snap and Flatpak builds</li>
+          <li>migrated long break sound preference from <code>audio</code> to <code>longBreakAudio</code></li>
+          <li>updated many translations</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.18.0" date="2025-9-15">
       <description>
         <p>Added</p>
