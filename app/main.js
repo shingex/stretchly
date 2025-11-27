@@ -717,7 +717,7 @@ function startMicrobreak () {
       frame: showBreaksAsRegularWindows,
       show: false,
       backgroundThrottling: false,
-      transparent: true,
+      transparent: !showBreaksAsRegularWindows,
       ...getBlurredBackgroundWindowOptions(),
       backgroundColor: calculateBackgroundColor(settings.get('miniBreakColor')),
       skipTaskbar: !showBreaksAsRegularWindows,
@@ -725,8 +725,8 @@ function startMicrobreak () {
       alwaysOnTop: !showBreaksAsRegularWindows,
       hasShadow: false,
       title: 'Stretchly',
-      titleBarStyle: 'hidden',
-      titleBarOverlay: false,
+      titleBarStyle: process.platform === 'darwin' ? (showBreaksAsRegularWindows ? 'default' : 'hidden') : undefined,
+      titleBarOverlay: process.platform === 'darwin' ? !showBreaksAsRegularWindows : undefined,
       webPreferences: {
         preload: join(__dirname, './microbreak-preload.mjs'),
         sandbox: false
@@ -871,7 +871,7 @@ function startBreak () {
       frame: showBreaksAsRegularWindows,
       show: false,
       backgroundThrottling: false,
-      transparent: true,
+      transparent: !showBreaksAsRegularWindows,
       ...getBlurredBackgroundWindowOptions(),
       backgroundColor: calculateBackgroundColor(settings.get('mainColor')),
       skipTaskbar: !showBreaksAsRegularWindows,
@@ -879,8 +879,8 @@ function startBreak () {
       alwaysOnTop: !showBreaksAsRegularWindows,
       hasShadow: false,
       title: 'Stretchly',
-      titleBarStyle: 'hidden',
-      titleBarOverlay: false,
+      titleBarStyle: process.platform === 'darwin' ? (showBreaksAsRegularWindows ? 'default' : 'hidden') : undefined,
+      titleBarOverlay: process.platform === 'darwin' ? !showBreaksAsRegularWindows : undefined,
       webPreferences: {
         preload: join(__dirname, './break-preload.mjs'),
         sandbox: false
