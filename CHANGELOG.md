@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - snap package not starting on Wayland
 - break windows not closing correctly on all platforms
+- show breaks as regular windows on Windows
 
 ## [1.19.0] - 2025-11-13
 ### Added
