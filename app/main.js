@@ -77,7 +77,6 @@ let updateChecker
 let currentTrayIconPath = null
 let currentTrayMenuTemplate = null
 let trayUpdateIntervalObj = null
-let skipStrictCloseGuard = false // to allow window closing in strict mode when we want to close it
 
 log.initialize({ preload: true })
 
@@ -444,12 +443,18 @@ function startPowerMonitoring () {
 
 function closeWindows (windowArray) {
   for (const window of windowArray) {
+    if (!window || window.isDestroyed()) {
+      continue
+    }
+
     window.hide()
     if (windowArray[0] === window) {
       ipcMain.removeHandler('send-long-break-data')
       ipcMain.removeHandler('send-mini-break-data')
     }
-    window.close()
+
+    // Use destroy() for immediate, guaranteed cleanup on all platforms
+    window.destroy()
   }
   return null
 }
@@ -781,7 +786,6 @@ function startMicrobreak () {
     microbreakWinLocal.setAlwaysOnTop(!showBreaksAsRegularWindows, 'pop-up-menu')
     if (microbreakWinLocal) {
       microbreakWinLocal.on('close', (e) => {
-        if (skipStrictCloseGuard) return
         if (breakPlanner.scheduler.timeLeft > 0 && settings.get('microbreakStrictMode')) {
           log.info('Stretchly: preventing closing break window as in strict mode')
           e.preventDefault()
@@ -937,7 +941,6 @@ function startBreak () {
     breakWinLocal.setAlwaysOnTop(!showBreaksAsRegularWindows, 'pop-up-menu')
     if (breakWinLocal) {
       breakWinLocal.on('close', (e) => {
-        if (skipStrictCloseGuard) return
         if (breakPlanner.scheduler.timeLeft > 0 && settings.get('breakStrictMode')) {
           log.info('Stretchly: preventing closing break window as in strict mode')
           e.preventDefault()
@@ -975,10 +978,7 @@ function breakComplete (shouldPlaySound, windows, breakType) {
     // get focus on the last app
     Menu.sendActionToFirstResponder('hide:')
   }
-  skipStrictCloseGuard = true
-  const result = closeWindows(windows)
-  skipStrictCloseGuard = false
-  return result
+  return closeWindows(windows)
 }
 
 function enterManualAwaitPhase (type, shouldPlaySound) {
