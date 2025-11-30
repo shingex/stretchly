@@ -67,7 +67,7 @@ export default {
   pauseBreaksFor5HoursShortcut: '',
   pauseBreaksUntilMorningShortcut: '',
   screen: 'primary',
-  timeToBreakInTray: false,
+  trayIconStyle: 'default',
   currentTimeInBreaks: false,
   showTrayIcon: true,
   skipToNextScheduledBreakShortcut: '',

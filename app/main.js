@@ -273,6 +273,18 @@ async function initialize (isAppStart = true) {
           } else {
             log.info('Stretchly: not migrating breakStartSoundPlaying')
           }
+        },
+        '1.20.0': store => {
+          if (store.has('timeToBreakInTray')) {
+            if (store.get('timeToBreakInTray')) {
+              store.set('trayIconStyle', 'time')
+              log.info('Stretchly: migrating timeToBreakInTray to trayIconStyle="time"')
+            } else {
+              store.set('trayIconStyle', 'default')
+              log.info('Stretchly: migrating tray settings to trayIconStyle="default"')
+            }
+            store.delete('timeToBreakInTray')
+          }
         }
       },
       watch: true
@@ -470,8 +482,9 @@ function trayIconPath () {
     inverted: settings.get('useMonochromeInvertedTrayIcon'),
     darkMode: nativeTheme.shouldUseDarkColors,
     platform: process.platform,
-    timeToBreakInTray: settings.get('timeToBreakInTray'),
+    trayIconStyle: settings.get('trayIconStyle'),
     timeToBreak: minutesRemaining(breakPlanner.timeToNextBreak),
+    percentage: breakPlanner.progressPercentage,
     reference: breakPlanner.scheduler.reference
   }
   const trayIconFileName = new AppIcon(params).trayIconFileName

@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- new icon styles preference for tray (showing time to break or visual progress to break)
+
 ### Fixed
 - snap package not starting on Wayland
 - break windows not closing correctly on all platforms

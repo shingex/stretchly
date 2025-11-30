@@ -5,8 +5,9 @@ class AppIcon {
     monochrome,
     inverted,
     darkMode,
-    timeToBreakInTray,
+    trayIconStyle,
     timeToBreak,
+    percentage,
     reference
   }) {
     this.platform = platform
@@ -14,8 +15,9 @@ class AppIcon {
     this.monochrome = monochrome
     this.inverted = inverted
     this.darkMode = darkMode
-    this.timeToBreakInTray = timeToBreakInTray
+    this.trayIconStyle = trayIconStyle
     this.timeToBreak = timeToBreak
+    this.percentage = percentage
     this.reference = reference
   }
 
@@ -23,22 +25,27 @@ class AppIcon {
     const pausedString = this.paused ? 'Paused' : ''
     const invertedMonochromeString = this.inverted ? 'Inverted' : ''
     const darkModeString = this.darkMode ? 'Dark' : ''
-    const timeToBreakInTrayString = (this.paused || this.reference === 'finishMicrobreak' ||
-      this.reference === 'finishBreak' || !this.timeToBreakInTray || !Number.isInteger(this.timeToBreak) || this.timeToBreak < 0)
-      ? ''
-      : `Number${this.timeToBreak}`
+    let suffixString = ''
+
+    if (!(this.paused || this.reference === 'finishMicrobreak' || this.reference === 'finishBreak')) {
+      if (this.trayIconStyle === 'progress' && Number.isInteger(this.percentage) && this.percentage >= 0 && this.percentage <= 100) {
+        suffixString = `Progress${this.percentage}`
+      } else if (this.trayIconStyle === 'time' && Number.isInteger(this.timeToBreak) && this.timeToBreak >= 0) {
+        suffixString = `Number${this.timeToBreak}`
+      }
+    }
 
     if (this.monochrome) {
       if (this.platform === 'darwin') {
-        return `trayMacMonochrome${pausedString}${timeToBreakInTrayString}Template.png`
+        return `trayMacMonochrome${pausedString}${suffixString}Template.png`
       } else {
-        return `trayMonochrome${invertedMonochromeString}${pausedString}${timeToBreakInTrayString}.png`
+        return `trayMonochrome${invertedMonochromeString}${pausedString}${suffixString}.png`
       }
     } else {
       if (this.platform === 'darwin') {
-        return `trayMac${pausedString}${darkModeString}${timeToBreakInTrayString}.png`
+        return `trayMac${pausedString}${darkModeString}${suffixString}.png`
       } else {
-        return `tray${pausedString}${darkModeString}${timeToBreakInTrayString}.png`
+        return `tray${pausedString}${darkModeString}${suffixString}.png`
       }
     }
   }

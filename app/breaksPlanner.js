@@ -272,6 +272,7 @@ class BreaksPlanner extends EventEmitter {
   }
 
   get timeToNextBreak () {
+    if (!this.scheduler) return null
     if (this.scheduler.reference === 'startMicrobreak' || this.scheduler.reference === 'startBreak') {
       return this.scheduler.timeLeft
     }
@@ -286,6 +287,34 @@ class BreaksPlanner extends EventEmitter {
         : 0)
     }
     return null
+  }
+
+  get _progressInterval () {
+    if (!this.scheduler) return null
+    const { reference, delay } = this.scheduler
+
+    if (reference === 'startMicrobreak' || reference === 'startBreak') {
+      return delay
+    }
+
+    if (reference === 'startBreakNotification') {
+      return delay + this.settings.get('breakNotificationInterval')
+    }
+
+    if (reference === 'startMicrobreakNotification') {
+      return delay + this.settings.get('microbreakNotificationInterval')
+    }
+
+    return null
+  }
+
+  get progressPercentage () {
+    const total = this._progressInterval
+    const remaining = this.timeToNextBreak
+    if (total === null || total <= 0 || remaining === null) return 0
+
+    const progress = 1 - (remaining / total)
+    return Math.max(0, Math.min(100, Math.round(progress * 100)))
   }
 }
 

@@ -74,7 +74,7 @@
       "appearance": "Udseende:",
       "sounds": "Lyde:",
       "enableSounds": "Slå lyd til",
-      "menubarIcon": "Menubar ikon:",
+      "trayIcon": "Menubar ikon:",
       "colour": "Farve",
       "monochrome": "Monokrom",
       "invertedMonochrome": "invertere Monokrom",
