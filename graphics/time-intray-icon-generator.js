@@ -1,9 +1,16 @@
 // Script to generate icons for "Time in tray" feature
 // `canvas` is not installed so install it before running this script
 // Run this script using `node graphics/time-intray-icon-generator.js`
-const { createCanvas, loadImage, registerFont } = require('canvas')
-const fs = require('node:fs')
-const path = require('path')
+// You can optionally pass an argument to generate only specific icons:
+// `node graphics/time-intray-icon-generator.js numbers`
+// `node graphics/time-intray-icon-generator.js progress`
+import { createCanvas, loadImage, registerFont } from 'canvas'
+import fs from 'node:fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 // Load the font (make sure the font file is available in your project directory)
 registerFont(path.join(__dirname, '../app/css/fonts/NotoSans-Regular.ttf'), { family: 'Noto Sans Regular' })
@@ -19,15 +26,16 @@ async function overlayTextOnImage (inputImagePath, outputImagePath, text, fontCo
     const canvas = createCanvas(imageWidth, imageHeight)
     const ctx = canvas.getContext('2d')
 
-    // Draw the input image onto the canvas
+    // Draw background (faint version of the logo)
+    ctx.globalAlpha = 0.6
     ctx.drawImage(baseImage, 0, 0, imageWidth, imageHeight)
+    ctx.globalAlpha = 1.0
 
     // Set the font properties
-    const textHeightRatio = 0.8
-    const maxTextWidthRatio = 0.8
+    const textHeightRatio = 0.75
+    const maxTextWidthRatio = 0.9
     ctx.quality = 'best'
     ctx.font = `${textHeightRatio * imageHeight}px '${fontFamily}'`
-    ctx.fillStyle = fontColor
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
 
@@ -37,28 +45,18 @@ async function overlayTextOnImage (inputImagePath, outputImagePath, text, fontCo
     const verticalOffsetFix = (textMetrics.actualBoundingBoxAscent - textMetrics.actualBoundingBoxDescent) / 2
     const textX = imageWidth / 2
     const textY = imageHeight / 2 + verticalOffsetFix
-    const textWidth = textMetrics.width
-    const textHeight = textMetrics.actualBoundingBoxAscent + textMetrics.actualBoundingBoxDescent
 
-    // Create cutout for text
-    ctx.globalCompositeOperation = 'destination-out'
-    const paddingX = 4
-    const paddingY = 4
-    const radiusX = textWidth / 2 + paddingX
-    const radiusY = textHeight / 2 + paddingY
-    ctx.beginPath()
-    ctx.ellipse(
-      textX,
-      imageHeight / 2,
-      radiusX,
-      radiusY,
-      0, 0, 2 * Math.PI
-    )
-    ctx.fill()
+    // Use Shadow/Glow instead of Stroke for better legibility at small sizes
+    ctx.shadowColor = fontColor === '#000000' ? '#ffffff' : '#000000'
+    ctx.shadowBlur = 4
+    ctx.shadowOffsetX = 0
+    ctx.shadowOffsetY = 0
+
+    // Force high contrast colors for numbers
+    const highContrastColor = fontColor === '#8c8c8c' ? '#ffffff' : fontColor
+    ctx.fillStyle = highContrastColor
 
     // Draw the text onto the canvas
-    ctx.globalCompositeOperation = 'source-over'
-    ctx.fillStyle = fontColor
     ctx.fillText(text, textX, textY, maxTextWidthRatio * imageWidth)
 
     // Convert the canvas to a buffer
@@ -71,8 +69,42 @@ async function overlayTextOnImage (inputImagePath, outputImagePath, text, fontCo
   }
 }
 
-const fontFamily = 'Noto Sans Regular';
-[
+async function overlayProgressOnImage (inputImagePath, outputImagePath, percentage, fontColor) {
+  try {
+    const baseImage = await loadImage(inputImagePath)
+    const imageWidth = baseImage.width
+    const imageHeight = baseImage.height
+
+    const canvas = createCanvas(imageWidth, imageHeight)
+    const ctx = canvas.getContext('2d')
+
+    // Draw background (faint version of the logo)
+    ctx.globalAlpha = 0.6
+    ctx.drawImage(baseImage, 0, 0, imageWidth, imageHeight)
+
+    // Draw foreground (full opacity, clipped to percentage)
+    ctx.globalAlpha = 1.0
+    const fillHeight = imageHeight * (percentage / 100)
+    const y = imageHeight - fillHeight
+
+    ctx.save()
+    ctx.beginPath()
+    ctx.rect(0, y, imageWidth, fillHeight)
+    ctx.clip()
+    ctx.drawImage(baseImage, 0, 0, imageWidth, imageHeight)
+    ctx.restore()
+
+    const buffer = canvas.toBuffer('image/png')
+    fs.writeFileSync(outputImagePath, buffer)
+  } catch (error) {
+    console.error('Error creating image with overlay progress:', error)
+  }
+}
+
+const fontFamily = 'Noto Sans Regular'
+const generationMode = process.argv[2]
+
+const iconStyles = [
   {
     name: 'tray',
     fontColor: '#000000'
@@ -114,19 +146,33 @@ const fontFamily = 'Noto Sans Regular';
     name: ['trayMacMonochrome', 'Template@2x'],
     fontColor: '#000000'
   }
-].forEach(iconStyle => {
+]
+
+iconStyles.forEach(iconStyle => {
   const nameArray = typeof iconStyle.name === 'string' ? [iconStyle.name, ''] : iconStyle.name
   const fullName = nameArray.join('')
   const prefix = nameArray[0]
   const suffix = nameArray[1]
   const inputImagePath = path.join(__dirname, `../app/images/app-icons/${fullName}.png`)
-  const promises = Array.from({ length: 100 }, (_, k) => k).map(i => {
-    const outputImagePath = path.join(__dirname, `../app/images/app-icons/${prefix}Number${i}${suffix}.png`)
-    const text = i.toString()
-    return overlayTextOnImage(inputImagePath, outputImagePath, text, iconStyle.fontColor, fontFamily)
-  })
 
-  Promise.all(promises).then(() =>
-    console.log(`Images for theme ${fullName} with overlay text have been processed.`)
+  let promises = []
+  if (!generationMode || generationMode === 'numbers') {
+    promises = Array.from({ length: 100 }, (_, k) => k).map(i => {
+      const outputImagePath = path.join(__dirname, `../app/images/app-icons/${prefix}Number${i}${suffix}.png`)
+      const text = i.toString()
+      return overlayTextOnImage(inputImagePath, outputImagePath, text, iconStyle.fontColor, fontFamily)
+    })
+  }
+
+  let progressPromises = []
+  if (!generationMode || generationMode === 'progress') {
+    progressPromises = Array.from({ length: 101 }, (_, k) => k).map(i => {
+      const outputImagePath = path.join(__dirname, `../app/images/app-icons/${prefix}Progress${i}${suffix}.png`)
+      return overlayProgressOnImage(inputImagePath, outputImagePath, i, iconStyle.fontColor)
+    })
+  }
+
+  Promise.all([...promises, ...progressPromises]).then(() =>
+    console.log(`Images for theme ${fullName} processed.`)
   )
 })

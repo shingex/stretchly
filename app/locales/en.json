@@ -86,11 +86,15 @@
       "ticToc": "Tic toc",
       "reverie": "Reverie",
       "silence": "Silence",
-      "menubarIcon": "Menubar icon:",
+      "trayIcon": "Menubar (Tray):",
       "colour": "Colour",
       "monochrome": "Monochrome",
       "invertedMonochrome": "Inverted Monochrome",
-      "snowWhite": "Snow white"
+      "snowWhite": "Snow white",
+      "trayIconStyleLabel": "Style:",
+      "trayIconStyleDefault": "Default",
+      "trayIconStyleTime": "Time to break",
+      "trayIconStyleProgress": "Progress to break"
     },
     "about": {
       "tagline": "The break time reminder app",
@@ -169,10 +173,8 @@
     "showOnMonitor": "Show breaks on",
     "primary": "Primary monitor",
     "cursor": "Follow cursor",
-    "timeToBreakInTray": "Time to break",
-    "showTimeToBreakInTray": "Show time to the next break in menubar icon",
-    "showTrayIcon": "Show menubar icon",
-    "toShowTrayIcon": "Show Stretchly icon in menubar",
+    "showTrayIcon": "Show tray icon",
+    "toShowTrayIcon": "Show Stretchly icon in tray",
     "currentTimeInBreaks": "Current time",
     "showCurrentTimeInBreaks": "Show current local time in break window"
   },

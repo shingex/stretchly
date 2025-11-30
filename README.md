@@ -211,6 +211,7 @@ Here are the preferences editable via the app. If values in the app does not sui
 - `language` - language
 - `useMonochromeTrayIcon` - use monochrome icon
 - `useMonochromeInvertedTrayIcon` - use inverted monochrome icon
+- `trayIconStyle` - icon style for menubar: default, time to break, or progress to break 
 - `silentNotifications` - enable sounds
 - `monitorDnd` - monitor DND mode
 - `checkNewVersion` - check for new versions
@@ -405,10 +406,6 @@ In case you have disabled showing of breaks on all monitors, you can specify whi
 - `"primary"` - primary monitor as given by OS
 - `"cursor"` - monitor where there is cursor
 - `"0"` (or `0`), `"1"`, `"2"` etc, where `"0"` is the first monitor returned by OS and so forth
-
-#### Show time to the next break in menubar icon [![Contributor Preferences](https://img.shields.io/badge/Contributor_Preferences-✔-success)](#contributor-preferences) ![Not Reliable](https://img.shields.io/badge/Not_Reliable-β-yellow)
-
-If you want Stretchly to show time to the next break in menubar icon set `timeToBreakInTray` to `true`.
 
 #### Show current time in breaks [![Contributor Preferences](https://img.shields.io/badge/Contributor_Preferences-✔-success)](#contributor-preferences)
 To show current time in breaks, set the value of `currentTimeInBreaks` from `false` to `true`.
