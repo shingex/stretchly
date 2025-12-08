@@ -366,6 +366,7 @@ By editing `appExclusions` in preferences file, you can automatically control wh
 
 If you want Stretchly to be paused when specific apps are running, you could have this value (breaks are paused when Skype or Atom are running):
 
+Linux
 ```
 "appExclusions": [
     {
@@ -379,8 +380,23 @@ If you want Stretchly to be paused when specific apps are running, you could hav
 ]
 ```
 
+Windows
+```
+"appExclusions": [
+    {
+        "rule": "pause",
+        "active": true,
+        "commands": [
+            "librewolf.exe",
+            "masseffectlauncher.exe"
+        ]
+    }
+]
+```
+
 If you want Stretchly to be running when specific apps are as well, you could have this value (breaks are paused when Skype or Atom are not running):
 
+Linux
 ```
 "appExclusions": [
     {
@@ -394,7 +410,23 @@ If you want Stretchly to be running when specific apps are as well, you could ha
 ]
 ```
 
-You can specify multiple values, (as `appExclusions` is array) and Stretchly will take the first one that is marked as `"active": true`. Multiple `commands` can be specified as well. Commands should be case sensitive, but seems like this is not consistent across platforms. Therefore, sometimes, going all lowercase might be needed (this was noticed on Windows).
+Windows
+```
+"appExclusions": [
+    {
+        "rule": "resume",
+        "active": true,
+        "commands": [
+            "librewolf.exe",
+            "masseffectlauncher.exe"
+        ]
+    }
+]
+```
+
+You can specify multiple values, (as `appExclusions` is array) and Stretchly will take the first one that is marked as `"active": true`. Multiple `commands` can be specified as well. Commands should be case sensitive, but seems like this is not consistent across platforms. Therefore, sometimes, going all lowercase might be needed (this was noticed on Windows). Commands can also be substrings, meaning a rule containing "exe" will trigger when there's any running processes that contains "exe" in its name or cmd properties.
+
+For Windows, note that paths not specified. This is because on Windows, the API we're using only checks the names of processes being run, which in the vast majority of cases is "process_name.exe". If you try to specify paths, it will not work.
 
 You can also specify `appExclusionsCheckInterval` in milliseconds: lower number means more often checks, but also higher CPU usage. Default value is `1000` which is 1 second.
 
@@ -611,6 +643,7 @@ You can help to translate Stretchly on [Weblate](https://hosted.weblate.org/enga
 - Lorenzo García Rivera, @lorenzogrv, [lorenzogrv.tech](https://lorenzogrv.tech)
 - Aleh, [@alehpa](https://github.com/alehpa)
 - Philip Wintersteiner, [@Wikiwix](https://github.com/wikiwix)
+- Steven Cai, [@stevencaiOR](https://github.com/stevencaiOR)
 
 Also see Github's list of [contributors](https://github.com/hovancik/stretchly/graphs/contributors).
 
