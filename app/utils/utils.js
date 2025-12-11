@@ -87,6 +87,10 @@ function insideSnap () {
   return process.platform === 'linux' && !!process.env.SNAP
 }
 
+function insideWindowsPortable () {
+  return process.platform === 'win32' && !!process.env.PORTABLE_EXECUTABLE_DIR
+}
+
 export {
   formatTimeRemaining,
   formatElapsedDuration,
@@ -99,5 +103,6 @@ export {
   shouldShowNotificationTitle,
   insideFlatpak,
   insideWindowsStore,
-  insideSnap
+  insideSnap,
+  insideWindowsPortable
 }

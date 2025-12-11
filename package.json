@@ -104,12 +104,16 @@
       "target": [
         "nsis",
         "7z",
-        "appx"
+        "appx",
+        "portable"
       ],
       "asarUnpack": [
         "node_modules/windows-notification-state/**",
         "node_modules/macos-notification-state/**"
       ]
+    },
+    "portable": {
+      "artifactName": "${productName} Portable ${version}.${ext}"
     },
     "nsis": {
       "oneClick": false,
