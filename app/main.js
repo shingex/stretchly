@@ -17,7 +17,7 @@ import { DateTime } from 'luxon'
 
 import {
   canPostpone, canSkip, formatTimeRemaining,
-  minutesRemaining, insideWindowsStore, insideFlatpak, insideSnap
+  minutesRemaining, insideWindowsStore, insideFlatpak, insideSnap, insideWindowsPortable
 } from './utils/utils.js'
 import IdeasLoader from './utils/ideasLoader.js'
 import BreaksPlanner from './breaksPlanner.js'
@@ -77,6 +77,14 @@ let updateChecker
 let currentTrayIconPath = null
 let currentTrayMenuTemplate = null
 let trayUpdateIntervalObj = null
+
+if (insideWindowsPortable()) {
+  const portableDataPath = join(process.env.PORTABLE_EXECUTABLE_DIR, 'Data')
+  if (!existsSync(portableDataPath)) {
+    mkdirSync(portableDataPath, { recursive: true })
+  }
+  app.setPath('userData', portableDataPath)
+}
 
 log.initialize({ preload: true })
 

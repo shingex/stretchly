@@ -1,6 +1,6 @@
 import defaultBreakIdeas from './defaultBreakIdeas.js'
 import defaultMicrobreakIdeas from './defaultMicrobreakIdeas.js'
-import { insideFlatpak, insideWindowsStore, insideSnap } from './utils.js'
+import { insideFlatpak, insideWindowsStore, insideSnap, insideWindowsPortable } from './utils.js'
 
 export default {
   microbreakDuration: 20000,
@@ -76,7 +76,7 @@ export default {
   resetBreaksShortcut: '',
   showTrayMenuInStrictMode: false,
   customPreferencesMessage: '',
-  disableAppUpdateFeatures: insideFlatpak() || insideWindowsStore() || insideSnap(),
+  disableAppUpdateFeatures: insideFlatpak() || insideWindowsStore() || insideSnap() || insideWindowsPortable(),
   hidePreferencesFileLocation: false,
   hideStrictModePreferences: false,
   miniBreakManualFinish: false,
