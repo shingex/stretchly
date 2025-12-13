@@ -72,7 +72,7 @@
       "cantDisableBoth": "Не може да се изключат и двата вида почивка"
     },
     "theme": {
-      "appearance": "Стил:",
+      "appearance": "Външен вид:",
       "greenClouds": "Зелени облаци",
       "autumnBeBlessed": "Златна есен",
       "graphiteCrystal": "Графитен кристал",
@@ -90,7 +90,11 @@
       "invertedMonochrome": "Обърнати цветове",
       "snowWhite": "Снежно бяло",
       "reverie": "Замечтаност",
-      "silence": "Тишина"
+      "silence": "Тишина",
+      "trayIconStyleLabel": "Стил:",
+      "trayIconStyleDefault": "По подразбиране",
+      "trayIconStyleTime": "Време до почивката",
+      "trayIconStyleProgress": "Напредък към почивката"
     },
     "about": {
       "tagline": "Приложение, което напомня да си почивате",
@@ -174,8 +178,8 @@
     "showTimeToBreakInTray": "Показване на оставащото време до следващата почивка в иконката",
     "currentTimeInBreaks": "Текущо време",
     "showCurrentTimeInBreaks": "Показване на текущото време в прозореца за почивка",
-    "showTrayIcon": "Показване на иконка в панела",
-    "toShowTrayIcon": "Показване на иконката на Stretchly в панела"
+    "showTrayIcon": "Показване на иконка в системната област",
+    "toShowTrayIcon": "Показване на иконката на Stretchly в системната област"
   },
   "utils": {
     "none_one": "{{count}}",
