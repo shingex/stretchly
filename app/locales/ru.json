@@ -90,7 +90,11 @@
       "snowWhite": "Белоснежный",
       "transparentMode": "Включить прозрачность",
       "reverie": "Греженье",
-      "silence": "Тишина"
+      "silence": "Тишина",
+      "trayIconStyleLabel": "Стиль:",
+      "trayIconStyleDefault": "По умолчанию",
+      "trayIconStyleTime": "Время до перерыва",
+      "trayIconStyleProgress": "Прогресс до перерыва"
     },
     "about": {
       "tagline": "напоминания о перерывах",

@@ -90,7 +90,11 @@
       "invertedMonochrome": "反转单色",
       "snowWhite": "纯白雪花",
       "reverie": "白日梦",
-      "silence": "沉默"
+      "silence": "沉默",
+      "trayIconStyleLabel": "样式：",
+      "trayIconStyleDefault": "默认",
+      "trayIconStyleTime": "休息时间",
+      "trayIconStyleProgress": "休息进度"
     },
     "about": {
       "tagline": "休息提醒应用",
@@ -174,8 +178,8 @@
     "showTimeToBreakInTray": "在托盘图标显示下次休息时间",
     "showCurrentTimeInBreaks": "在休息画面显示当前时间",
     "currentTimeInBreaks": "当前时间",
-    "showTrayIcon": "显示菜单栏图标",
-    "toShowTrayIcon": "在菜单栏中显示 Stretchly 图标"
+    "showTrayIcon": "显示托盘图标",
+    "toShowTrayIcon": "在托盘中显示 Stretchly 图标"
   },
   "utils": {
     "none_other": "{{count}}",

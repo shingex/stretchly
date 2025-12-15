@@ -28,7 +28,8 @@
   "break": {
     "postpone": "Diese Pause aufschieben",
     "skip": "Diese Pause überspringen",
-    "title": "Zeit für eine Pause!"
+    "title": "Zeit für eine Pause!",
+    "finish": "Beende diese Pause"
   },
   "preferences": {
     "title": "Stretchly-Einstellungen",
@@ -88,7 +89,8 @@
       "monochrome": "Einfarbig",
       "invertedMonochrome": "Einfarbig invertiert",
       "snowWhite": "Schneeweiß",
-      "reverie": "Tagträumerei"
+      "reverie": "Tagträumerei",
+      "silence": "Stille"
     },
     "about": {
       "tagline": "Die Pausen-Erinnerungs-App",
@@ -151,8 +153,8 @@
     "breakWindowHeight": "Höhe:",
     "sounds": "Töne:",
     "volume": "Lautstärke:",
-    "miniBreakStartSound": "Töne am Beginn und Ende einer Mini-Pause spielen",
-    "longBreakStartSound": "Töne am Beginn und Ende einer langen Pause spielen",
+    "miniBreakStartSound": "Töne am Beginn einer Mini-Pause spielen",
+    "longBreakStartSound": "Töne am Beginn einer langen Pause spielen",
     "naturalBreaks": "Natürliche Pausen:",
     "naturalBreaksInfo": "Wenn 'Abwesenheit vom Gerät berücksichtigen' in den Haupteinstellungen aktiviert ist, kannst du angeben, nach welcher Zeit der Countdown angehalten werden soll.",
     "pauseAfter": "Pause nach:",
@@ -189,7 +191,8 @@
     "hours_one": "{{count}} Stunde",
     "hours_other": "{{count}} Stunden",
     "remaining": "{{count}} verbleibend",
-    "inAbout": "in etwa {{count}}"
+    "inAbout": "in etwa {{count}}",
+    "elapsed": "{{count}} vergangen"
   },
   "process": {
     "newVersionAvailable": "Neue Version ist verfügbar!"
@@ -507,6 +510,10 @@
     "abi": {
       "title": "Fantasievolle Visualisierung",
       "text": "Schließen Sie die Augen und stellen Sie sich einen ruhigen Ort vor, wie einen Strand oder einen Wald. Konzentrieren Sie sich auf die Aussicht, Geräusche und Empfindungen dieser Umgebung."
+    },
+    "abj": {
+      "title": "Überfordert?",
+      "text": "Probiere die 5-4-3-2-1-Erdungs-Technik: Benenne 5 Sachen die Du sehen kannst, 4 Sachen , die du berühren kannst, 3 Sachen , die Du hören kannst, 2 Sachen , die du riechen kannst und 1 Sache, die du schmecken kannst."
     }
   }
 }

@@ -28,7 +28,8 @@
   "break": {
     "postpone": "Skjut upp denna paus",
     "skip": "Hoppa över denna paus",
-    "title": "Dags att ta en paus!"
+    "title": "Dags att ta en paus!",
+    "finish": "Avsluta denna paus"
   },
   "preferences": {
     "title": "Stretchly-inställningar",
@@ -88,7 +89,11 @@
       "monochrome": "Svartvit",
       "invertedMonochrome": "Inverterad svartvit",
       "snowWhite": "Snövit",
-      "reverie": "Dagdröm"
+      "reverie": "Dagdröm",
+      "silence": "Tystnad",
+      "trayIconStyleLabel": "Stil:",
+      "trayIconStyleDefault": "Standard",
+      "trayIconStyleTime": "Dags för paus"
     },
     "about": {
       "tagline": "Appen för paustidspåminnelse",
@@ -151,8 +156,8 @@
     "breakWindowHeight": "Höjd:",
     "sounds": "Ljud:",
     "volume": "Volym:",
-    "miniBreakStartSound": "Spela upp ljudet i slutet också i början av kort paus",
-    "longBreakStartSound": "Spela upp ljudet i slutet också i början av lång paus",
+    "miniBreakStartSound": "Ljud i början av kort paus",
+    "longBreakStartSound": "Ljud i början av lång paus",
     "naturalBreaks": "Naturliga pauser:",
     "naturalBreaksInfo": "Om övervakning av vilotid är aktiverad i huvudinställningarna kan du ange efter vilken tid nedräkningen ska pausas.",
     "pauseAfter": "Pausa om:",
@@ -172,8 +177,8 @@
     "currentTimeInBreaks": "Aktuell tid",
     "showCurrentTimeInBreaks": "Visa aktuell lokal tid i pausfönster",
     "showBreaksAsRegularWindowsInfo": "När det är aktiverat kommer pausfönster att bli fokuserbara, de kommer inte att vara \"Alltid överst\" längre och de kommer också att visas i aktivitetsfältet.",
-    "showTrayIcon": "Visa menyfält ikon",
-    "toShowTrayIcon": "Visa Stretchly ikon i menyfält"
+    "showTrayIcon": "Visa ikon i aktivitetsfältet",
+    "toShowTrayIcon": "Visa Stretchly-ikonen i fältet"
   },
   "utils": {
     "none_one": "{{count}}",
@@ -189,7 +194,8 @@
     "hours_one": "{{count}} timme",
     "hours_other": "{{count}} timmar",
     "remaining": "{{count}} återstår",
-    "inAbout": "om ungefär {{count}}"
+    "inAbout": "om ungefär {{count}}",
+    "elapsed": "{{count}} har förflutit"
   },
   "process": {
     "newVersionAvailable": "Ny version är tillgänglig!"

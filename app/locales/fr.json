@@ -28,7 +28,8 @@
   "break": {
     "postpone": "Reporter cette pause",
     "skip": "Ignorer cette pause",
-    "title": "Il est temps de faire une pause !"
+    "title": "Il est temps de faire une pause !",
+    "finish": "Terminer cette pause"
   },
   "preferences": {
     "title": "Paramètres de Stretchly",
