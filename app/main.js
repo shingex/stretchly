@@ -347,6 +347,13 @@ async function initialize (isAppStart = true) {
     settings
   })
 
+  if (!settings.get('_migratedOpenAtLogin')) {
+    // one time migration with 1.20 or after
+    settings.set('openAtLogin', await autostartManager.autoLaunchStatus())
+    settings.set('_migratedOpenAtLogin', true)
+    log.info('Stretchly: Migrated to openAtLogin')
+  }
+
   const imagesDir = join(app.getPath('userData'), 'images')
   if (!existsSync(imagesDir)) {
     try {
@@ -384,13 +391,13 @@ async function initialize (isAppStart = true) {
   })
   startPowerMonitoring()
   if (preferencesWin) {
-    preferencesWin.webContents.send('renderSettings', await settingsToSend())
+    preferencesWin.webContents.send('renderSettings', settings.store)
   }
   if (welcomeWin) {
-    welcomeWin.webContents.send('renderSettings', await settingsToSend())
+    welcomeWin.webContents.send('renderSettings', settings.store)
   }
   if (contributorPreferencesWin) {
-    contributorPreferencesWin.webContents.send('renderSettings', await settingsToSend())
+    contributorPreferencesWin.webContents.send('renderSettings', settings.store)
   }
   globalShortcut.unregisterAll()
 
@@ -1490,9 +1497,9 @@ ipcMain.on('save-setting', function (event, key, value) {
 
   if (key === 'openAtLogin') {
     autostartManager.setAutostartEnabled(value)
-  } else {
-    settings.set(key, value)
   }
+
+  settings.set(key, value)
 
   updateTray()
 })
@@ -1607,13 +1614,9 @@ ipcMain.on('open-sync-preferences', () => {
   createSyncPreferencesWindow()
 })
 
-ipcMain.handle('current-settings', async (event) => {
-  return await settingsToSend()
+ipcMain.handle('current-settings', (event) => {
+  return settings.store
 })
-
-async function settingsToSend () {
-  return Object.assign({}, settings.store, { openAtLogin: await autostartManager.autoLaunchStatus() })
-}
 
 ipcMain.handle('restore-remote-settings', (event, remoteSettings) => {
   log.info('Stretchly: restoring remote settings')
