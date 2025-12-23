@@ -471,7 +471,7 @@ If you want to hide Strict Mode preferences section from the Preferences window,
 This might be useful for corporate installations. 
 
 #### Set automatic start from congfig file
-If you want autostart to work based on value from config file, set `openAtLogin`. 
+If you want autostart to work based on the value from config file, set `openAtLogin`. 
 
 This might be useful for corporate installations. 
 

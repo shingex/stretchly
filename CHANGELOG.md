@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Autostart functionality in Flatpaks
 - updated appExclusions section on README to include description for Windows and substring matching
 - portable version for Windows
-- set autostart value based on config file
+- set autostart based on the config file value
 
 ### Fixed
 - snap package not starting on Wayland
