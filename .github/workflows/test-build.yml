@@ -2,9 +2,15 @@ name: Test build
 
 on:
   workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number to build (leave empty for current branch)'
+        required: false
+        type: string
 
 permissions:
   contents: read
+  pull-requests: read
 
 jobs:
   build:
@@ -22,6 +28,19 @@ jobs:
       if: matrix.os == 'ubuntu-latest'
       run: sudo apt-get install libarchive-tools
     - uses: actions/checkout@v4
+    - name: Checkout PR
+      if: ${{ github.event.inputs.pr_number }}
+      shell: bash
+      run: |
+        if [[ "$PR_NUM" =~ ^[1-9][0-9]*$ ]]; then
+          gh pr checkout "$PR_NUM"
+        else
+          echo "Error: PR number must be a positive integer"
+          exit 1
+        fi
+      env:
+        GH_TOKEN: ${{ secrets.github_token }}
+        PR_NUM: ${{ github.event.inputs.pr_number }}
     - uses: actions/setup-python@v5
       with:
         python-version: '3.12'
