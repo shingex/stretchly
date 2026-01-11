@@ -26,7 +26,9 @@ jobs:
       run: sudo xcode-select -s /Library/Developer/CommandLineTools
     - name: run on linux
       if: matrix.os == 'ubuntu-latest'
-      run: sudo apt-get install libarchive-tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libarchive-tools libinput-dev libudev-dev pkg-config
     - uses: actions/checkout@v4
     - name: Checkout PR
       if: ${{ github.event.inputs.pr_number }}
