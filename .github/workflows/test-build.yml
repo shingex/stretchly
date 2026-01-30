@@ -1,4 +1,9 @@
-name: Test build
+name: Test build of packages on specific PR
+
+env:
+  NODE_VERSION: '22.20.0'
+  PYTHON_VERSION: '3.12'
+  RETENTION_DAYS: 30
 
 on:
   workflow_dispatch:
@@ -7,6 +12,18 @@ on:
         description: 'PR number to build (leave empty for current branch)'
         required: false
         type: string
+      build_snap:
+        description: 'Build snap package'
+        type: boolean
+        default: false
+      build_arm:
+        description: 'Build ARM packages'
+        type: boolean
+        default: false
+      build_normal:
+        description: 'Build normal packages (Windows/macOS/Linux)'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -14,8 +31,8 @@ permissions:
 
 jobs:
   build:
+    if: github.event.inputs.build_normal == 'true'
     runs-on: ${{ matrix.os }}
-
     strategy:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
@@ -30,27 +47,16 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y libarchive-tools libinput-dev libudev-dev pkg-config
     - uses: actions/checkout@v4
-    - name: Checkout PR
-      if: ${{ github.event.inputs.pr_number }}
-      shell: bash
-      run: |
-        if [[ "$PR_NUM" =~ ^[1-9][0-9]*$ ]]; then
-          gh pr checkout "$PR_NUM"
-        else
-          echo "Error: PR number must be a positive integer"
-          exit 1
-        fi
-      env:
-        GH_TOKEN: ${{ secrets.github_token }}
-        PR_NUM: ${{ github.event.inputs.pr_number }}
+      with:
+        ref: ${{ github.event.inputs.pr_number && format('refs/pull/{0}/head', github.event.inputs.pr_number) || github.ref }}
     - uses: actions/setup-python@v5
       with:
-        python-version: '3.12'
+        python-version: ${{ env.PYTHON_VERSION }}
     - uses: actions/setup-node@v4
       with:
-        node-version: '22.20.0'
+        node-version: ${{ env.NODE_VERSION }}
     - run: pip install setuptools
-    - run: npm install npm -g
+    - run: npm install -g npm
     - run: npm install
     - run: node_modules/.bin/electron-builder build --publish=never
       env:
@@ -59,4 +65,58 @@ jobs:
       with:
         name: stretchly-${{ matrix.os }}-${{ github.run_id }}
         path: dist/*.*
-        retention-days: 30
+        retention-days: ${{ env.RETENTION_DAYS }}
+
+  snap:
+    if: github.event.inputs.build_snap == 'true'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.inputs.pr_number && format('refs/pull/{0}/head', github.event.inputs.pr_number) || github.ref }}
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    - uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+    - run: pip install setuptools
+    - run: npm install -g npm
+    - run: npm install
+    - run: node_modules/.bin/electron-builder --linux snap --publish=never
+      env:
+        GH_TOKEN: ${{ secrets.github_token }}
+    - uses: actions/upload-artifact@v4
+      with:
+        name: stretchly-snap-${{ github.run_id }}
+        path: dist/*.snap
+        retention-days: ${{ env.RETENTION_DAYS }}
+
+  arm:
+    if: github.event.inputs.build_arm == 'true'
+    runs-on: buildjet-2vcpu-ubuntu-2204-arm
+    env:
+      USE_SYSTEM_FPM: true
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.inputs.pr_number && format('refs/pull/{0}/head', github.event.inputs.pr_number) || github.ref }}
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    - uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+    - run: pip install setuptools
+    - run: sudo apt update && sudo apt-get install --no-install-recommends -y ruby-full libarchive-tools
+    - run: sudo gem install fpm -v 1.15
+    - run: npm install -g npm
+    - run: npm install
+    - run: node_modules/.bin/electron-builder build --publish=never
+      env:
+        GH_TOKEN: ${{ secrets.github_token }}
+    - uses: actions/upload-artifact@v4
+      with:
+        name: stretchly-arm-${{ github.run_id }}
+        path: dist/*.*
+        retention-days: ${{ env.RETENTION_DAYS }}
