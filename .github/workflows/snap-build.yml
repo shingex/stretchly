@@ -13,15 +13,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
-      with:
-        node-version: '22.20.0'
-    - run: pip install setuptools
-    - run: sudo apt update && sudo apt-get install --no-install-recommends -y libinput-dev libudev-dev
-    - run: npm install -g npm
-    - run: npm install
-    - run: node_modules/.bin/electron-builder --linux snap --publish=never
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Setup build environment
+      uses: ./.github/actions/setup-build
+    - name: Build snap package
+      run: node_modules/.bin/electron-builder --linux snap --publish=never
       env:
         GH_TOKEN: ${{ secrets.github_token }}
     - name: Setup Snapcraft
