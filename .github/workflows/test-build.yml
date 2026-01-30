@@ -71,6 +71,9 @@ jobs:
     if: github.event.inputs.build_snap == 'true'
     runs-on: ubuntu-latest
     steps:
+    - run: |
+        sudo apt-get update
+        sudo apt-get install -y libinput-dev libudev-dev  
     - uses: actions/checkout@v4
       with:
         ref: ${{ github.event.inputs.pr_number && format('refs/pull/{0}/head', github.event.inputs.pr_number) || github.ref }}
@@ -108,7 +111,14 @@ jobs:
       with:
         node-version: ${{ env.NODE_VERSION }}
     - run: pip install setuptools
-    - run: sudo apt update && sudo apt-get install --no-install-recommends -y ruby-full libarchive-tools
+    - run: | 
+        sudo apt update
+        sudo apt-get install --no-install-recommends -y \
+          ruby-full \
+          libarchive-tools \
+          pkg-config \
+          libinput-dev \
+          libudev-dev
     - run: sudo gem install fpm -v 1.15
     - run: npm install -g npm
     - run: npm install
