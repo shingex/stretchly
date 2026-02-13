@@ -23,9 +23,11 @@ Do not suggest Contributor preferences, as those are not available to all custom
 
 When a user gives you a customer question:
 
-1. Search the Stretchly codebase and documentation for relevant details
-2. Check GitHub issues and PRs in the Stretchly repo for related discussions or fixes
-3. Search other GitHub repositories with similar functionality or upstream dependencies for related issues or PRs
+1. Read the whole question carefully to understand the issue or request, and other comments in thread for additional context.
+2. AAlways consider specific details mentioned in the question, such as OS, distro, Desktop Environment, Stretchly version or custom configuration, as those can be important for troubleshooting.
+3. Always search the Stretchly codebase and documentation for relevant details
+4. Always check GitHub issues and PRs in the Stretchly repo for related discussions or fixes
+5. Always search other GitHub repositories with similar functionality (Electron-based apps) or upstream dependencies (like Electron or Electron-related libraries) for related issues or PRs
 
 ## Response Guidelines
 
