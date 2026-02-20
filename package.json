@@ -137,15 +137,15 @@
     ]
   },
   "devDependencies": {
-    "@vitest/coverage-istanbul": "^4.0.16",
+    "@vitest/coverage-istanbul": "^4.0.18",
     "cross-env": "^10.1.0",
-    "electron": "^40.0.0",
-    "electron-builder": "^26.0.12",
+    "electron": "^40.6.0",
+    "electron-builder": "^26.8.1",
     "husky": "^9.1.7",
-    "jsdom": "^28.0.0",
-    "rimraf": "^6.1.2",
+    "jsdom": "^28.1.0",
+    "rimraf": "^6.1.3",
     "standard": "^17.1.2",
-    "vitest": "^4.0.16"
+    "vitest": "^4.0.18"
   },
   "dependencies": {
     "@particle/dbus-next": "^0.11.4",
@@ -154,13 +154,13 @@
     "electron-log": "^5.4.3",
     "electron-store": "^11.0.2",
     "humanize-duration": "^3.33.2",
-    "i18next": "^25.7.3",
+    "i18next": "^25.8.11",
     "i18next-fs-backend": "^2.6.1",
     "luxon": "^3.7.2",
     "meeussunmoon": "^3.1.0",
-    "node-desktop-idle-v2": "^1.1.18",
+    "node-desktop-idle-v2": "^1.1.22",
     "ps-list": "^9.0.0",
-    "semver": "^7.7.3",
+    "semver": "^7.7.4",
     "windows-focus-assist": "^1.4.0"
   }
 }
