@@ -17,14 +17,14 @@
     "indefinitely": "Na neurčito",
     "resetBreaks": "Resetovat přestávky",
     "quitStretchly": "Ukončit Stretchly",
-    "restoreDefaults": "Obnovit původní nastavení",
+    "restoreDefaults": "Obnovit výchozí nastavení",
     "areYouSure": "Tato akce obnoví původní nastavení a všechny vaše změny budou ztraceny.",
     "continue": "Pokračovat",
     "cancel": "Zrušit",
     "preferences": "Předvolby",
     "contributorPreferences": "Nastavení pro přispěvatele",
     "syncPreferences": "Synchronizace nastavení",
-    "warning": "Tím se obnoví původní nastavení aplikace a všechna vaše nastavení budou ztracena."
+    "warning": "Tím se obnoví původní nastavení aplikace a všechna vámi provedená budou ztracena."
   },
   "break": {
     "postpone": "Odložit tuto přestávku",
@@ -91,7 +91,11 @@
       "monochrome": "Černobílá",
       "invertedMonochrome": "Převrácená černobílá",
       "snowWhite": "Sněhobílá",
-      "reverie": "Zátiší"
+      "reverie": "Zátiší",
+      "trayIconStyleLabel": "Styl:",
+      "trayIconStyleDefault": "Výchozí",
+      "trayIconStyleTime": "Čas na přestávku",
+      "trayIconStyleProgress": "Postup k přestávce"
     },
     "about": {
       "tagline": "Pamatuje na přestávky za vás",
@@ -172,11 +176,11 @@
     "showBreaksAsRegularWindowsTitle": "Chovat se jako běžné okno:",
     "currentTimeInBreaks": "Aktuální čas",
     "showCurrentTimeInBreaks": "Zobrazit aktuální místní čas v okně přestávky",
-    "showBreaksAsRegularWindowsInfo": "Pokud je tato funkce povolena, okna Přestávek se budou moci zaostřovat, nebudou již \"vždy nahoře\" a budou se také zobrazovat na hlavním panelu.",
+    "showBreaksAsRegularWindowsInfo": "Pokud je tato funkce povolena, okna přestávek se budou moci zaostřovat, nebudou již „vždy nahoře“ a budou se také zobrazovat na hlavním panelu.",
     "timeToBreakInTray": "Čas si dát přestávku",
     "showTimeToBreakInTray": "Zobrazit čas do další přestávky v ikoně na panelu nabídek",
     "showTrayIcon": "Zobrazit ikonu nabídky",
-    "toShowTrayIcon": "Zobrazit ikonu aplikace Stretchly v menu"
+    "toShowTrayIcon": "Zobrazit ikonu aplikace Stretchly v nabídce"
   },
   "utils": {
     "none_one": "{{count}}",
