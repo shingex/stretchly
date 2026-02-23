@@ -91,7 +91,11 @@
       "monochrome": "Čiernobiela",
       "invertedMonochrome": "Otočená čiernobiela",
       "snowWhite": "Snehobiela",
-      "reverie": "Snenie"
+      "reverie": "Snenie",
+      "trayIconStyleLabel": "Štýl:",
+      "trayIconStyleDefault": "Predvolený",
+      "trayIconStyleTime": "Čas do prestávky",
+      "trayIconStyleProgress": "Pokrok k prestávke"
     },
     "about": {
       "tagline": "Pamätá si prestávky za vás",

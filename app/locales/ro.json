@@ -28,7 +28,8 @@
   "break": {
     "title": "Este timpul să iei o pauză!",
     "skip": "Sari peste această pauză",
-    "postpone": "Amână această pauză"
+    "postpone": "Amână această pauză",
+    "finish": "Finalizează această pauză"
   },
   "preferences": {
     "theme": {
