@@ -90,7 +90,11 @@
       "snowWhite": "Hófehér",
       "transparentMode": "Áttetszőség bekapcsolása",
       "reverie": "Álmodozás",
-      "silence": "Csend"
+      "silence": "Csend",
+      "trayIconStyleLabel": "Stílus:",
+      "trayIconStyleDefault": "Alapértelmezett",
+      "trayIconStyleTime": "Hátralévő idő a szünetig",
+      "trayIconStyleProgress": "Szünet óta eltelt idő"
     },
     "about": {
       "tagline": "A szünet emlékeztető alkalmazás",
@@ -108,7 +112,7 @@
     "heart": {
       "loveStretchly": "Szereted a Stretchlyt?",
       "desc1": "A számítógép használat közben tartott rendszeres szünetek tudományosan bizonyítottan fontosak a testi és szellemi jólét fenntartásához.",
-      "desc2": "A Stretchly alkalmazás ingyenes, de támogathatsz minket, hogy továbbra is fejleszteni tudjuk a Stretchly-t és egyéb ingyenes szoftvereinket.",
+      "desc2": "A Stretchly alkalmazás ingyenes, de támogathatsz minket, hogy továbbra is fejleszteni tudjuk a Stretchlyt és egyéb ingyenes szoftvereinket.",
       "becomeContributor": "Legyél támogató (Patreon)",
       "alreadyContributor": "Már támogató vagyok",
       "authenticateUsing": "Azonosítás a következővel:",
@@ -159,7 +163,7 @@
     "3": "Negyedik monitor",
     "showBreaksAsRegularWindowsTitle": "Ablak üzemmód:",
     "showTrayIcon": "Tálca ikon megjelenítése",
-    "toShowTrayIcon": "Mutassa a Stretcly ikont a tálcán",
+    "toShowTrayIcon": "Mutassa a Stretchly ikont a tálcán",
     "showCurrentTimeInBreaks": "Mutassa a jelenlegi időt a szünet ablakban",
     "screen": "Monitor a szünetekhez:",
     "screenInfo": "Ha a szünetek megjelenítése az összes monitoron nincs engedélyezve, kiválaszthatod, hogy melyik monitoron szeretnéd a szüneteket megjeleníteni.",
