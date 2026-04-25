@@ -36,6 +36,26 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="1.21.0" date="2026-04-25">
+      <description>
+        <p>Added</p>
+        <ul>
+          <li>advanced option for Break Health Mode</li>
+        </ul>
+        <p>Fixed</p>
+        <ul>
+          <li>fix focus mode detection on macOS Tahoe</li>
+          <li>fix idle time detection on Wayland</li>
+        </ul>
+        <p>Changed</p>
+        <ul>
+          <li>increased font size of current time in break window</li>
+          <li>moved macOS Homebrew installation to custom tap</li>
+          <li>improved tray icon styling</li>
+          <li>updated many translations</li>
+        </ul>        
+      </description>
+    </release>
     <release version="1.20.0" date="2025-12-24">
       <description>
         <p>Added</p>

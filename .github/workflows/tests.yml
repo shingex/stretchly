@@ -40,7 +40,7 @@ jobs:
         timezoneMacos: Europe/Amsterdam
         timezoneWindows: W. Europe Standard Time
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
     - name: Setup build environment
       uses: ./.github/actions/setup-build
     - name: Install missing usocket
