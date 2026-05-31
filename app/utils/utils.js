@@ -65,6 +65,15 @@ function minutesRemaining (milliseconds) {
   return Math.round(milliseconds / 60000.0)
 }
 
+function formatCountdownTitle (milliseconds) {
+  if (!Number.isFinite(milliseconds) || milliseconds < 0) return ''
+
+  const totalSeconds = Math.ceil(milliseconds / 1000)
+  const minutes = Math.floor(totalSeconds / 60)
+  const seconds = totalSeconds % 60
+  return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+}
+
 function shouldShowNotificationTitle (platform, systemVersion, semver) {
   if (platform === 'win32' && semver.gte(semver.coerce(systemVersion), '10.0.19042')) {
     return false
@@ -98,6 +107,7 @@ export {
   formatUnitAndValue,
   canPostpone,
   canSkip,
+  formatCountdownTitle,
   formatKeyboardShortcut,
   minutesRemaining,
   shouldShowNotificationTitle,

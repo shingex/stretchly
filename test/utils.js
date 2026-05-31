@@ -1,4 +1,4 @@
-import { formatTimeRemaining, formatElapsedDuration, formatTimeIn, canSkip, canPostpone, formatKeyboardShortcut, minutesRemaining, shouldShowNotificationTitle, formatUnitAndValue } from '../app/utils/utils'
+import { formatTimeRemaining, formatElapsedDuration, formatTimeIn, canSkip, canPostpone, formatCountdownTitle, formatKeyboardShortcut, minutesRemaining, shouldShowNotificationTitle, formatUnitAndValue } from '../app/utils/utils'
 import { beforeAll, afterAll, vi } from 'vitest'
 import 'chai/register-should'
 import i18next from 'i18next'
@@ -163,6 +163,19 @@ describe('Others', () => {
     })
     it('ten minutes remaining', () => {
       minutesRemaining(600 * 1000).should.equal(10)
+    })
+  })
+
+  describe('formatCountdownTitle', () => {
+    it('formats milliseconds as MM:SS', () => {
+      formatCountdownTitle(125 * 1000).should.equal('02:05')
+    })
+    it('rounds up partial seconds', () => {
+      formatCountdownTitle(60 * 1000 + 1).should.equal('01:01')
+    })
+    it('returns empty string for invalid time', () => {
+      formatCountdownTitle(null).should.equal('')
+      formatCountdownTitle(-1).should.equal('')
     })
   })
 

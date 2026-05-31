@@ -16,8 +16,8 @@ import humanizeDuration from 'humanize-duration'
 import { DateTime } from 'luxon'
 
 import {
-  canPostpone, canSkip, formatTimeRemaining,
-  minutesRemaining, insideWindowsStore, insideFlatpak, insideSnap, insideWindowsPortable
+  canPostpone, canSkip, formatCountdownTitle, formatTimeRemaining,
+  insideWindowsStore, insideFlatpak, insideSnap, insideWindowsPortable
 } from './utils/utils.js'
 import IdeasLoader from './utils/ideasLoader.js'
 import BreaksPlanner from './breaksPlanner.js'
@@ -77,6 +77,7 @@ let danger = 0
 let updateChecker
 let currentTrayIconPath = null
 let currentTrayMenuTemplate = null
+let currentTrayTitle = null
 let trayUpdateIntervalObj = null
 
 if (insideWindowsPortable()) {
@@ -517,13 +518,29 @@ function trayIconPath () {
     darkMode: nativeTheme.shouldUseDarkColors,
     platform: process.platform,
     trayIconStyle: settings.get('trayIconStyle'),
-    timeToBreak: minutesRemaining(breakPlanner.timeToNextBreak),
     percentage: breakPlanner.progressPercentage,
     reference: breakPlanner.scheduler.reference
   }
   const trayIconFileName = new AppIcon(params).trayIconFileName
   const pathToTrayIcon = join(__dirname, '/images/app-icons/', trayIconFileName)
   return pathToTrayIcon
+}
+
+function trayTitle () {
+  const isCountingToBreak = !(
+    breakPlanner.isPaused ||
+    breakPlanner.dndManager.isOnDnd ||
+    breakPlanner.naturalBreaksManager.isSchedulerCleared ||
+    breakPlanner.appExclusionsManager.isSchedulerCleared ||
+    breakPlanner.scheduler.reference === 'finishMicrobreak' ||
+    breakPlanner.scheduler.reference === 'finishBreak'
+  )
+
+  if (settings.get('trayIconStyle') !== 'time' || !isCountingToBreak) {
+    return ''
+  }
+
+  return formatCountdownTitle(breakPlanner.timeToNextBreak)
 }
 
 function windowIconPath () {
@@ -1236,10 +1253,10 @@ function createPreferencesWindow () {
     show: false,
     backgroundThrottling: false,
     icon: windowIconPath(),
-    width: 600,
+    width: 640,
     height: 530,
     maxHeight: Math.round(maxHeight),
-    x: displayManager.getDisplayX(-1, 600),
+    x: displayManager.getDisplayX(-1, 640),
     y: displayManager.getDisplayY(-1, 530),
     backgroundColor: '#EDEDED',
     webPreferences: {
@@ -1279,7 +1296,7 @@ function updateTray () {
       })
     }
     if (!trayUpdateIntervalObj) {
-      trayUpdateIntervalObj = setInterval(updateTray, 10000)
+      trayUpdateIntervalObj = setInterval(updateTray, 1000)
     }
 
     updateToolTip()
@@ -1288,6 +1305,12 @@ function updateTray () {
     if (newTrayIconPath !== currentTrayIconPath) {
       appIcon.setImage(newTrayIconPath)
       currentTrayIconPath = newTrayIconPath
+    }
+
+    const newTrayTitle = trayTitle()
+    if (newTrayTitle !== currentTrayTitle) {
+      appIcon.setTitle(newTrayTitle)
+      currentTrayTitle = newTrayTitle
     }
 
     const newTrayMenuTemplate = getTrayMenuTemplate()
