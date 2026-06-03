@@ -29,7 +29,11 @@
     "postpone": "Postpone this break",
     "skip": "Skip this break",
     "title": "Time to take a break!",
-    "finish": "Finish this break"
+    "finish": "Finish this break",
+    "saveImage": "Save image",
+    "savedImage": "Saved",
+    "saveImageFailed": "Save failed",
+    "dislikeImage": "Show another image"
   },
   "preferences": {
     "title": "Stretchly Preferences",
@@ -79,6 +83,9 @@
       "coffeeKisses": "Coffee kisses",
       "morningSwim": "Morning swim",
       "transparentMode": "Enable transparency",
+      "breakTheme": "Break screen:",
+      "solidBreakTheme": "Solid colour",
+      "wallpaperBreakTheme": "Wallpaper magazine",
       "sounds": "Sounds:",
       "enableSounds": "Enable sounds",
       "crystalGlass": "Crystal glass",

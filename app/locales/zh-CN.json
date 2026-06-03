@@ -29,7 +29,11 @@
     "postpone": "延后此次休息",
     "skip": "跳过此次休息",
     "title": "该休息一下了！",
-    "finish": "完成本次休息"
+    "finish": "完成本次休息",
+    "saveImage": "保存图片",
+    "savedImage": "已保存",
+    "saveImageFailed": "保存失败",
+    "dislikeImage": "换一张图片"
   },
   "preferences": {
     "title": "Stretchly 偏好设置",
@@ -79,6 +83,9 @@
       "coffeeKisses": "咖啡之吻",
       "morningSwim": "沐浴晨光",
       "transparentMode": "启用半透明",
+      "breakTheme": "休息画面：",
+      "solidBreakTheme": "纯色",
+      "wallpaperBreakTheme": "Wallpaper 杂志",
       "sounds": "音效：",
       "enableSounds": "启用音效",
       "crystalGlass": "水晶玻璃",

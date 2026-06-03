@@ -1,10 +1,11 @@
 import HtmlTranslate from './utils/htmlTranslate.js'
 import applyBreakHealthEffect from './utils/breakHealthEffect.js'
+import { applyWallpaperTheme } from './utils/wallpaperBreakRenderer.js'
 import './platform.js'
 
 window.onload = async (event) => {
   const [idea, started, duration, strictMode, postpone,
-    postponePercent, backgroundColor, danger, breakHealthMode] = await window.breaks.sendBreakData()
+    postponePercent, backgroundColor, danger, breakHealthMode, themeOptions] = await window.breaks.sendBreakData()
 
   const mainColor = await window.settings.get('mainColor')
 
@@ -24,6 +25,25 @@ window.onload = async (event) => {
     await window.breaks.postponeBreak()
 
   document.querySelector('.microbreak-idea').innerHTML = window.breaks.sanitizeIdea(idea)
+  applyWallpaperTheme({
+    ideaTitle: '',
+    ideaText: idea,
+    options: themeOptions,
+    sanitizer: window.breaks.sanitizeIdea
+  }).catch(error => {
+    console.error('Stretchly: wallpaper mini break theme failed', error)
+    document.body.classList.remove('wallpaper-break')
+  })
+  window.breaks.onWallpaperChanged(wallpaper => {
+    applyWallpaperTheme({
+      ideaTitle: '',
+      ideaText: idea,
+      options: { theme: 'wallpaper', wallpaper },
+      sanitizer: window.breaks.sanitizeIdea
+    }).catch(error => {
+      console.error('Stretchly: wallpaper mini break update failed', error)
+    })
+  })
 
   document.querySelectorAll('.microbreak-idea a').forEach(a => {
     a.onclick = (event) => {

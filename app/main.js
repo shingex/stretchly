@@ -29,6 +29,8 @@ import { registerBreakShortcuts } from './utils/breakShortcuts.js'
 import defaultSettings from './utils/defaultSettings.js'
 import StatusMessages from './utils/statusMessages.js'
 import DisplayManager from './utils/displayManager.js'
+import { buildWallpaper, saveWallpaper } from './utils/wallpaperTheme.js'
+import { backupInvalidJsonConfig } from './utils/storeRecovery.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -79,6 +81,12 @@ let currentTrayIconPath = null
 let currentTrayMenuTemplate = null
 let currentTrayTitle = null
 let trayUpdateIntervalObj = null
+let currentWallpaper = null
+let prefetchedWallpapers = []
+let wallpaperPrefetchPromise = null
+const wallpaperPrefetchTarget = 4
+const unsplashRateLimit = 50
+const unsplashRateWindowMs = 60 * 60 * 1000
 
 if (insideWindowsPortable()) {
   const portableDataPath = join(process.env.PORTABLE_EXECUTABLE_DIR, 'Data')
@@ -221,7 +229,7 @@ async function initialize (isAppStart = true) {
 
   EventEmitter.setMaxListeners(200) // for watching Store changes
   if (!settings) {
-    settings = new Store({
+    const settingsOptions = {
       defaults: defaultSettings,
       beforeEachMigration: (store, context) => {
         log.info(`Stretchly: migrating preferences from Stretchly v${context.fromVersion} to v${context.toVersion}`)
@@ -302,6 +310,11 @@ async function initialize (isAppStart = true) {
         }
       },
       watch: true
+    }
+    backupInvalidJsonConfig(join(app.getPath('userData'), 'config.json'), { log })
+    settings = new Store({
+      ...settingsOptions,
+      clearInvalidConfig: true
     })
     log.info('Stretchly: loading preferences')
     Store.initRenderer()
@@ -373,6 +386,15 @@ async function initialize (isAppStart = true) {
       log.error('Stretchly: error creating images directory', error)
     }
   }
+  const wallpapersDir = join(app.getPath('userData'), 'wallpapers')
+  if (!existsSync(wallpapersDir)) {
+    try {
+      mkdirSync(wallpapersDir, { recursive: true })
+    } catch (error) {
+      log.error('Stretchly: error creating wallpapers directory', error)
+    }
+  }
+  prefetchNextWallpaper()
   // Initialize portal early for Flatpak so it's ready when user opens preferences
   if (insideFlatpak()) {
     autostartManager.flatpakPortalManager.initialize().catch(err => {
@@ -489,6 +511,12 @@ function startPowerMonitoring () {
 }
 
 function closeWindows (windowArray) {
+  if (!Array.isArray(windowArray)) {
+    ipcMain.removeHandler('send-long-break-data')
+    ipcMain.removeHandler('send-mini-break-data')
+    return null
+  }
+
   for (const window of windowArray) {
     if (!window || window.isDestroyed()) {
       continue
@@ -504,6 +532,31 @@ function closeWindows (windowArray) {
     window.destroy()
   }
   return null
+}
+
+function addBreakWindowDiagnostics (win, label, localDisplayId) {
+  const context = `${label} window ${localDisplayId + 1}`
+
+  win.webContents.on('render-process-gone', (_event, details) => {
+    log.error(`Stretchly: ${context} renderer gone`, details)
+  })
+
+  win.webContents.on('unresponsive', () => {
+    log.warn(`Stretchly: ${context} renderer unresponsive`)
+  })
+
+  win.webContents.on('did-fail-load', (_event, errorCode, errorDescription, validatedURL) => {
+    log.error(`Stretchly: ${context} failed to load ${validatedURL}: ${errorCode} ${errorDescription}`)
+  })
+
+  win.webContents.on('preload-error', (_event, preloadPath, error) => {
+    log.error(`Stretchly: ${context} preload failed ${preloadPath}`, error)
+  })
+
+  win.webContents.on('console-message', (_event, level, message, line, sourceId) => {
+    if (level < 2) return
+    log.warn(`Stretchly: ${context} console ${sourceId}:${line} ${message}`)
+  })
 }
 
 function trayIconPath () {
@@ -721,6 +774,32 @@ function getBlurredBackgroundWindowOptions () {
   }
 }
 
+function deliverBreakWallpaper (wallpaperPromise, win, type) {
+  wallpaperPromise
+    .then(wallpaper => {
+      if (!wallpaper || win.isDestroyed()) return
+      win.webContents.send(`${type}-break-wallpaper`, wallpaper)
+    })
+    .catch(error => {
+      log.warn(`Stretchly: ${type} break wallpaper delivery failed`, error)
+    })
+}
+
+function keepBreakWindowVisible (win, showBreaksAsRegularWindows) {
+  if (process.platform !== 'darwin' || !win || win.isDestroyed()) return
+
+  win.setVisibleOnAllWorkspaces(true, {
+    visibleOnFullScreen: true,
+    skipTransformProcessType: true
+  })
+
+  if (!showBreaksAsRegularWindows) {
+    win.setAlwaysOnTop(true, 'screen-saver', 1)
+  }
+
+  win.moveTop()
+}
+
 function startMicrobreak () {
   // don't start another break if break running
   if (microbreakWins) {
@@ -741,6 +820,7 @@ function startMicrobreak () {
 
   const idea = nextIdea || (settings.get('ideas') ? microbreakIdeas.randomElement : [''])
   nextIdea = null
+  const wallpaperPromise = prepareWallpaper()
 
   if (!settings.get('silentNotifications')) {
     const sound = settings.get('miniBreakStartSound')
@@ -749,7 +829,7 @@ function startMicrobreak () {
     }
   }
 
-  ipcMain.handle('send-mini-break-data', (event) => {
+  ipcMain.handle('send-mini-break-data', async (event) => {
     const startTime = Date.now()
     const shortcut = settings.get('endBreakShortcut')
     if (shortcut) {
@@ -770,7 +850,8 @@ function startMicrobreak () {
     }
     return [idea, startTime, breakDuration, strictMode,
       postponable, postponableDurationPercent,
-      calculateBackgroundColor(settings.get('miniBreakColor')), danger, settings.get('breakHealthMode')]
+      calculateBackgroundColor(settings.get('miniBreakColor')), danger, settings.get('breakHealthMode'),
+      { theme: settings.get('breakTheme'), wallpaper: null }]
   })
 
   for (let localDisplayId = 0; localDisplayId < displayManager.getDisplayCount(); localDisplayId++) {
@@ -810,20 +891,22 @@ function startMicrobreak () {
     }
 
     let microbreakWinLocal = new BrowserWindow(windowOptions)
+    addBreakWindowDiagnostics(microbreakWinLocal, 'Mini break', localDisplayId)
     // seems to help with multiple-displays problems
     microbreakWinLocal.setSize(windowOptions.width, windowOptions.height)
+    let microbreakShown = false
+    const showMicrobreakWindow = (source) => {
+      if (microbreakShown || !microbreakWinLocal || microbreakWinLocal.isDestroyed()) return
+      microbreakShown = true
+      log.info(`Stretchly: Mini break window shown by ${source}`)
+      keepBreakWindowVisible(microbreakWinLocal, showBreaksAsRegularWindows)
 
-    microbreakWinLocal.once('ready-to-show', () => {
-      log.info('Stretchly: ready-to-show fired')
-    })
-
-    ipcMain.once('mini-break-loaded', () => {
-      log.info('Stretchly: Mini break window loaded')
       if (showBreaksAsRegularWindows) {
         microbreakWinLocal.show()
       } else {
         microbreakWinLocal.showInactive()
       }
+      keepBreakWindowVisible(microbreakWinLocal, showBreaksAsRegularWindows)
 
       log.info(`Stretchly: showing window ${localDisplayId + 1} of ${displayManager.getDisplayCount()}`)
       if (process.platform === 'darwin') {
@@ -845,11 +928,26 @@ function startMicrobreak () {
         }, 0)
       }
       updateTray()
+    }
+
+    microbreakWinLocal.once('ready-to-show', () => {
+      log.info('Stretchly: ready-to-show fired')
+      showMicrobreakWindow('ready-to-show')
+    })
+
+    ipcMain.once('mini-break-loaded', () => {
+      log.info('Stretchly: Mini break window loaded')
+      showMicrobreakWindow('renderer-loaded')
+      deliverBreakWallpaper(wallpaperPromise, microbreakWinLocal, 'mini')
     })
 
     microbreakWinLocal.loadURL(modalPath)
-    microbreakWinLocal.setVisibleOnAllWorkspaces(true)
-    microbreakWinLocal.setAlwaysOnTop(!showBreaksAsRegularWindows, 'pop-up-menu')
+    if (process.platform === 'darwin') {
+      keepBreakWindowVisible(microbreakWinLocal, showBreaksAsRegularWindows)
+    } else {
+      microbreakWinLocal.setVisibleOnAllWorkspaces(true)
+      microbreakWinLocal.setAlwaysOnTop(!showBreaksAsRegularWindows, 'pop-up-menu')
+    }
     if (microbreakWinLocal) {
       microbreakWinLocal.on('close', (e) => {
         if (breakPlanner.scheduler.timeLeft > 0 && settings.get('microbreakStrictMode')) {
@@ -897,6 +995,7 @@ function startBreak () {
   const defaultNextIdea = settings.get('ideas') ? breakIdeas.randomElement : ['', '']
   const idea = nextIdea ? (nextIdea.map((val, index) => val || defaultNextIdea[index])) : defaultNextIdea
   nextIdea = null
+  const wallpaperPromise = prepareWallpaper()
 
   if (!settings.get('silentNotifications')) {
     const sound = settings.get('longBreakStartSound')
@@ -905,7 +1004,7 @@ function startBreak () {
     }
   }
 
-  ipcMain.handle('send-long-break-data', (event) => {
+  ipcMain.handle('send-long-break-data', async (event) => {
     const startTime = Date.now()
     const shortcut = settings.get('endBreakShortcut')
     if (shortcut) {
@@ -926,7 +1025,8 @@ function startBreak () {
     }
     return [idea, startTime, breakDuration, strictMode,
       postponable, postponableDurationPercent,
-      calculateBackgroundColor(settings.get('mainColor')), danger, settings.get('breakHealthMode')]
+      calculateBackgroundColor(settings.get('mainColor')), danger, settings.get('breakHealthMode'),
+      { theme: settings.get('breakTheme'), wallpaper: null }]
   })
 
   for (let localDisplayId = 0; localDisplayId < displayManager.getDisplayCount(); localDisplayId++) {
@@ -966,20 +1066,22 @@ function startBreak () {
     }
 
     let breakWinLocal = new BrowserWindow(windowOptions)
+    addBreakWindowDiagnostics(breakWinLocal, 'Long break', localDisplayId)
     // seems to help with multiple-displays problems
     breakWinLocal.setSize(windowOptions.width, windowOptions.height)
+    let breakShown = false
+    const showBreakWindow = (source) => {
+      if (breakShown || !breakWinLocal || breakWinLocal.isDestroyed()) return
+      breakShown = true
+      log.info(`Stretchly: Long break window shown by ${source}`)
+      keepBreakWindowVisible(breakWinLocal, showBreaksAsRegularWindows)
 
-    breakWinLocal.once('ready-to-show', () => {
-      log.info('Stretchly: ready-to-show fired')
-    })
-
-    ipcMain.once('long-break-loaded', () => {
-      log.info('Stretchly: Long break window loaded')
       if (showBreaksAsRegularWindows) {
         breakWinLocal.show()
       } else {
         breakWinLocal.showInactive()
       }
+      keepBreakWindowVisible(breakWinLocal, showBreaksAsRegularWindows)
 
       log.info(`Stretchly: showing window ${localDisplayId + 1} of ${displayManager.getDisplayCount()}`)
       if (process.platform === 'darwin') {
@@ -1002,11 +1104,26 @@ function startBreak () {
         }, 0)
       }
       updateTray()
+    }
+
+    breakWinLocal.once('ready-to-show', () => {
+      log.info('Stretchly: ready-to-show fired')
+      showBreakWindow('ready-to-show')
+    })
+
+    ipcMain.once('long-break-loaded', () => {
+      log.info('Stretchly: Long break window loaded')
+      showBreakWindow('renderer-loaded')
+      deliverBreakWallpaper(wallpaperPromise, breakWinLocal, 'long')
     })
 
     breakWinLocal.loadURL(modalPath)
-    breakWinLocal.setVisibleOnAllWorkspaces(true)
-    breakWinLocal.setAlwaysOnTop(!showBreaksAsRegularWindows, 'pop-up-menu')
+    if (process.platform === 'darwin') {
+      keepBreakWindowVisible(breakWinLocal, showBreaksAsRegularWindows)
+    } else {
+      breakWinLocal.setVisibleOnAllWorkspaces(true)
+      breakWinLocal.setAlwaysOnTop(!showBreaksAsRegularWindows, 'pop-up-menu')
+    }
     if (breakWinLocal) {
       breakWinLocal.on('close', (e) => {
         if (breakPlanner.scheduler.timeLeft > 0 && settings.get('breakStrictMode')) {
@@ -1183,6 +1300,148 @@ function calculateBackgroundColor (color) {
     opacityMultiplier = settings.get('opacity')
   }
   return color + Math.round(opacityMultiplier * 255).toString(16).padStart(2, '0')
+}
+
+function recentWallpaperIds () {
+  const recent = settings.get('wallpaperThemeRecentIds')
+  return Array.isArray(recent) ? recent : []
+}
+
+function wallpaperPaths () {
+  return {
+    cacheDir: join(app.getPath('userData'), 'wallpapers', 'cache'),
+    saveDir: join(app.getPath('userData'), 'wallpapers', 'saved')
+  }
+}
+
+function unsplashAccessKey () {
+  return settings.get('wallpaperUnsplashAccessKey') ||
+    process.env.STRETCHLY_UNSPLASH_ACCESS_KEY ||
+    process.env.UNSPLASH_ACCESS_KEY ||
+    ''
+}
+
+function unsplashRequestTimestamps () {
+  const now = Date.now()
+  const timestamps = settings.get('wallpaperUnsplashRequestTimestamps')
+  const recent = Array.isArray(timestamps)
+    ? timestamps.filter(timestamp => Number.isFinite(timestamp) && now - timestamp < unsplashRateWindowMs)
+    : []
+  if (recent.length !== timestamps?.length) {
+    settings.set('wallpaperUnsplashRequestTimestamps', recent)
+  }
+  return recent
+}
+
+function reserveUnsplashRequest () {
+  const recent = unsplashRequestTimestamps()
+  if (recent.length >= unsplashRateLimit) return false
+  settings.set('wallpaperUnsplashRequestTimestamps', [...recent, Date.now()])
+  return true
+}
+
+async function prepareWallpaper () {
+  if (settings.get('breakTheme') !== 'wallpaper') {
+    currentWallpaper = null
+    return null
+  }
+
+  try {
+    if (prefetchedWallpapers.length > 0) {
+      currentWallpaper = prefetchedWallpapers.shift()
+      rememberWallpaper(currentWallpaper)
+      prefetchNextWallpaper()
+      return currentWallpaper
+    }
+
+    currentWallpaper = await buildWallpaper({
+      ...wallpaperPaths(),
+      latitude: settings.get('posLatitude'),
+      longitude: settings.get('posLongitude'),
+      recentIds: recentWallpaperIds(),
+      remoteSources: false
+    })
+    rememberWallpaper(currentWallpaper)
+    prefetchNextWallpaper()
+    return currentWallpaper
+  } catch (error) {
+    currentWallpaper = null
+    log.warn('Stretchly: wallpaper preparation failed', error)
+    prefetchNextWallpaper()
+    return null
+  }
+}
+
+async function nextWallpaperReplacement () {
+  rememberWallpaper(currentWallpaper)
+
+  if (prefetchedWallpapers.length > 0) {
+    currentWallpaper = prefetchedWallpapers.shift()
+    rememberWallpaper(currentWallpaper)
+    prefetchNextWallpaper()
+    return currentWallpaper
+  }
+
+  currentWallpaper = await buildWallpaper({
+    ...wallpaperPaths(),
+    latitude: settings.get('posLatitude'),
+    longitude: settings.get('posLongitude'),
+    recentIds: recentWallpaperIds(),
+    remoteSources: true,
+    unsplashAccessKey: unsplashAccessKey(),
+    unsplashRateLimited: unsplashRequestTimestamps().length >= unsplashRateLimit,
+    onUnsplashRequest: reserveUnsplashRequest
+  })
+  rememberWallpaper(currentWallpaper)
+  prefetchNextWallpaper()
+  return currentWallpaper
+}
+
+function rememberWallpaper (wallpaper) {
+  if (!wallpaper?.id) return
+  const recentIds = [wallpaper.id, ...recentWallpaperIds().filter(id => id !== wallpaper.id)].slice(0, 12)
+  settings.set('wallpaperThemeRecentIds', recentIds)
+}
+
+function prefetchNextWallpaper () {
+  if (!settings || settings.get('breakTheme') !== 'wallpaper') return
+  if (wallpaperPrefetchPromise) return
+  if (prefetchedWallpapers.length >= wallpaperPrefetchTarget) return
+
+  wallpaperPrefetchPromise = prefetchWallpaperQueue()
+    .catch(error => {
+      log.warn('Stretchly: wallpaper prefetch failed', error)
+    })
+    .finally(() => {
+      wallpaperPrefetchPromise = null
+    })
+}
+
+async function prefetchWallpaperQueue () {
+  const attempts = Math.max(wallpaperPrefetchTarget - prefetchedWallpapers.length, 0) + 2
+
+  for (let index = 0; index < attempts && prefetchedWallpapers.length < wallpaperPrefetchTarget; index++) {
+    const queuedIds = prefetchedWallpapers.map(wallpaper => wallpaper.id).filter(Boolean)
+    const wallpaper = await buildWallpaper({
+      ...wallpaperPaths(),
+      latitude: settings.get('posLatitude'),
+      longitude: settings.get('posLongitude'),
+      recentIds: [...recentWallpaperIds(), ...queuedIds],
+      remoteSources: true,
+      unsplashAccessKey: unsplashAccessKey(),
+      unsplashRateLimited: unsplashRequestTimestamps().length >= unsplashRateLimit,
+      onUnsplashRequest: reserveUnsplashRequest
+    })
+
+    if (!wallpaper?.fileUrl) {
+      log.info(`Stretchly: skipped non-image wallpaper prefetch ${wallpaper?.sourceName || wallpaper?.source || 'fallback'}`)
+      continue
+    }
+
+    if (prefetchedWallpapers.some(existing => existing.id === wallpaper.id)) continue
+    prefetchedWallpapers.push(wallpaper)
+    log.info(`Stretchly: prefetched wallpaper ${prefetchedWallpapers.length}/${wallpaperPrefetchTarget} ${wallpaper.sourceName || wallpaper.source}`)
+  }
 }
 
 function loadIdeas () {
@@ -1556,6 +1815,13 @@ ipcMain.on('save-setting', function (event, key, value) {
     settings.set('miniBreakColor', value)
   }
 
+  if (key === 'breakTheme' && value === 'wallpaper') {
+    settings.set('transparentMode', false)
+    prefetchedWallpapers = []
+  } else if (key === 'breakTheme') {
+    prefetchedWallpapers = []
+  }
+
   if (key === 'showTrayIcon') {
     settings.set('showTrayIcon', value)
     if (value) {
@@ -1578,6 +1844,10 @@ ipcMain.on('save-setting', function (event, key, value) {
   }
 
   settings.set(key, value)
+
+  if (key === 'breakTheme' && value === 'wallpaper') {
+    prefetchNextWallpaper()
+  }
 
   updateTray()
 })
@@ -1738,4 +2008,18 @@ ipcMain.handle('get-version', (event) => {
 ipcMain.handle('resolve-local-image', (event, filename) => {
   const imagesPath = join(app.getPath('userData'), 'images')
   return resolveLocalImage(imagesPath, filename)
+})
+
+ipcMain.handle('save-current-wallpaper', () => {
+  return saveWallpaper(currentWallpaper, join(app.getPath('userData'), 'wallpapers', 'saved'))
+})
+
+ipcMain.handle('dislike-current-wallpaper', async () => {
+  if (settings.get('breakTheme') !== 'wallpaper') return null
+  try {
+    return await nextWallpaperReplacement()
+  } catch (error) {
+    log.warn('Stretchly: wallpaper replacement failed', error)
+    return null
+  }
 })

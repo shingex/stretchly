@@ -8,7 +8,9 @@ function exposeElectronApi () {
   contextBridge.exposeInMainWorld('electronApi', {
     openExternal: (path) => shell.openExternal(path),
     openPath: (path) => shell.openPath(path),
-    resolveLocalImage: (filename) => ipcRenderer.invoke('resolve-local-image', filename)
+    resolveLocalImage: (filename) => ipcRenderer.invoke('resolve-local-image', filename),
+    saveCurrentWallpaper: () => ipcRenderer.invoke('save-current-wallpaper'),
+    dislikeCurrentWallpaper: () => ipcRenderer.invoke('dislike-current-wallpaper')
   })
 }
 
@@ -32,6 +34,7 @@ function exposeBreaks (type) {
     finishBreak: (manualAwaiting) => ipcRenderer.send(`finish-${type}-break`, false, manualAwaiting),
     postponeBreak: () => ipcRenderer.send(`postpone-${type}-break`),
     signalLoaded: () => ipcRenderer.send(`${type}-break-loaded`),
+    onWallpaperChanged: (callback) => ipcRenderer.on(`${type}-break-wallpaper`, (_e, wallpaper) => callback(wallpaper)),
     onEnterManualAwait: (callback) => ipcRenderer.on('enter-manual-await', (_e, which) => callback(which)),
     sanitizeIdea: (value) => sanitizeIdea(value)
   })
