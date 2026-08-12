@@ -11,6 +11,7 @@ class DndManager extends EventEmitter {
     super()
     this.settings = settings
     this.monitorDnd = settings.get('monitorDnd')
+    this.monitorDndCheckInterval = settings.get('monitorDndCheckInterval')
     this.timer = null
     this.isOnDnd = false
 
@@ -23,6 +24,7 @@ class DndManager extends EventEmitter {
   }
 
   start () {
+    if (this.timer) return
     this.monitorDnd = true
     this._checkDnd()
     log.info('Stretchly: starting Do Not Disturb monitoring')
@@ -32,6 +34,7 @@ class DndManager extends EventEmitter {
   }
 
   stop () {
+    if (!this.timer) return
     this.monitorDnd = false
     this.isOnDnd = false
     clearTimeout(this.timer)
@@ -211,7 +214,7 @@ class DndManager extends EventEmitter {
         this.isOnDnd = false
         this.emit('dndFinished')
       }
-    }, 1000)
+    }, this.monitorDndCheckInterval)
   }
 }
 

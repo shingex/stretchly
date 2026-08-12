@@ -5,7 +5,7 @@ import AppExclusionsManager from '../app/utils/appExclusionsManager'
 import Store from 'electron-store'
 import defaultSettings from '../app/utils/defaultSettings'
 import psList from 'ps-list'
-import { unlinkSync } from 'node:fs'
+import { rm } from 'node:fs/promises'
 
 const timeout = process.env.CI ? 30000 : 10000
 
@@ -20,6 +20,7 @@ describe('appExclusionsManager', function () {
       name: 'test-settings-appExclusionsManager',
       defaults: defaultSettings
     })
+    settings.set('appExclusionsCheckInterval', 1000)
     appExclusionsManager = null
   })
 
@@ -232,9 +233,28 @@ describe('appExclusionsManager', function () {
       })
     }))
 
-  afterEach(() => {
+  it('stops monitoring with stop()', () => {
+    settings.set('appExclusions', [{ rule: 'pause', active: true, commands: ['xxxxxxxxxxxxxxx'] }])
+    appExclusionsManager = new AppExclusionsManager(settings)
+    appExclusionsManager.stop()
+    const stopped = appExclusionsManager.timer === null
+    stopped.should.be.equal(true)
+  })
+
+  it('does not create a second timer when start() is called twice', () => {
+    settings.set('appExclusions', [{ rule: 'pause', active: true, commands: ['xxxxxxxxxxxxxxx'] }])
+    appExclusionsManager = new AppExclusionsManager(settings)
+    const timer = appExclusionsManager.timer
+    appExclusionsManager.start()
+    appExclusionsManager.timer.should.be.equal(timer)
+    appExclusionsManager.stop()
+  })
+
+  afterEach(async () => {
+    appExclusionsManager?.stop()
+    appExclusionsManager = null
     if (settings) {
-      unlinkSync(join(__dirname, '/test-settings-appExclusionsManager.json'))
+      await rm(join(__dirname, '/test-settings-appExclusionsManager.json'), { force: true })
       settings = null
     }
   })

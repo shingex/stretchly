@@ -8,5 +8,6 @@ coverage
 .idea
 .flatpak-builder/
 *build-dir/
+native/macos/build/
 repo/
 flatpak-node-generator.py

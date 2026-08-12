@@ -3,6 +3,16 @@ body {
   height: 100%;
 }
 
+* {
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: default;
+}
+
+::selection {
+  background: transparent;
+}
+
 body {
   overflow: hidden;
 }
@@ -41,9 +51,16 @@ body.break-health-mode {
 }
 
 .breaks > :nth-child(1) >  .microbreak-idea {
-  font-size: 30px;
+  font-size: 34px;
   letter-spacing: 0.44px;
-  line-height: 46px;
+  line-height: 44px;
+}
+
+.breaks > :nth-child(1) >  .microbreak-text {
+  font-size: 22px;
+  letter-spacing: 0.32px;
+  line-height: 31px;
+  margin-top: 28px;
 }
 
 .breaks > :nth-child(1) >  .break-idea {
@@ -157,13 +174,14 @@ body.wallpaper-break .breaks > :nth-child(2) {
   border: 1px solid rgba(255, 250, 240, 0.20);
   border-radius: 999px;
   display: flex;
-  font-family: 'Noto Sans Regular', 'Noto Sans Arabic Regular',
+  font-family: 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont,
+    'PingFang SC', 'Noto Sans Regular', 'Noto Sans Arabic Regular',
     'Noto Sans CJK KR Regular',
     'Noto Sans Devanagari Regular',
     'Noto Sans Gujarati Regular', 'Noto Sans Gurmukhi Regular',
     'Noto Sans Hebrew Regular';
   font-size: 14px;
-  gap: 26px;
+  gap: 18px;
   grid-column: 2 / span 1;
   grid-row: 3 / span 1;
   justify-self: center;
@@ -177,7 +195,20 @@ body.wallpaper-break .breaks > :nth-child(2) {
 body.wallpaper-break .breaks > :nth-child(2) > a {
   align-items: center;
   display: inline-flex;
-  gap: 8px;
+  gap: 0;
+  justify-content: center;
+  min-height: 24px;
+  min-width: 24px;
+}
+
+body.wallpaper-break .breaks > :nth-child(2) > a > span[data-i18next] {
+  display: none;
+}
+
+body.wallpaper-break .breaks > :nth-child(2) .tiptext {
+  min-width: max-content;
+  padding: 8px 10px;
+  white-space: nowrap;
 }
 
 body.wallpaper-break .breaks > :nth-child(2) > a img,
@@ -211,7 +242,8 @@ body.wallpaper-break .breaks > :last-child {
 
 body.wallpaper-break .breaks > :nth-child(1) > .break-idea,
 body.wallpaper-break .breaks > :nth-child(1) > .break-text,
-body.wallpaper-break .breaks > :nth-child(1) > .microbreak-idea {
+body.wallpaper-break .breaks > :nth-child(1) > .microbreak-idea,
+body.wallpaper-break .breaks > :nth-child(1) > .microbreak-text {
   display: none;
 }
 
@@ -236,26 +268,30 @@ body.wallpaper-break .breaks > :nth-child(1) > progress::-webkit-progress-value 
 }
 
 body.wallpaper-break #progress-time {
-  -webkit-backdrop-filter: blur(18px) saturate(125%);
-  backdrop-filter: blur(18px) saturate(125%);
-  background: rgba(16, 20, 18, 0.28);
-  border: 1px solid rgba(255, 250, 240, 0.18);
-  border-radius: 999px;
-  bottom: 22px;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  bottom: auto;
   color: rgba(255, 250, 240, 0.90);
   display: block;
-  font-family: 'Noto Sans Regular', 'Noto Sans Arabic Regular',
+  font-family: 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont,
+    'PingFang SC', 'Noto Sans Regular', 'Noto Sans Arabic Regular',
     'Noto Sans CJK KR Regular',
     'Noto Sans Devanagari Regular',
     'Noto Sans Gujarati Regular', 'Noto Sans Gurmukhi Regular',
     'Noto Sans Hebrew Regular';
   font-size: 14px;
+  font-variant-numeric: tabular-nums;
   letter-spacing: 0.06em;
-  padding: 9px 13px;
-  position: absolute;
-  right: 22px;
+  min-width: 7.5em;
+  padding: 0 8px 0 2px;
+  position: static;
+  right: auto;
+  text-align: center;
   text-transform: uppercase;
-  z-index: 3;
+  z-index: auto;
 }
 
 .wallpaper-theme {
@@ -264,13 +300,37 @@ body.wallpaper-break #progress-time {
   --wallpaper-muted: rgba(255, 250, 240, 0.74);
   --wallpaper-rule: rgba(255, 250, 240, 0.58);
   --wallpaper-shadow: rgba(0, 0, 0, 0.34);
+  --wallpaper-title-scale: 1;
+  --wallpaper-body-scale: 1;
   background: #121611;
   display: none;
   height: 100%;
   inset: 0;
   overflow: hidden;
+  perspective: 1200px;
   position: absolute;
   width: 100%;
+}
+
+.wallpaper-theme::after {
+  background:
+    radial-gradient(circle at var(--shade-x, 50%) var(--shade-y, 50%),
+      color-mix(in srgb, var(--wallpaper-ink) 24%, transparent) 0 18%,
+      transparent 44%),
+    linear-gradient(var(--shade-angle, 0deg),
+      color-mix(in srgb, var(--wallpaper-ink) 18%, transparent),
+      transparent 42%);
+  content: "";
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transition: opacity 280ms ease;
+  z-index: 1;
+}
+
+.wallpaper-theme.needs-readable-shade::after {
+  opacity: 1;
 }
 
 .wallpaper-theme.tone-ink {
@@ -290,6 +350,7 @@ body.wallpaper-break .wallpaper-theme {
 
 .wallpaper-media,
 .wallpaper-image,
+.wallpaper-depth-image,
 .wallpaper-generated,
 .wallpaper-grain {
   height: 100%;
@@ -304,8 +365,36 @@ body.wallpaper-break .wallpaper-theme {
   transform: scale(1.02);
 }
 
+.wallpaper-depth-image {
+  display: none;
+  object-fit: cover;
+  pointer-events: none;
+  transform: scale(1.02);
+  z-index: 2;
+}
+
 .wallpaper-theme.has-image .wallpaper-image {
   display: block;
+}
+
+.wallpaper-theme.has-image.poster-depth-lockscreen .wallpaper-depth-image {
+  display: block;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(var(--poster-depth-start, 54%) - var(--poster-depth-softness, 12%)),
+    rgba(0, 0, 0, 0.34) var(--poster-depth-start, 54%),
+    #000 calc(var(--poster-depth-start, 54%) + var(--poster-depth-softness, 12%)),
+    #000 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(var(--poster-depth-start, 54%) - var(--poster-depth-softness, 12%)),
+    rgba(0, 0, 0, 0.34) var(--poster-depth-start, 54%),
+    #000 calc(var(--poster-depth-start, 54%) + var(--poster-depth-softness, 12%)),
+    #000 100%
+  );
 }
 
 .wallpaper-generated {
@@ -328,6 +417,59 @@ body.wallpaper-break .wallpaper-theme {
   opacity: 0.42;
 }
 
+.wallpaper-motion-sweep,
+.wallpaper-motion-focus,
+.wallpaper-motion-rails,
+.wallpaper-motion-panel {
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
+}
+
+.wallpaper-motion-sweep {
+  background: linear-gradient(104deg, transparent 38%, rgba(255, 244, 203, 0.25), transparent 62%);
+  filter: blur(10px);
+  inset: -20%;
+  transform: translateX(-28%);
+}
+
+.wallpaper-motion-focus {
+  background: radial-gradient(circle at 50% 46%, transparent 0 22%, rgba(0, 0, 0, 0.34) 55%, rgba(0, 0, 0, 0.58));
+}
+
+.wallpaper-motion-rails::before,
+.wallpaper-motion-rails::after {
+  background: rgba(255, 250, 240, 0.36);
+  content: "";
+  height: 1px;
+  left: clamp(32px, 7vw, 118px);
+  position: absolute;
+  right: clamp(32px, 7vw, 118px);
+}
+
+.wallpaper-motion-rails::before {
+  top: 30%;
+}
+
+.wallpaper-motion-rails::after {
+  bottom: 24%;
+}
+
+.wallpaper-motion-panel {
+  background: rgba(255, 250, 240, 0.10);
+  border-left: 1px solid rgba(255, 250, 240, 0.28);
+  bottom: clamp(116px, 16vh, 170px);
+  height: min(46vh, 390px);
+  left: auto;
+  right: clamp(28px, 5vw, 76px);
+  top: auto;
+  transform: rotateY(-18deg) translateX(80px);
+  transform-origin: right center;
+  width: min(34vw, 430px);
+}
+
 .wallpaper-theme.has-image .wallpaper-grain {
   display: none;
 }
@@ -337,9 +479,78 @@ body.wallpaper-break .wallpaper-theme {
   color: inherit;
   display: grid;
   gap: clamp(13px, 2vh, 22px);
-  max-width: min(720px, 76vw);
+  max-width: min(560px, 52vw);
   position: absolute;
   z-index: 2;
+}
+
+.wallpaper-top-meta {
+  display: contents;
+}
+
+.wallpaper-text::before,
+.wallpaper-text::after {
+  content: "";
+  pointer-events: none;
+}
+
+.wallpaper-text::before {
+  background: var(--wallpaper-rule);
+  display: block;
+  height: 2px;
+  left: 0;
+  opacity: 0.78;
+  position: absolute;
+  top: clamp(-34px, -4vh, -18px);
+  width: clamp(38px, 6vw, 92px);
+}
+
+.typography-quote .wallpaper-text::before {
+  background: none;
+  color: currentColor;
+  content: "“";
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(48px, 7.2vw, 110px);
+  height: auto;
+  left: 0;
+  line-height: 0.58;
+  opacity: 0.94;
+  position: absolute;
+  text-shadow: 0 14px 36px var(--wallpaper-shadow);
+  top: clamp(-58px, -7vh, -32px);
+  width: auto;
+}
+
+.typography-rule .wallpaper-text::after {
+  background: linear-gradient(90deg, var(--wallpaper-rule), transparent);
+  bottom: clamp(-28px, -3.2vh, -16px);
+  display: block;
+  height: 1px;
+  left: 0;
+  opacity: 0.72;
+  position: absolute;
+  width: min(360px, 44vw);
+}
+
+.layout-right .wallpaper-text::before,
+.layout-poster-stack .wallpaper-text::before {
+  left: auto;
+  right: 0;
+}
+
+.layout-right.typography-rule .wallpaper-text::after,
+.layout-poster-stack.typography-rule .wallpaper-text::after {
+  background: linear-gradient(270deg, var(--wallpaper-rule), transparent);
+  left: auto;
+  right: 0;
+}
+
+.layout-bottom .wallpaper-text::before,
+.layout-center .wallpaper-text::before,
+.layout-top .wallpaper-text::before,
+.layout-caption-strip .wallpaper-text::before {
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .wallpaper-break .layout-left .wallpaper-text {
@@ -351,10 +562,26 @@ body.wallpaper-break .wallpaper-theme {
   text-align: right;
 }
 
+.wallpaper-break .layout-center .wallpaper-text {
+  left: 50%;
+  max-width: min(520px, 44vw);
+  text-align: center;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.wallpaper-break .layout-top .wallpaper-text {
+  left: 50%;
+  max-width: min(640px, 52vw);
+  text-align: center;
+  top: clamp(38px, 8vh, 92px);
+  transform: translateX(-50%);
+}
+
 .wallpaper-break .layout-bottom .wallpaper-text {
   bottom: clamp(92px, 12vh, 160px);
   left: 50%;
-  max-width: min(940px, 84vw);
+  max-width: min(640px, 58vw);
   text-align: center;
   transform: translateX(-50%);
 }
@@ -386,12 +613,10 @@ body.wallpaper-break .wallpaper-theme {
 }
 
 .wallpaper-break .layout-caption-strip .wallpaper-text {
-  align-items: end;
-  bottom: clamp(82px, 10vh, 128px);
-  column-gap: clamp(18px, 3vw, 40px);
-  grid-template-columns: minmax(130px, 0.6fr) minmax(260px, 1.35fr) minmax(180px, 1fr);
-  left: clamp(30px, 5vw, 82px);
-  max-width: calc(100vw - clamp(60px, 10vw, 164px));
+  bottom: clamp(92px, 12vh, 150px);
+  grid-template-columns: 1fr;
+  left: clamp(34px, 7vw, 112px);
+  max-width: min(620px, 56vw);
 }
 
 .wallpaper-label,
@@ -413,19 +638,101 @@ body.wallpaper-break .wallpaper-theme {
 }
 
 .wallpaper-title {
-  animation: wallpaperTitleIn 900ms cubic-bezier(0.19, 1, 0.22, 1) both;
   font-family: Georgia, 'Times New Roman', 'Noto Sans CJK JP Regular', serif;
-  font-size: clamp(52px, 9.4vw, 132px);
+  font-size: calc(clamp(48px, 8vw, 118px) * var(--wallpaper-title-scale));
   font-weight: 400;
   letter-spacing: 0;
-  line-height: 0.9;
+  line-height: 0.92;
   max-width: 10ch;
   overflow-wrap: anywhere;
+  text-wrap: balance;
   text-shadow: 0 16px 46px var(--wallpaper-shadow);
 }
 
+.wallpaper-title-word {
+  display: inline-block;
+  position: relative;
+}
+
+.wallpaper-title-word.is-emphasis {
+  color: var(--wallpaper-accent, #fff1a6);
+  font-style: italic;
+  text-shadow:
+    0 1px 0 color-mix(in srgb, currentColor 34%, transparent),
+    0 18px 48px var(--wallpaper-shadow);
+}
+
+.typography-editorial .wallpaper-title {
+  font-family: 'Noto Sans Light', 'Noto Sans Arabic Light',
+    'Noto Sans CJK KR Light',
+    'Noto Sans Devanagari Light',
+    'Noto Sans Gujarati Light', 'Noto Sans Gurmukhi Light',
+    'Noto Sans Hebrew Light';
+  font-weight: 300;
+  max-width: 11ch;
+  text-transform: lowercase;
+}
+
+.typography-editorial .wallpaper-title-word.is-emphasis {
+  color: var(--wallpaper-accent, #fff1a6);
+  font-family: Georgia, 'Times New Roman', 'Noto Sans CJK JP Regular', serif;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.typography-impact .wallpaper-title {
+  font-family: 'Noto Sans Regular', 'Noto Sans Arabic Regular',
+    'Noto Sans CJK KR Regular',
+    'Noto Sans Devanagari Regular',
+    'Noto Sans Gujarati Regular', 'Noto Sans Gurmukhi Regular',
+    'Noto Sans Hebrew Regular';
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 0.88;
+  text-transform: uppercase;
+}
+
+.typography-impact .wallpaper-title-word.is-emphasis {
+  -webkit-text-stroke: 1px currentColor;
+  color: transparent;
+  font-style: normal;
+}
+
+.typography-caption .wallpaper-title {
+  font-family: 'Noto Sans Regular', 'Noto Sans Arabic Regular',
+    'Noto Sans CJK KR Regular',
+    'Noto Sans Devanagari Regular',
+    'Noto Sans Gujarati Regular', 'Noto Sans Gurmukhi Regular',
+    'Noto Sans Hebrew Regular';
+  font-size: calc(clamp(40px, 6.8vw, 102px) * var(--wallpaper-title-scale));
+  font-weight: 700;
+  line-height: 0.92;
+}
+
+.typography-caption .wallpaper-title-word.is-emphasis {
+  background: color-mix(in srgb, var(--wallpaper-accent, #fff1a6) 94%, white 6%);
+  box-decoration-break: clone;
+  color: var(--wallpaper-ink);
+  font-style: normal;
+  padding: 0 0.07em 0.08em;
+  text-shadow: none;
+  -webkit-box-decoration-break: clone;
+}
+
+.typography-rule .wallpaper-title-word.is-emphasis::after {
+  background: currentColor;
+  bottom: 0.02em;
+  content: "";
+  height: 0.06em;
+  left: 0;
+  opacity: 0.72;
+  position: absolute;
+  right: 0;
+  transform: rotate(-1.4deg);
+}
+
 .layout-bottom .wallpaper-title {
-  max-width: 14ch;
+  max-width: 11ch;
 }
 
 .layout-magazine-cover .wallpaper-title {
@@ -458,12 +765,11 @@ body.wallpaper-break .wallpaper-theme {
 }
 
 .layout-caption-strip .wallpaper-title {
-  font-size: clamp(34px, 5.2vw, 76px);
-  max-width: 12ch;
+  font-size: calc(clamp(38px, 5.8vw, 84px) * var(--wallpaper-title-scale));
+  max-width: 11ch;
 }
 
 .wallpaper-body {
-  animation: wallpaperTextIn 900ms 120ms cubic-bezier(0.19, 1, 0.22, 1) both;
   border-left: 2px solid var(--wallpaper-rule);
   color: currentColor;
   font-family: 'Noto Sans Light', 'Noto Sans Arabic Light',
@@ -471,10 +777,10 @@ body.wallpaper-break .wallpaper-theme {
     'Noto Sans Devanagari Light',
     'Noto Sans Gujarati Light', 'Noto Sans Gurmukhi Light',
     'Noto Sans Hebrew Light';
-  font-size: clamp(17px, 2.2vw, 28px);
+  font-size: calc(clamp(13px, 1.35vw, 20px) * var(--wallpaper-body-scale));
   letter-spacing: 0;
-  line-height: 1.35;
-  max-width: 33em;
+  line-height: 1.34;
+  max-width: 25em;
   opacity: 0.88;
   overflow: hidden;
   padding: 13px 0 13px 18px;
@@ -490,6 +796,17 @@ body[dir=rtl] .wallpaper-body,
   padding-right: 18px;
 }
 
+body[dir=rtl] .wallpaper-text::before {
+  left: auto;
+  right: 0;
+}
+
+body[dir=rtl] .typography-rule .wallpaper-text::after {
+  background: linear-gradient(270deg, var(--wallpaper-rule), transparent);
+  left: auto;
+  right: 0;
+}
+
 .layout-bottom .wallpaper-body,
 .layout-caption-strip .wallpaper-body {
   border-left: 0;
@@ -502,7 +819,7 @@ body[dir=rtl] .wallpaper-body,
 .layout-caption-strip .wallpaper-body {
   margin-left: 0;
   margin-right: 0;
-  max-width: 26em;
+  max-width: 24em;
 }
 
 .layout-magazine-cover .wallpaper-body {
@@ -513,9 +830,477 @@ body[dir=rtl] .wallpaper-body,
   font-size: clamp(16px, 1.75vw, 22px);
 }
 
+.scheme-a {
+  --shade-x: 28%;
+  --shade-y: 22%;
+  --shade-angle: 90deg;
+  --wallpaper-title-scale: 1.08;
+}
+
+.scheme-b {
+  --shade-x: 72%;
+  --shade-y: 42%;
+  --shade-angle: 90deg;
+  --wallpaper-title-scale: 0.92;
+}
+
+.layout-right.scheme-b,
+.layout-poster-stack.scheme-b,
+.layout-field-card.scheme-b {
+  --shade-x: 28%;
+}
+
+.scheme-c {
+  --shade-x: 50%;
+  --shade-y: 50%;
+  --shade-angle: 0deg;
+  --wallpaper-title-scale: 0.78;
+  --wallpaper-body-scale: 0.9;
+}
+
+.scheme-d {
+  --shade-x: 50%;
+  --shade-y: 76%;
+  --shade-angle: 0deg;
+  --wallpaper-title-scale: 0.86;
+}
+
+.scheme-e {
+  --shade-x: 50%;
+  --shade-y: 18%;
+  --shade-angle: 180deg;
+  --wallpaper-title-scale: 0.82;
+}
+
+.scheme-f {
+  --shade-x: 52%;
+  --shade-y: 54%;
+  --shade-angle: 90deg;
+  --wallpaper-title-scale: 0.62;
+  --wallpaper-body-scale: 0.82;
+}
+
+.scheme-c .wallpaper-label,
+.scheme-c .wallpaper-meta,
+.scheme-f .wallpaper-label,
+.scheme-f .wallpaper-meta,
+.decor-minimal .wallpaper-label,
+.decor-minimal .wallpaper-meta {
+  display: none;
+}
+
+.scheme-c .wallpaper-text::before,
+.scheme-c .wallpaper-text::after,
+.scheme-f .wallpaper-text::before,
+.scheme-f .wallpaper-text::after,
+.decor-minimal .wallpaper-text::before,
+.decor-minimal .wallpaper-text::after {
+  display: none;
+}
+
+.scheme-c .wallpaper-body,
+.scheme-f .wallpaper-body,
+.decor-minimal .wallpaper-body {
+  border: 0;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 22em;
+  opacity: 0.82;
+  padding: 0;
+}
+
+.wallpaper-theme.scheme-a,
+.wallpaper-theme.scheme-b,
+.wallpaper-theme.scheme-c,
+.wallpaper-theme.scheme-d,
+.wallpaper-theme.scheme-e,
+.wallpaper-theme.scheme-f {
+  --shade-x: 50%;
+  --shade-y: 42%;
+  --shade-angle: 0deg;
+  --wallpaper-title-scale: 1;
+  --wallpaper-body-scale: 1;
+}
+
+.wallpaper-theme::after {
+  background:
+    radial-gradient(ellipse at var(--shade-x, 50%) var(--shade-y, 42%),
+      color-mix(in srgb, var(--wallpaper-ink) 14%, transparent) 0 10%,
+      transparent 42%),
+    linear-gradient(var(--shade-angle, 0deg),
+      color-mix(in srgb, var(--wallpaper-ink) 8%, transparent),
+      transparent 44%);
+}
+
+.wallpaper-theme.decor-none::after,
+.wallpaper-theme.decor-line::after {
+  opacity: 0;
+}
+
+.wallpaper-theme.decor-shade::after,
+.wallpaper-theme.needs-readable-shade::after {
+  opacity: var(--poster-scrim-opacity, 0.18);
+}
+
+.wallpaper-theme.tone-ink {
+  --wallpaper-muted: color-mix(in srgb, var(--wallpaper-ink) 70%, transparent);
+  --wallpaper-rule: color-mix(in srgb, var(--wallpaper-ink) 38%, transparent);
+  --wallpaper-shadow: color-mix(in srgb, var(--wallpaper-paper) 28%, transparent);
+  color: var(--wallpaper-ink);
+}
+
+.wallpaper-theme.tone-paper {
+  --wallpaper-muted: color-mix(in srgb, var(--wallpaper-paper) 70%, transparent);
+  --wallpaper-rule: color-mix(in srgb, var(--wallpaper-paper) 38%, transparent);
+  --wallpaper-shadow: color-mix(in srgb, #050505 34%, transparent);
+  color: var(--wallpaper-paper);
+}
+
+.wallpaper-motion-sweep,
+.wallpaper-motion-rails,
+.wallpaper-motion-panel {
+  display: none;
+}
+
+.wallpaper-motion-focus {
+  background: radial-gradient(ellipse at var(--shade-x, 50%) var(--shade-y, 42%), transparent 0 20%, rgba(0, 0, 0, 0.16) 58%, transparent 78%);
+  mix-blend-mode: multiply;
+}
+
+.wallpaper-text,
+.wallpaper-break .layout-upper-left .wallpaper-text,
+.wallpaper-break .layout-upper-right .wallpaper-text,
+.wallpaper-break .layout-mid-left .wallpaper-text,
+.wallpaper-break .layout-mid-right .wallpaper-text,
+.wallpaper-break .layout-sky-left .wallpaper-text,
+.wallpaper-break .layout-sky-right .wallpaper-text,
+.wallpaper-break .layout-low-left .wallpaper-text,
+.wallpaper-break .layout-low-right .wallpaper-text {
+  bottom: auto;
+  display: grid;
+  gap: clamp(8px, 1.25vh, 15px);
+  grid-template-columns: 1fr;
+  max-width: min(45vw, 620px);
+  right: auto;
+  text-align: left;
+  top: auto;
+  transform: none;
+}
+
+.wallpaper-break .layout-upper-left .wallpaper-text {
+  left: clamp(46px, 7.2vw, 128px);
+  top: clamp(42px, 9vh, 112px);
+}
+
+.wallpaper-break .layout-upper-right .wallpaper-text {
+  max-width: min(38vw, 540px);
+  right: clamp(96px, 12vw, 210px);
+  text-align: right;
+  top: clamp(60px, 12vh, 136px);
+}
+
+.wallpaper-break .layout-mid-left .wallpaper-text {
+  left: clamp(46px, 7vw, 122px);
+  top: clamp(128px, 27vh, 300px);
+}
+
+.wallpaper-break .layout-mid-right .wallpaper-text {
+  max-width: min(39vw, 560px);
+  right: clamp(72px, 10vw, 178px);
+  text-align: right;
+  top: clamp(132px, 29vh, 312px);
+}
+
+.wallpaper-break .layout-sky-left .wallpaper-text {
+  left: clamp(88px, 13vw, 230px);
+  max-width: min(42vw, 600px);
+  top: clamp(38px, 7vh, 84px);
+}
+
+.wallpaper-break .layout-sky-right .wallpaper-text {
+  max-width: min(40vw, 580px);
+  right: clamp(118px, 16vw, 272px);
+  text-align: right;
+  top: clamp(42px, 7.5vh, 92px);
+}
+
+.wallpaper-break .layout-low-left .wallpaper-text {
+  bottom: clamp(150px, 20vh, 230px);
+  left: clamp(50px, 7.6vw, 136px);
+  max-width: min(36vw, 520px);
+}
+
+.wallpaper-break .layout-low-right .wallpaper-text {
+  bottom: clamp(150px, 20vh, 230px);
+  max-width: min(36vw, 520px);
+  right: clamp(72px, 10vw, 176px);
+  text-align: right;
+}
+
+.wallpaper-text::before,
+.wallpaper-text::after,
+.typography-quote .wallpaper-text::before,
+.typography-rule .wallpaper-text::after {
+  display: none;
+}
+
+.decor-line .wallpaper-text::before {
+  background: currentColor;
+  display: block;
+  height: 1px;
+  left: 0;
+  opacity: 0.34;
+  position: absolute;
+  top: clamp(-18px, -2vh, -10px);
+  transform: none;
+  width: clamp(26px, 4.2vw, 68px);
+}
+
+.layout-upper-right.decor-line .wallpaper-text::before,
+.layout-mid-right.decor-line .wallpaper-text::before,
+.layout-sky-right.decor-line .wallpaper-text::before,
+.layout-low-right.decor-line .wallpaper-text::before {
+  left: auto;
+  right: 0;
+}
+
+.wallpaper-theme.scheme-a .wallpaper-label,
+.wallpaper-theme.scheme-a .wallpaper-meta,
+.wallpaper-theme.scheme-b .wallpaper-label,
+.wallpaper-theme.scheme-b .wallpaper-meta,
+.wallpaper-theme.scheme-c .wallpaper-label,
+.wallpaper-theme.scheme-c .wallpaper-meta,
+.wallpaper-theme.scheme-d .wallpaper-label,
+.wallpaper-theme.scheme-d .wallpaper-meta,
+.wallpaper-theme.scheme-e .wallpaper-label,
+.wallpaper-theme.scheme-e .wallpaper-meta,
+.wallpaper-theme.scheme-f .wallpaper-label,
+.wallpaper-theme.scheme-f .wallpaper-meta {
+  display: block;
+}
+
+.wallpaper-label,
+.wallpaper-meta {
+  color: var(--wallpaper-muted);
+  font-family: 'Noto Sans Regular', 'Noto Sans Arabic Regular',
+    'Noto Sans CJK KR Regular',
+    'Noto Sans Devanagari Regular',
+    'Noto Sans Gujarati Regular', 'Noto Sans Gurmukhi Regular',
+    'Noto Sans Hebrew Regular';
+  font-size: clamp(8px, 0.82vw, 11px);
+  letter-spacing: 0.16em;
+  line-height: 1.35;
+  max-width: 30em;
+  opacity: 0.66;
+  text-transform: uppercase;
+}
+
+.wallpaper-title {
+  color: inherit;
+  font-family: 'Noto Sans Regular', 'Noto Sans Arabic Regular',
+    'Noto Sans CJK KR Regular',
+    'Noto Sans Devanagari Regular',
+    'Noto Sans Gujarati Regular', 'Noto Sans Gurmukhi Regular',
+    'Noto Sans Hebrew Regular';
+  font-size: calc(clamp(42px, 5.2vw, 92px) * var(--wallpaper-title-scale));
+  font-weight: 500;
+  letter-spacing: 0.018em;
+  line-height: 1.06;
+  max-width: 11.5ch;
+  overflow-wrap: normal;
+  text-shadow: 0 10px 28px var(--wallpaper-shadow);
+  text-transform: none;
+  text-wrap: balance;
+  word-break: keep-all;
+}
+
+.wallpaper-title-word {
+  display: inline;
+}
+
+.wallpaper-title-line {
+  display: block;
+  white-space: nowrap;
+}
+
+.wallpaper-title-word.is-emphasis,
+.typography-caption .wallpaper-title-word.is-emphasis,
+.typography-impact .wallpaper-title-word.is-emphasis {
+  -webkit-text-stroke: 0;
+  background: transparent;
+  color: inherit;
+  font-style: normal;
+  padding: 0;
+  text-shadow: inherit;
+}
+
+.typography-serif .wallpaper-title,
+.typography-editorial .wallpaper-title {
+  font-family: Georgia, 'Times New Roman', 'Noto Serif CJK SC', 'Noto Sans CJK KR Regular', serif;
+  font-weight: 400;
+  letter-spacing: 0.012em;
+  line-height: 1.02;
+  text-transform: none;
+}
+
+.typography-quiet .wallpaper-title {
+  font-family: 'Noto Sans Light', 'Noto Sans Arabic Light',
+    'Noto Sans CJK KR Light',
+    'Noto Sans Devanagari Light',
+    'Noto Sans Gujarati Light', 'Noto Sans Gurmukhi Light',
+    'Noto Sans Hebrew Light';
+  font-weight: 300;
+  letter-spacing: var(--poster-letter-spacing, 0);
+  line-height: 1.18;
+  max-width: 13ch;
+}
+
+.typography-modern .wallpaper-title,
+.typography-caption .wallpaper-title {
+  font-size: calc(clamp(34px, 4.35vw, 76px) * var(--wallpaper-title-scale));
+  font-weight: 500;
+  letter-spacing: var(--poster-letter-spacing, 0);
+  line-height: 1.12;
+  max-width: 14ch;
+}
+
+.subject-plant .wallpaper-title,
+.subject-landscape .wallpaper-title {
+  font-weight: 400;
+}
+
+.wallpaper-body,
+.scheme-c .wallpaper-body,
+.scheme-f .wallpaper-body,
+.decor-minimal .wallpaper-body {
+  border: 0;
+  color: currentColor;
+  font-family: 'Noto Sans Light', 'Noto Sans Arabic Light',
+    'Noto Sans CJK KR Light',
+    'Noto Sans Devanagari Light',
+    'Noto Sans Gujarati Light', 'Noto Sans Gurmukhi Light',
+    'Noto Sans Hebrew Light';
+  font-size: calc(clamp(10px, 0.94vw, 15px) * var(--wallpaper-body-scale));
+  letter-spacing: 0.035em;
+  line-height: 1.5;
+  margin: 0;
+  max-width: 24em;
+  opacity: 0.72;
+  padding: 0;
+  text-shadow: 0 8px 22px var(--wallpaper-shadow);
+}
+
+.layout-upper-right .wallpaper-body,
+.layout-mid-right .wallpaper-body,
+.layout-sky-right .wallpaper-body,
+.layout-low-right .wallpaper-body,
+body[dir=rtl] .wallpaper-body {
+  border: 0;
+  margin-left: auto;
+  padding: 0;
+}
+
+.wallpaper-label[hidden],
+.wallpaper-mood[hidden],
 .wallpaper-body[hidden],
 .wallpaper-meta[hidden] {
   display: none;
+}
+
+.wallpaper-break .poster-layout .wallpaper-text {
+  bottom: auto;
+  gap: clamp(8px, 1.1vh, 14px);
+  left: var(--poster-x, 24%);
+  max-width: min(var(--poster-max-width, 42vw), calc(100vw - 10vw));
+  right: auto;
+  text-align: left;
+  top: var(--poster-y, 30%);
+  transform: translate(-50%, -50%);
+}
+
+.wallpaper-break .poster-layout.poster-anchor-left .wallpaper-text {
+  transform: translate(0, -50%);
+}
+
+.wallpaper-break .poster-layout.poster-anchor-right .wallpaper-text {
+  text-align: right;
+  transform: translate(-100%, -50%);
+}
+
+.wallpaper-break .poster-layout .wallpaper-title {
+  font-size: clamp(42px, var(--poster-title-size, 112px), 238px);
+  letter-spacing: var(--poster-letter-spacing, 0.04em);
+  line-height: var(--poster-line-height, 1.02);
+  max-width: 100%;
+  opacity: var(--poster-title-opacity, 0.92);
+}
+
+.wallpaper-break .poster-full-typographic-poster .wallpaper-title,
+.wallpaper-break .poster-hero-sky-center .wallpaper-title {
+  font-weight: 700;
+}
+
+.wallpaper-break .poster-minimal-phrase .wallpaper-title {
+  font-weight: 300;
+}
+
+.wallpaper-break .poster-layout .wallpaper-body {
+  border: 0;
+  color: var(--poster-instruction-color, currentColor);
+  font-size: clamp(11px, var(--poster-subtitle-size, 18px), 28px);
+  letter-spacing: 0.035em;
+  line-height: 1.45;
+  margin-top: clamp(12px, 2vh, 28px);
+  max-width: min(28em, 100%);
+  opacity: var(--poster-instruction-opacity, 0.78);
+  padding: 0;
+  text-shadow: 0 6px 18px var(--wallpaper-shadow);
+}
+
+.wallpaper-break .poster-layout.poster-anchor-right .wallpaper-body {
+  margin-left: auto;
+}
+
+.wallpaper-break .poster-layout .wallpaper-label,
+.wallpaper-break .poster-layout .wallpaper-mood,
+.wallpaper-break .poster-layout .wallpaper-meta {
+  color: var(--poster-metadata-color, currentColor);
+  display: block;
+  font-size: clamp(8px, var(--poster-metadata-size, 11px), 14px);
+  letter-spacing: 0.18em;
+  line-height: 1.4;
+  max-width: min(24vw, 34ch);
+  opacity: var(--poster-metadata-opacity, 0.52);
+  pointer-events: none;
+  position: fixed;
+  text-transform: uppercase;
+  z-index: 2;
+}
+
+.wallpaper-break .poster-layout.poster-depth-lockscreen .wallpaper-text {
+  z-index: 1;
+}
+
+.wallpaper-break .poster-layout .wallpaper-label {
+  left: clamp(96px, 17vw, 280px);
+  text-align: left;
+  top: clamp(48px, 14vh, 132px);
+  transform: none;
+}
+
+.wallpaper-break .poster-layout .wallpaper-mood {
+  left: 50%;
+  text-align: center;
+  top: clamp(48px, 14vh, 132px);
+  transform: translateX(-50%);
+}
+
+.wallpaper-break .poster-layout .wallpaper-meta {
+  left: auto;
+  right: clamp(96px, 17vw, 280px);
+  text-align: right;
+  top: clamp(48px, 14vh, 132px);
+  transform: none;
 }
 
 .wallpaper-save {
@@ -532,6 +1317,18 @@ body[dir=rtl] .wallpaper-body,
 
 body.wallpaper-break .wallpaper-save {
   display: inline-flex;
+  -webkit-backdrop-filter: blur(18px) saturate(125%);
+  backdrop-filter: blur(18px) saturate(125%);
+  background: rgba(16, 20, 18, 0.28);
+  border: 1px solid rgba(255, 250, 240, 0.18);
+  border-radius: 999px;
+  bottom: 22px;
+  color: rgba(255, 250, 240, 0.90);
+  gap: 8px;
+  padding: 13px 18px;
+  position: fixed;
+  right: 22px;
+  z-index: 4;
 }
 
 .wallpaper-save:hover {
@@ -611,6 +1408,176 @@ body.wallpaper-break .wallpaper-dislike {
   }
 }
 
+.wallpaper-break .poster-centered-simple .wallpaper-depth-image,
+.wallpaper-break .poster-centered-simple .wallpaper-mood:empty,
+.wallpaper-break .poster-centered-simple .wallpaper-meta:empty,
+.wallpaper-break .poster-centered-simple .wallpaper-label:empty {
+  display: none !important;
+}
+
+.wallpaper-break .poster-centered-simple .wallpaper-top-meta {
+  display: contents;
+}
+
+.wallpaper-break .poster-centered-simple .wallpaper-label,
+.wallpaper-break .poster-centered-simple .wallpaper-mood,
+.wallpaper-break .poster-centered-simple .wallpaper-meta {
+  color: rgba(255, 255, 255, 0.78);
+  display: block;
+  font-family: 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont,
+    'PingFang SC', 'Noto Sans Regular', 'Noto Sans Arabic Regular',
+    'Noto Sans CJK KR Regular',
+    'Noto Sans Devanagari Regular',
+    'Noto Sans Gujarati Regular', 'Noto Sans Gurmukhi Regular',
+    'Noto Sans Hebrew Regular';
+  font-size: clamp(8px, 0.82vw, 11px);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  line-height: 1.35;
+  max-width: min(34vw, 40ch);
+  opacity: 0.72;
+  pointer-events: none;
+  position: fixed;
+  text-shadow: none;
+  text-transform: uppercase;
+  z-index: 3;
+}
+
+.wallpaper-break .poster-centered-simple .wallpaper-label {
+  left: clamp(96px, 17vw, 280px) !important;
+  right: auto !important;
+  text-align: left;
+  top: clamp(48px, 14vh, 132px) !important;
+  transform: none !important;
+}
+
+.wallpaper-break .poster-centered-simple .wallpaper-mood {
+  left: auto !important;
+  right: clamp(96px, 17vw, 280px) !important;
+  text-align: right;
+  top: clamp(48px, 14vh, 132px) !important;
+  transform: none !important;
+}
+
+.wallpaper-break .poster-centered-simple .wallpaper-meta {
+  bottom: auto !important;
+  left: 50% !important;
+  max-width: min(30vw, 42ch);
+  right: auto !important;
+  text-align: center;
+  top: clamp(48px, 14vh, 132px) !important;
+  transform: translateX(-50%) !important;
+}
+
+.wallpaper-break .poster-centered-simple.wallpaper-theme::after,
+.wallpaper-break .poster-centered-simple.needs-readable-shade::after {
+  opacity: 0;
+}
+
+.wallpaper-break .poster-centered-simple .wallpaper-motion-focus {
+  background: radial-gradient(ellipse at 50% 46%, transparent 0 36%, rgba(0, 0, 0, 0.16) 76%, rgba(0, 0, 0, 0.22));
+  mix-blend-mode: multiply;
+}
+
+.wallpaper-break .poster-centered-simple .wallpaper-text,
+.wallpaper-break .poster-layout.poster-centered-simple .wallpaper-text {
+  bottom: auto;
+  display: grid;
+  gap: clamp(18px, 2.8vh, 36px);
+  left: 50%;
+  max-width: min(92vw, 1520px);
+  place-items: center;
+  right: auto;
+  text-align: center;
+  top: 48%;
+  transform: translate(-50%, -50%);
+  width: min(92vw, 1520px);
+}
+
+.wallpaper-break .poster-centered-simple .wallpaper-text::before,
+.wallpaper-break .poster-centered-simple .wallpaper-text::after {
+  display: none !important;
+}
+
+.wallpaper-break .poster-centered-simple .wallpaper-title,
+.wallpaper-break .poster-layout.poster-centered-simple .wallpaper-title {
+  color: #fff;
+  display: grid;
+  font-family: 'SF Pro Display', 'SF Pro Text', -apple-system, BlinkMacSystemFont,
+    'PingFang SC', 'Noto Sans Regular', 'Noto Sans Arabic Regular',
+    'Noto Sans CJK KR Regular',
+    'Noto Sans Devanagari Regular',
+    'Noto Sans Gujarati Regular', 'Noto Sans Gurmukhi Regular',
+    'Noto Sans Hebrew Regular';
+  font-size: var(--center-title-primary-size, 132px);
+  font-weight: 800;
+  gap: clamp(16px, 2.2vh, 30px);
+  justify-items: center;
+  letter-spacing: 0;
+  line-height: 0.9;
+  max-width: 100%;
+  opacity: 0.98;
+  overflow: visible;
+  text-shadow: none;
+  text-transform: none;
+  text-wrap: nowrap;
+  white-space: nowrap;
+  word-break: keep-all;
+}
+
+.wallpaper-break .poster-centered-simple .wallpaper-title-primary,
+.wallpaper-break .poster-centered-simple .wallpaper-title-secondary {
+  display: block;
+  line-height: 0.9;
+  max-width: 100%;
+  overflow: visible;
+  white-space: nowrap;
+}
+
+.wallpaper-break .poster-centered-simple .wallpaper-title-primary {
+  font-size: var(--center-title-primary-size, 132px);
+}
+
+.wallpaper-break .poster-centered-simple .wallpaper-title-secondary {
+  font-size: var(--center-title-secondary-size, 112px);
+  font-family: 'SF Pro Display', 'SF Pro Text', -apple-system, BlinkMacSystemFont,
+    'PingFang SC', 'Noto Sans Regular', 'Noto Sans Arabic Regular',
+    'Noto Sans CJK KR Regular',
+    'Noto Sans Devanagari Regular',
+    'Noto Sans Gujarati Regular', 'Noto Sans Gurmukhi Regular',
+    'Noto Sans Hebrew Regular';
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.wallpaper-break .poster-centered-simple .wallpaper-title.is-single-title .wallpaper-title-primary {
+  font-size: var(--center-title-primary-size, 154px);
+}
+
+.wallpaper-break .poster-centered-simple .wallpaper-body,
+.wallpaper-break .poster-layout.poster-centered-simple .wallpaper-body {
+  border: 0;
+  color: #fff;
+  font-family: 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont,
+    'PingFang SC', 'Noto Sans Light', 'Noto Sans Arabic Light',
+    'Noto Sans CJK KR Light',
+    'Noto Sans Devanagari Light',
+    'Noto Sans Gujarati Light', 'Noto Sans Gurmukhi Light',
+    'Noto Sans Hebrew Light';
+  font-size: var(--center-description-size, 28px);
+  font-weight: 300;
+  letter-spacing: 0;
+  line-height: 1.28;
+  margin: 0;
+  max-width: min(78vw, 1120px);
+  opacity: 0.96;
+  overflow: visible;
+  padding: 0;
+  text-align: center;
+  text-shadow: none;
+  white-space: nowrap;
+}
+
 @media (max-width: 720px), (max-height: 560px) {
   body.wallpaper-break .breaks > :nth-child(2) {
     bottom: 18px;
@@ -619,19 +1586,29 @@ body.wallpaper-break .wallpaper-dislike {
   }
 
   body.wallpaper-break #progress-time {
-    bottom: 72px;
-    right: 17px;
+    bottom: auto;
+    right: auto;
   }
 
   .wallpaper-text,
   .wallpaper-break .layout-left .wallpaper-text,
   .wallpaper-break .layout-right .wallpaper-text,
+  .wallpaper-break .layout-center .wallpaper-text,
+  .wallpaper-break .layout-top .wallpaper-text,
   .wallpaper-break .layout-bottom .wallpaper-text,
   .wallpaper-break .layout-magazine-cover .wallpaper-text,
   .wallpaper-break .layout-poster-stack .wallpaper-text,
   .wallpaper-break .layout-side-note .wallpaper-text,
   .wallpaper-break .layout-field-card .wallpaper-text,
-  .wallpaper-break .layout-caption-strip .wallpaper-text {
+  .wallpaper-break .layout-caption-strip .wallpaper-text,
+  .wallpaper-break .layout-upper-left .wallpaper-text,
+  .wallpaper-break .layout-upper-right .wallpaper-text,
+  .wallpaper-break .layout-mid-left .wallpaper-text,
+  .wallpaper-break .layout-mid-right .wallpaper-text,
+  .wallpaper-break .layout-sky-left .wallpaper-text,
+  .wallpaper-break .layout-sky-right .wallpaper-text,
+  .wallpaper-break .layout-low-left .wallpaper-text,
+  .wallpaper-break .layout-low-right .wallpaper-text {
     bottom: 122px;
     grid-template-columns: 1fr;
     left: 22px;
@@ -643,13 +1620,149 @@ body.wallpaper-break .wallpaper-dislike {
 
   .wallpaper-title {
     font-size: clamp(42px, 14vw, 76px);
+    max-width: 9ch;
+  }
+
+  .wallpaper-break .poster-layout .wallpaper-text {
+    bottom: 122px;
+    left: 22px;
+    max-width: calc(100vw - 44px);
+    right: auto;
+    text-align: left;
+    top: auto;
+    transform: none;
+  }
+
+  .wallpaper-break .poster-layout .wallpaper-title {
+    font-size: clamp(40px, calc(var(--poster-title-size, 96px) * 0.62), 92px);
+    max-width: 10ch;
+  }
+
+  .wallpaper-break .poster-centered-simple .wallpaper-text,
+  .wallpaper-break .poster-layout.poster-centered-simple .wallpaper-text {
+    bottom: auto;
+    left: 50%;
+    max-width: 94vw;
+    right: auto;
+    text-align: center;
+    top: 47%;
+    transform: translate(-50%, -50%);
+    width: 94vw;
+  }
+
+  .wallpaper-break .poster-centered-simple .wallpaper-title,
+  .wallpaper-break .poster-layout.poster-centered-simple .wallpaper-title {
+    font-size: min(var(--center-title-primary-size, 72px), 14vw);
+    max-width: 100%;
+  }
+
+  .wallpaper-break .poster-centered-simple .wallpaper-title-primary {
+    font-size: min(var(--center-title-primary-size, 72px), 14vw);
+  }
+
+  .wallpaper-break .poster-centered-simple .wallpaper-title-secondary {
+    font-size: min(var(--center-title-secondary-size, 58px), 12vw);
+  }
+
+  .wallpaper-break .poster-centered-simple .wallpaper-body,
+  .wallpaper-break .poster-layout.poster-centered-simple .wallpaper-body {
+    font-size: min(var(--center-description-size, 20px), 5vw);
+    max-width: 90vw;
+  }
+
+  .wallpaper-break .poster-layout .wallpaper-label,
+  .wallpaper-break .poster-layout .wallpaper-mood,
+  .wallpaper-break .poster-layout .wallpaper-meta {
+    font-size: clamp(8px, calc(var(--poster-metadata-size, 11px) * 0.9), 11px);
+    max-width: 28vw;
+    top: 22px;
+  }
+
+  .wallpaper-break .poster-centered-simple .wallpaper-label,
+  .wallpaper-break .poster-centered-simple .wallpaper-mood {
+    font-size: 8px;
+    top: 22px;
+  }
+
+  .wallpaper-break .poster-centered-simple .wallpaper-label {
+    left: 22px !important;
+    right: auto !important;
+  }
+
+  .wallpaper-break .poster-centered-simple .wallpaper-mood {
+    left: auto !important;
+    right: 22px !important;
+    text-align: right;
+    transform: none !important;
+  }
+
+  .wallpaper-break .poster-centered-simple .wallpaper-meta {
+    font-size: 8px;
+    left: 50% !important;
+    max-width: 32vw;
+    right: auto !important;
+    text-align: center;
+    top: 22px !important;
+    transform: translateX(-50%) !important;
+  }
+
+  .wallpaper-break .poster-layout .wallpaper-label {
+    left: 22px;
+    text-align: left;
+    transform: none;
+  }
+
+  .wallpaper-break .poster-layout .wallpaper-mood {
+    left: 50%;
+    text-align: center;
+    transform: translateX(-50%);
+  }
+
+  .wallpaper-break .poster-layout .wallpaper-meta {
+    left: auto;
+    right: 22px;
+    text-align: right;
+    transform: none;
+  }
+
+  .wallpaper-break .poster-layout.poster-centered-simple .wallpaper-meta {
+    left: 50% !important;
+    max-width: 32vw;
+    right: auto !important;
+    text-align: center;
+    top: 22px !important;
+    transform: translateX(-50%) !important;
   }
 
   .wallpaper-body {
     font-size: clamp(16px, 4vw, 20px);
   }
 
+  .typography-impact .wallpaper-title {
+    font-size: clamp(38px, 12vw, 68px);
+  }
+
+  .typography-rule .wallpaper-text::after {
+    width: min(260px, 70vw);
+  }
+
+  .wallpaper-motion-panel {
+    display: none;
+  }
+
   .layout-caption-strip .wallpaper-meta {
     text-align: left;
   }
+}
+
+.wallpaper-break .poster-layout.poster-depth-lockscreen .wallpaper-title {
+  font-size: clamp(74px, var(--poster-depth-title-size, 144px), 260px);
+  font-weight: 700;
+  line-height: 0.92;
+  opacity: clamp(0.78, var(--poster-title-opacity, 0.9), 0.96);
+  text-shadow: 0 12px 34px color-mix(in srgb, var(--wallpaper-shadow) 70%, transparent);
+}
+
+.wallpaper-break .poster-layout.poster-depth-lockscreen .wallpaper-body {
+  margin-top: clamp(16px, 2.3vh, 30px);
 }

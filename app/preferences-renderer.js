@@ -188,6 +188,12 @@ window.onload = async (e) => {
     }
   })
 
+  const updateThemeSettingsVisibility = (breakTheme) => {
+    document.querySelector('.solid-appearance-settings').classList.toggle('hidden', breakTheme !== 'solid')
+    document.querySelector('.wallpaper-save-settings').classList.toggle('hidden', breakTheme !== 'wallpaper')
+  }
+  updateThemeSettingsVisibility(settings.breakTheme)
+
   document.querySelectorAll('input[type="radio"]').forEach(radio => {
     let value
     switch (radio.value) {
@@ -203,6 +209,7 @@ window.onload = async (e) => {
     radio.checked = settings[radio.name] === value
     if (!eventsAttached) {
       radio.onchange = (event) => {
+        if (radio.name === 'breakTheme') updateThemeSettingsVisibility(value)
         window.settings.saveSettings(radio.name, value)
       }
     }
@@ -219,6 +226,28 @@ window.onload = async (e) => {
   if (!eventsAttached) {
     document.querySelector('#trayIconStyle').onchange = (event) => {
       window.settings.saveSettings('trayIconStyle', event.target.value)
+    }
+  }
+
+  const wallpaperSavePathInput = document.querySelector('#wallpaperSavePath')
+  const defaultWallpaperSavePath = await window.electronApi.defaultWallpaperSavePath()
+  const displayWallpaperSavePath = (path) => {
+    wallpaperSavePathInput.value = path || defaultWallpaperSavePath
+    wallpaperSavePathInput.title = wallpaperSavePathInput.value
+  }
+  displayWallpaperSavePath(settings.wallpaperThemeSavePath)
+  if (!eventsAttached) {
+    document.querySelector('#chooseWallpaperSavePath').onclick = async (event) => {
+      event.preventDefault()
+      const selectedPath = await window.electronApi.selectWallpaperSavePath(wallpaperSavePathInput.value)
+      if (!selectedPath) return
+      displayWallpaperSavePath(selectedPath)
+      window.settings.saveSettings('wallpaperThemeSavePath', selectedPath)
+    }
+    document.querySelector('#resetWallpaperSavePath').onclick = (event) => {
+      event.preventDefault()
+      displayWallpaperSavePath('')
+      window.settings.saveSettings('wallpaperThemeSavePath', '')
     }
   }
 

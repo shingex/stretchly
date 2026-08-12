@@ -12,6 +12,13 @@
   --accent: #0F6B66;
   --accent-strong: #0B4F4B;
   --accent-subtle: rgba(15, 107, 102, 0.10);
+  --control-bg: rgba(255, 255, 255, 0.86);
+  --control-bg-hover: rgba(255, 255, 255, 0.96);
+  --control-border: rgba(54, 60, 54, 0.24);
+  --control-icon: #555A53;
+  --control-option-bg: #FFFFFF;
+  --control-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.62);
+  --control-text: #242822;
 
   --font-ui: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue",
     "Noto Sans Regular", "Noto Sans Arabic Regular", "Noto Sans CJK KR Regular",
@@ -47,6 +54,14 @@
     --accent: #75C9BF;
     --accent-strong: #75C9BF;
     --accent-subtle: rgba(117, 201, 191, 0.13);
+    --control-bg: rgba(24, 26, 23, 0.94);
+    --control-bg-hover: rgba(34, 37, 32, 0.96);
+    --control-border: rgba(117, 201, 191, 0.38);
+    --control-icon: #D2D0C8;
+    --control-option-bg: #242721;
+    --control-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      0 0 0 1px rgba(0, 0, 0, 0.22);
+    --control-text: #F3F2EE;
     --preferences-focus: rgba(117, 201, 191, 0.22);
     --shadow-window: 0 24px 58px rgba(0, 0, 0, 0.32);
     --shadow-card: 0 14px 34px rgba(0, 0, 0, 0.24);
@@ -349,6 +364,36 @@ input:focus-visible {
   outline: 0;
 }
 
+input[type="text"] {
+  background: var(--control-bg);
+  border: 1px solid var(--control-border);
+  border-radius: var(--radius-control);
+  box-shadow: var(--control-shadow);
+  color: var(--control-text);
+  height: 30px;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.path-setting {
+  align-items: flex-start;
+}
+
+.path-control {
+  display: grid;
+  flex: 1 1 320px;
+  gap: 8px;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  min-width: 0;
+}
+
+.path-control input {
+  width: 100%;
+}
+
 input[type="range"] {
   accent-color: var(--accent);
   flex: 1 1 210px;
@@ -423,6 +468,98 @@ input[type="radio"]:checked + label:before {
   padding: 5px 9px;
 }
 
+.break-theme-option > input[type="radio"] + label {
+  align-items: center;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 58px minmax(0, 1fr);
+  width: 100%;
+}
+
+.break-theme-option > input[type="radio"] + label:before {
+  display: none;
+}
+
+.break-theme-preview {
+  background: var(--surface2);
+  border: 1px solid var(--border-visible);
+  border-radius: 8px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  display: block;
+  height: 38px;
+  overflow: hidden;
+  position: relative;
+  width: 58px;
+}
+
+.break-theme-preview::before,
+.break-theme-preview::after,
+.break-theme-preview > span::before {
+  content: "";
+  display: block;
+  position: absolute;
+}
+
+.solid-preview {
+  background: #478484;
+}
+
+.solid-preview::before {
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 6px;
+  height: 4px;
+  left: 14px;
+  top: 13px;
+  width: 30px;
+}
+
+.solid-preview::after {
+  background: rgba(255, 255, 255, 0.72);
+  border-radius: 6px;
+  height: 3px;
+  left: 18px;
+  top: 21px;
+  width: 22px;
+}
+
+.wallpaper-preview {
+  background:
+    linear-gradient(140deg, rgba(12, 18, 16, 0.20), rgba(12, 18, 16, 0.62)),
+    linear-gradient(135deg, #f3d08a 0 24%, #5b8f9b 24% 48%, #253c32 48% 72%, #101512 72%);
+}
+
+.wallpaper-preview::before {
+  background: rgba(255, 250, 240, 0.90);
+  border-radius: 5px;
+  height: 3px;
+  left: 8px;
+  top: 9px;
+  width: 22px;
+}
+
+.wallpaper-preview::after {
+  background: rgba(255, 250, 240, 0.72);
+  border-radius: 5px;
+  height: 3px;
+  left: 8px;
+  top: 15px;
+  width: 34px;
+}
+
+.wallpaper-preview > span::before {
+  background: rgba(255, 250, 240, 0.82);
+  border-radius: 999px;
+  bottom: 7px;
+  height: 5px;
+  left: 8px;
+  width: 44px;
+}
+
+.break-theme-option > input[type="radio"]:checked + label .break-theme-preview {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--preferences-focus);
+}
+
 .has-select {
   flex: 0 0 auto;
   max-width: 100%;
@@ -436,7 +573,7 @@ input[type="radio"]:checked + label:before {
 }
 
 .has-select::after {
-  color: var(--text3);
+  color: var(--control-icon);
   line-height: 30px;
   right: 10px;
 }
@@ -449,11 +586,11 @@ body[dir=rtl] .has-select::after {
 select {
   -webkit-appearance: none;
   appearance: none;
-  background: rgba(255, 255, 255, 0.74);
-  border: 1px solid var(--border-visible);
+  background: var(--control-bg);
+  border: 1px solid var(--control-border);
   border-radius: var(--radius-control);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
-  color: var(--text1);
+  box-shadow: var(--control-shadow);
+  color: var(--control-text);
   height: 30px;
   max-width: 100%;
   min-width: 0;
@@ -462,17 +599,22 @@ select {
   width: 100%;
 }
 
+select option {
+  background: var(--control-option-bg);
+  color: var(--control-text);
+}
+
 body[dir=rtl] select {
   padding-left: 28px;
   padding-right: 10px;
 }
 
 button {
-  background: rgba(255, 255, 255, 0.56);
-  border: 1px solid var(--border-visible);
+  background: var(--control-bg);
+  border: 1px solid var(--control-border);
   border-radius: var(--radius-control);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
-  color: var(--text1);
+  box-shadow: var(--control-shadow);
+  color: var(--control-text);
   font-size: 12px;
   font-weight: 500;
   height: 30px;
@@ -482,7 +624,7 @@ button {
 }
 
 button:hover {
-  background: rgba(255, 255, 255, 0.76);
+  background: var(--control-bg-hover);
   border-color: rgba(15, 107, 102, 0.32);
 }
 
@@ -824,5 +966,14 @@ body[dir=rtl] .heart > .authenticate > a {
   input[type="range"] {
     flex-basis: 100%;
     max-width: 100%;
+  }
+
+  .path-control {
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+  }
+
+  .path-control input {
+    grid-column: 1 / -1;
   }
 }

@@ -16,7 +16,7 @@ import humanizeDuration from 'humanize-duration'
 import { DateTime } from 'luxon'
 
 import {
-  canPostpone, canSkip, formatCountdownTitle, formatTimeRemaining,
+  canPostpone, canSkip, formatTimeRemaining, minutesRemaining,
   insideWindowsStore, insideFlatpak, insideSnap, insideWindowsPortable
 } from './utils/utils.js'
 import IdeasLoader from './utils/ideasLoader.js'
@@ -31,23 +31,34 @@ import StatusMessages from './utils/statusMessages.js'
 import DisplayManager from './utils/displayManager.js'
 import { buildWallpaper, saveWallpaper } from './utils/wallpaperTheme.js'
 import { backupInvalidJsonConfig } from './utils/storeRecovery.js'
+import NativeMacTray, { nativeMacTrayHelperPath } from './utils/nativeMacTray.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
+let handlingUncaughtException = false
 process.on('uncaughtException', (err, _) => {
-  log.error(err)
+  log.error('Stretchly: uncaught exception', err?.stack || err?.message || err)
+  if (handlingUncaughtException) return
+  handlingUncaughtException = true
   const dialogOpts = {
     type: 'error',
     title: 'Stretchly',
-    message: 'An error occured while running Stretchly and it will now quit. To report the issue, click Report.',
+    message: 'An error occurred while running Stretchly and it will now quit. To report the issue, click Report.',
     buttons: ['Report', 'OK']
   }
-  dialog.showMessageBox(dialogOpts).then((returnValue) => {
+  dialog.showMessageBox(dialogOpts).then(async (returnValue) => {
     if (returnValue.response === 0) {
-      shell.openExternal('https://github.com/hovancik/stretchly/issues')
+      try {
+        await shell.openExternal('https://github.com/hovancik/stretchly/issues')
+      } catch (error) {
+        log.error('Stretchly: failed to open issue tracker', error)
+      }
     }
-    app.quit()
+  }).catch((error) => {
+    log.error('Stretchly: failed to show uncaught exception dialog', error)
+  }).finally(() => {
+    app.exit(1)
   })
 })
 
@@ -79,14 +90,30 @@ let danger = 0
 let updateChecker
 let currentTrayIconPath = null
 let currentTrayMenuTemplate = null
-let currentTrayTitle = null
 let trayUpdateIntervalObj = null
 let currentWallpaper = null
+let currentWallpaperBreak = null
 let prefetchedWallpapers = []
 let wallpaperPrefetchPromise = null
 const wallpaperPrefetchTarget = 4
 const unsplashRateLimit = 50
 const unsplashRateWindowMs = 60 * 60 * 1000
+const trayUpdateIntervalMs = 10000
+const wallpaperAnimationVariants = ['pan', 'type', 'layout', 'burst', 'glitch']
+const wallpaperHeadlinePool = [
+  'Borrow The Horizon',
+  'Let The Room Breathe',
+  'Look Past The Glass',
+  'A Softer Distance',
+  'Leave A Little Sky',
+  'Return To Quiet',
+  'The Day Opens',
+  'Slow Weather',
+  'Field Notes For Rest',
+  'Another Rhythm',
+  'Follow The Light',
+  'Pause In Full Frame'
+]
 
 if (insideWindowsPortable()) {
   const portableDataPath = join(process.env.PORTABLE_EXECUTABLE_DIR, 'Data')
@@ -152,7 +179,7 @@ if (!gotTheLock) {
           log.error('Stretchly: error parsing wait interval to ms because of invalid value')
           return
         }
-        if (cmd.options.title) nextIdea = [cmd.options.title]
+        if (cmd.options.title) nextIdea = [cmd.options.title, '']
         if (!cmd.options.noskip || delay) skipToMicrobreak(delay)
         break
       }
@@ -205,8 +232,8 @@ app.on('window-all-closed', () => {
   // do nothing, so app wont get closed
 })
 app.on('before-quit', (event) => {
-  if ((breakPlanner.scheduler.reference === 'finishMicrobreak' && settings.get('microbreakStrictMode')) ||
-      (breakPlanner.scheduler.reference === 'finishBreak' && settings.get('breakStrictMode'))
+  if ((breakPlanner?.scheduler?.reference === 'finishMicrobreak' && settings?.get('microbreakStrictMode')) ||
+      (breakPlanner?.scheduler?.reference === 'finishBreak' && settings?.get('breakStrictMode'))
   ) {
     log.info('Stretchly: preventing app closure (in break with strict mode)')
     event.preventDefault()
@@ -216,7 +243,10 @@ app.on('before-quit', (event) => {
     if (autostartManager) {
       autostartManager.disconnect()
     }
-    app.quit()
+    if (processWin && !processWin.isDestroyed()) {
+      processWin.destroy()
+      processWin = null
+    }
   }
 })
 
@@ -451,6 +481,7 @@ function startI18next () {
     .init({
       lng: settings.get('language'),
       fallbackLng: 'en',
+      load: 'currentOnly',
       debug: !app.isPackaged,
       backend: {
         loadPath: join(__dirname, '/locales/{{lng}}.json'),
@@ -458,7 +489,7 @@ function startI18next () {
       }
     }, function (err, t) {
       if (err) {
-        log.error(err.stack)
+        log.error('Stretchly: i18next init failed', err?.stack || err?.message || err)
       }
     })
 }
@@ -504,6 +535,10 @@ function onResumeOrUnlock () {
 }
 
 function startPowerMonitoring () {
+  powerMonitor.removeListener('suspend', onSuspendOrLock)
+  powerMonitor.removeListener('lock-screen', onSuspendOrLock)
+  powerMonitor.removeListener('resume', onResumeOrUnlock)
+  powerMonitor.removeListener('unlock-screen', onResumeOrUnlock)
   powerMonitor.on('suspend', onSuspendOrLock)
   powerMonitor.on('lock-screen', onSuspendOrLock)
   powerMonitor.on('resume', onResumeOrUnlock)
@@ -571,29 +606,13 @@ function trayIconPath () {
     darkMode: nativeTheme.shouldUseDarkColors,
     platform: process.platform,
     trayIconStyle: settings.get('trayIconStyle'),
+    timeToBreak: minutesRemaining(breakPlanner.timeToNextBreak),
     percentage: breakPlanner.progressPercentage,
     reference: breakPlanner.scheduler.reference
   }
   const trayIconFileName = new AppIcon(params).trayIconFileName
   const pathToTrayIcon = join(__dirname, '/images/app-icons/', trayIconFileName)
   return pathToTrayIcon
-}
-
-function trayTitle () {
-  const isCountingToBreak = !(
-    breakPlanner.isPaused ||
-    breakPlanner.dndManager.isOnDnd ||
-    breakPlanner.naturalBreaksManager.isSchedulerCleared ||
-    breakPlanner.appExclusionsManager.isSchedulerCleared ||
-    breakPlanner.scheduler.reference === 'finishMicrobreak' ||
-    breakPlanner.scheduler.reference === 'finishBreak'
-  )
-
-  if (settings.get('trayIconStyle') !== 'time' || !isCountingToBreak) {
-    return ''
-  }
-
-  return formatCountdownTitle(breakPlanner.timeToNextBreak)
 }
 
 function windowIconPath () {
@@ -774,24 +793,16 @@ function getBlurredBackgroundWindowOptions () {
   }
 }
 
-function deliverBreakWallpaper (wallpaperPromise, win, type) {
-  wallpaperPromise
-    .then(wallpaper => {
-      if (!wallpaper || win.isDestroyed()) return
-      win.webContents.send(`${type}-break-wallpaper`, wallpaper)
-    })
-    .catch(error => {
-      log.warn(`Stretchly: ${type} break wallpaper delivery failed`, error)
-    })
-}
-
 function keepBreakWindowVisible (win, showBreaksAsRegularWindows) {
   if (process.platform !== 'darwin' || !win || win.isDestroyed()) return
 
-  win.setVisibleOnAllWorkspaces(true, {
-    visibleOnFullScreen: true,
-    skipTransformProcessType: true
-  })
+  const isKioskFullscreen = !showBreaksAsRegularWindows && settings.get('fullscreen')
+  if (!isKioskFullscreen) {
+    win.setVisibleOnAllWorkspaces(true, {
+      visibleOnFullScreen: true,
+      skipTransformProcessType: true
+    })
+  }
 
   if (!showBreaksAsRegularWindows) {
     win.setAlwaysOnTop(true, 'screen-saver', 1)
@@ -800,7 +811,167 @@ function keepBreakWindowVisible (win, showBreaksAsRegularWindows) {
   win.moveTop()
 }
 
-function startMicrobreak () {
+function normalizeIdeaPair (idea, fallback = ['', '']) {
+  if (Array.isArray(idea)) {
+    return [
+      idea[0] === null || idea[0] === undefined ? fallback[0] || '' : idea[0],
+      idea[1] === null || idea[1] === undefined ? fallback[1] || '' : idea[1]
+    ]
+  }
+
+  return [
+    idea || fallback[0] || '',
+    fallback[1] || ''
+  ]
+}
+
+function textFromBreakIdea (value) {
+  return String(value || '')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function normalizeWallpaperText (text) {
+  return String(text || '').toLowerCase().replace(/[^a-z0-9\u4e00-\u9fff]+/g, '')
+}
+
+function isDuplicateWallpaperText (a, b) {
+  const left = normalizeWallpaperText(a)
+  const right = normalizeWallpaperText(b)
+  if (!left || !right) return false
+  if (left === right) return true
+  return left.length > 10 && right.length > 10 && (left.includes(right) || right.includes(left))
+}
+
+function titleFromWallpaper (wallpaper) {
+  const contextual = {
+    morning: ['First Light, Slow Breath', 'Morning Distance', 'A Softer Start'],
+    afternoon: ['Wide Afternoon', 'Slow Weather', 'Look Farther'],
+    evening: ['Evening Margin', 'The Day Loosens', 'Low Light, Open Window'],
+    night: ['Night Window', 'Quiet Orbit', 'Dim The Room']
+  }
+  const pool = contextual[wallpaper?.context?.timeOfDay] || wallpaperHeadlinePool
+  return pool[Math.floor(Math.random() * pool.length)]
+}
+
+function supportFromWallpaperText (text, title) {
+  const cleaned = String(text || '').trim()
+  if (!cleaned || isDuplicateWallpaperText(cleaned, title)) return ''
+  const sentences = cleaned.split(/(?<=[.!?。！？])\s+/).filter(Boolean)
+  const support = sentences[0] || cleaned
+  return support.length > 150 ? `${support.slice(0, 147).trim()}...` : support
+}
+
+function labelForWallpaper (wallpaper) {
+  const keyword = wallpaper?.keyword?.replace(/\s+no people$/i, '')
+  const time = wallpaper?.context?.timeOfDay
+  const weather = wallpaper?.context?.weatherMood
+  return [keyword || 'pause study', time, weather].filter(Boolean).join(' / ')
+}
+
+function metaForWallpaper (wallpaper) {
+  const parts = []
+  if (wallpaper?.sourceName && wallpaper.sourceName !== 'Stretchly') parts.push(wallpaper.sourceName)
+  if (wallpaper?.authorName) parts.push(wallpaper.authorName)
+  return parts.join(' - ')
+}
+
+function buildSharedWallpaperText (idea, wallpaper) {
+  const ideaTitle = textFromBreakIdea(idea[0])
+  const ideaText = textFromBreakIdea(idea[1])
+  const title = ideaTitle || titleFromWallpaper(wallpaper)
+  const label = labelForWallpaper(wallpaper)
+  const meta = metaForWallpaper(wallpaper)
+  const subtitle = /[\u4e00-\u9fff]/.test(title) ? englishTitleFromIdea(title) : ''
+  return {
+    label,
+    title,
+    subtitle,
+    support: supportFromWallpaperText(ideaText, title),
+    meta: isDuplicateWallpaperText(meta, label) ? '' : meta
+  }
+}
+
+function englishTitleFromIdea (title) {
+  const normalizedTitle = normalizeWallpaperText(title)
+  if (!normalizedTitle || !/[\u4e00-\u9fff]/.test(title)) return ''
+
+  const englishT = i18next.getFixedT('en')
+  const namespaces = ['miniBreakIdeas', 'longBreakIdeas']
+  for (const namespace of namespaces) {
+    const ideas = englishT(namespace, { returnObjects: true })
+    if (!ideas || typeof ideas !== 'object') continue
+
+    for (const key of Object.keys(ideas)) {
+      const localizedTitle = i18next.t(`${namespace}.${key}.title`)
+      if (normalizeWallpaperText(localizedTitle) !== normalizedTitle) continue
+
+      const englishTitle = englishT(`${namespace}.${key}.title`)
+      if (isDuplicateWallpaperText(englishTitle, title)) return ''
+      return textFromBreakIdea(englishTitle)
+    }
+  }
+
+  return ''
+}
+
+function selectWallpaperAnimationVariant () {
+  return wallpaperAnimationVariants[Math.floor(Math.random() * wallpaperAnimationVariants.length)]
+}
+
+function initialBreakThemeOptions (idea) {
+  const theme = settings.get('breakTheme')
+  if (theme !== 'wallpaper') {
+    return { theme, wallpaper: null }
+  }
+
+  return buildWallpaperThemeOptions(idea, null)
+}
+
+async function prepareAndBroadcastBreakWallpaper (type, idea) {
+  const wallpaper = await prepareWallpaper()
+  if (!currentWallpaperBreak || currentWallpaperBreak.type !== type) {
+    return
+  }
+
+  const themeOptions = buildWallpaperThemeOptions(idea, wallpaper)
+  currentWallpaperBreak = {
+    ...currentWallpaperBreak,
+    themeOptions
+  }
+  broadcastWallpaperThemeOptions(themeOptions, type)
+}
+
+function getCurrentWallpaperBreakState (type) {
+  if (!currentWallpaperBreak || currentWallpaperBreak.type !== type) {
+    return null
+  }
+
+  return currentWallpaperBreak.themeOptions || null
+}
+
+function buildWallpaperThemeOptions (idea, wallpaper) {
+  return {
+    theme: 'wallpaper',
+    wallpaper,
+    wallpaperText: buildSharedWallpaperText(idea, wallpaper || {}),
+    wallpaperAnimationVariant: selectWallpaperAnimationVariant()
+  }
+}
+
+function broadcastWallpaperThemeOptions (options, type, exceptWebContents = null) {
+  const wins = type === 'mini' ? microbreakWins : breakWins
+  const channel = type === 'mini' ? 'mini-break-wallpaper' : 'long-break-wallpaper'
+  if (!Array.isArray(wins)) return
+
+  wins.forEach(win => {
+    if (!win || win.isDestroyed() || win.webContents === exceptWebContents) return
+    win.webContents.send(channel, options)
+  })
+}
+
+async function startMicrobreak () {
   // don't start another break if break running
   if (microbreakWins) {
     log.warn('Stretchly: Mini break already running, not starting Mini break')
@@ -818,9 +989,17 @@ function startMicrobreak () {
   const modalPath = 'file://' + join(__dirname, '/microbreak.html')
   microbreakWins = []
 
-  const idea = nextIdea || (settings.get('ideas') ? microbreakIdeas.randomElement : [''])
+  const defaultNextIdea = settings.get('ideas') ? normalizeIdeaPair(microbreakIdeas.randomElement) : ['', '']
+  const idea = nextIdea ? normalizeIdeaPair(nextIdea, defaultNextIdea) : defaultNextIdea
   nextIdea = null
-  const wallpaperPromise = prepareWallpaper()
+  const startTime = Date.now()
+  const themeOptions = initialBreakThemeOptions(idea)
+  currentWallpaperBreak = { type: 'mini', idea, themeOptions }
+  if (themeOptions.theme === 'wallpaper') {
+    prepareAndBroadcastBreakWallpaper('mini', idea).catch(error => {
+      log.warn('Stretchly: wallpaper mini break preparation failed', error)
+    })
+  }
 
   if (!settings.get('silentNotifications')) {
     const sound = settings.get('miniBreakStartSound')
@@ -830,7 +1009,6 @@ function startMicrobreak () {
   }
 
   ipcMain.handle('send-mini-break-data', async (event) => {
-    const startTime = Date.now()
     const shortcut = settings.get('endBreakShortcut')
     if (shortcut) {
       globalShortcut.register(shortcut, () => {
@@ -850,8 +1028,8 @@ function startMicrobreak () {
     }
     return [idea, startTime, breakDuration, strictMode,
       postponable, postponableDurationPercent,
-      calculateBackgroundColor(settings.get('miniBreakColor')), danger, settings.get('breakHealthMode'),
-      { theme: settings.get('breakTheme'), wallpaper: null }]
+      breakBackgroundColor(settings.get('miniBreakColor')), danger, settings.get('breakHealthMode'),
+      themeOptions]
   })
 
   for (let localDisplayId = 0; localDisplayId < displayManager.getDisplayCount(); localDisplayId++) {
@@ -866,7 +1044,7 @@ function startMicrobreak () {
       backgroundThrottling: false,
       transparent: !showBreaksAsRegularWindows,
       ...getBlurredBackgroundWindowOptions(),
-      backgroundColor: calculateBackgroundColor(settings.get('miniBreakColor')),
+      backgroundColor: breakBackgroundColor(settings.get('miniBreakColor')),
       skipTaskbar: !showBreaksAsRegularWindows,
       focusable: showBreaksAsRegularWindows,
       alwaysOnTop: !showBreaksAsRegularWindows,
@@ -932,14 +1110,18 @@ function startMicrobreak () {
 
     microbreakWinLocal.once('ready-to-show', () => {
       log.info('Stretchly: ready-to-show fired')
-      showMicrobreakWindow('ready-to-show')
+      if (themeOptions.theme !== 'wallpaper') {
+        showMicrobreakWindow('ready-to-show')
+      }
     })
 
-    ipcMain.once('mini-break-loaded', () => {
+    const onMiniBreakLoaded = (event) => {
+      if (!microbreakWinLocal || event.sender !== microbreakWinLocal.webContents) return
+      ipcMain.removeListener('mini-break-loaded', onMiniBreakLoaded)
       log.info('Stretchly: Mini break window loaded')
       showMicrobreakWindow('renderer-loaded')
-      deliverBreakWallpaper(wallpaperPromise, microbreakWinLocal, 'mini')
-    })
+    }
+    ipcMain.on('mini-break-loaded', onMiniBreakLoaded)
 
     microbreakWinLocal.loadURL(modalPath)
     if (process.platform === 'darwin') {
@@ -956,6 +1138,7 @@ function startMicrobreak () {
         }
       })
       microbreakWinLocal.once('closed', () => {
+        ipcMain.removeListener('mini-break-loaded', onMiniBreakLoaded)
         microbreakWinLocal = null
       })
     }
@@ -975,7 +1158,7 @@ function startMicrobreak () {
   }
 }
 
-function startBreak () {
+async function startBreak () {
   if (breakWins) {
     log.warn('Stretchly: Long break already running, not starting Long break')
     return
@@ -992,10 +1175,17 @@ function startBreak () {
   const modalPath = 'file://' + join(__dirname, '/break.html')
   breakWins = []
 
-  const defaultNextIdea = settings.get('ideas') ? breakIdeas.randomElement : ['', '']
-  const idea = nextIdea ? (nextIdea.map((val, index) => val || defaultNextIdea[index])) : defaultNextIdea
+  const defaultNextIdea = settings.get('ideas') ? normalizeIdeaPair(breakIdeas.randomElement) : ['', '']
+  const idea = nextIdea ? normalizeIdeaPair(nextIdea, defaultNextIdea) : defaultNextIdea
   nextIdea = null
-  const wallpaperPromise = prepareWallpaper()
+  const startTime = Date.now()
+  const themeOptions = initialBreakThemeOptions(idea)
+  currentWallpaperBreak = { type: 'long', idea, themeOptions }
+  if (themeOptions.theme === 'wallpaper') {
+    prepareAndBroadcastBreakWallpaper('long', idea).catch(error => {
+      log.warn('Stretchly: wallpaper long break preparation failed', error)
+    })
+  }
 
   if (!settings.get('silentNotifications')) {
     const sound = settings.get('longBreakStartSound')
@@ -1005,7 +1195,6 @@ function startBreak () {
   }
 
   ipcMain.handle('send-long-break-data', async (event) => {
-    const startTime = Date.now()
     const shortcut = settings.get('endBreakShortcut')
     if (shortcut) {
       globalShortcut.register(shortcut, () => {
@@ -1025,8 +1214,8 @@ function startBreak () {
     }
     return [idea, startTime, breakDuration, strictMode,
       postponable, postponableDurationPercent,
-      calculateBackgroundColor(settings.get('mainColor')), danger, settings.get('breakHealthMode'),
-      { theme: settings.get('breakTheme'), wallpaper: null }]
+      breakBackgroundColor(settings.get('mainColor')), danger, settings.get('breakHealthMode'),
+      themeOptions]
   })
 
   for (let localDisplayId = 0; localDisplayId < displayManager.getDisplayCount(); localDisplayId++) {
@@ -1041,7 +1230,7 @@ function startBreak () {
       backgroundThrottling: false,
       transparent: !showBreaksAsRegularWindows,
       ...getBlurredBackgroundWindowOptions(),
-      backgroundColor: calculateBackgroundColor(settings.get('mainColor')),
+      backgroundColor: breakBackgroundColor(settings.get('mainColor')),
       skipTaskbar: !showBreaksAsRegularWindows,
       focusable: showBreaksAsRegularWindows,
       alwaysOnTop: !showBreaksAsRegularWindows,
@@ -1108,14 +1297,18 @@ function startBreak () {
 
     breakWinLocal.once('ready-to-show', () => {
       log.info('Stretchly: ready-to-show fired')
-      showBreakWindow('ready-to-show')
+      if (themeOptions.theme !== 'wallpaper') {
+        showBreakWindow('ready-to-show')
+      }
     })
 
-    ipcMain.once('long-break-loaded', () => {
+    const onLongBreakLoaded = (event) => {
+      if (!breakWinLocal || event.sender !== breakWinLocal.webContents) return
+      ipcMain.removeListener('long-break-loaded', onLongBreakLoaded)
       log.info('Stretchly: Long break window loaded')
       showBreakWindow('renderer-loaded')
-      deliverBreakWallpaper(wallpaperPromise, breakWinLocal, 'long')
-    })
+    }
+    ipcMain.on('long-break-loaded', onLongBreakLoaded)
 
     breakWinLocal.loadURL(modalPath)
     if (process.platform === 'darwin') {
@@ -1132,6 +1325,7 @@ function startBreak () {
         }
       })
       breakWinLocal.once('closed', () => {
+        ipcMain.removeListener('long-break-loaded', onLongBreakLoaded)
         breakWinLocal = null
       })
     }
@@ -1206,6 +1400,7 @@ const enterLongBreakManualContinuation = (shouldPlaySound) => enterManualAwaitPh
 
 function finishMicrobreak (shouldPlaySound = true, shouldPlanNext = true) {
   microbreakWins = breakComplete(shouldPlaySound, microbreakWins, 'mini')
+  if (currentWallpaperBreak?.type === 'mini') currentWallpaperBreak = null
   log.info(`Stretchly: finishing Mini break (shouldPlanNext: ${shouldPlanNext})`)
   if (shouldPlanNext) {
     breakPlanner.nextBreak()
@@ -1217,6 +1412,7 @@ function finishMicrobreak (shouldPlaySound = true, shouldPlanNext = true) {
 
 function finishBreak (shouldPlaySound = true, shouldPlanNext = true) {
   breakWins = breakComplete(shouldPlaySound, breakWins, 'long')
+  if (currentWallpaperBreak?.type === 'long') currentWallpaperBreak = null
   log.info(`Stretchly: finishing Long break (shouldPlanNext: ${shouldPlanNext})`)
   if (shouldPlanNext) {
     breakPlanner.nextBreak()
@@ -1229,6 +1425,7 @@ function finishBreak (shouldPlaySound = true, shouldPlanNext = true) {
 function postponeMicrobreak () {
   increaseDanger(1)
   microbreakWins = breakComplete(false, microbreakWins, 'mini')
+  if (currentWallpaperBreak?.type === 'mini') currentWallpaperBreak = null
   breakPlanner.postponeCurrentBreak()
   log.info('Stretchly: postponing Mini break')
   updateTray()
@@ -1237,6 +1434,7 @@ function postponeMicrobreak () {
 function postponeBreak () {
   increaseDanger(1)
   breakWins = breakComplete(false, breakWins, 'long')
+  if (currentWallpaperBreak?.type === 'long') currentWallpaperBreak = null
   breakPlanner.postponeCurrentBreak()
   log.info('Stretchly: postponing Long break')
   updateTray()
@@ -1246,10 +1444,12 @@ function skipToMicrobreak (delay) {
   if (microbreakWins) {
     increaseDanger(1)
     microbreakWins = breakComplete(false, microbreakWins)
+    if (currentWallpaperBreak?.type === 'mini') currentWallpaperBreak = null
   }
   if (breakWins) {
     increaseDanger(2)
     breakWins = breakComplete(false, breakWins)
+    if (currentWallpaperBreak?.type === 'long') currentWallpaperBreak = null
   }
   if (delay) {
     breakPlanner.skipToMicrobreak(delay)
@@ -1265,10 +1465,12 @@ function skipToBreak (delay) {
   if (microbreakWins) {
     increaseDanger(1)
     microbreakWins = breakComplete(false, microbreakWins)
+    if (currentWallpaperBreak?.type === 'mini') currentWallpaperBreak = null
   }
   if (breakWins) {
     increaseDanger(2)
     breakWins = breakComplete(false, breakWins)
+    if (currentWallpaperBreak?.type === 'long') currentWallpaperBreak = null
   }
   if (delay) {
     breakPlanner.skipToBreak(delay)
@@ -1283,9 +1485,11 @@ function skipToBreak (delay) {
 function resetBreaks () {
   if (microbreakWins) {
     microbreakWins = breakComplete(false, microbreakWins)
+    if (currentWallpaperBreak?.type === 'mini') currentWallpaperBreak = null
   }
   if (breakWins) {
     breakWins = breakComplete(false, breakWins)
+    if (currentWallpaperBreak?.type === 'long') currentWallpaperBreak = null
   }
   danger = 0
   log.info(`Stretchly: danger reset to ${danger}`)
@@ -1294,12 +1498,20 @@ function resetBreaks () {
   updateTray()
 }
 
+function isSolidBreakTheme () {
+  return settings.get('breakTheme') === 'solid'
+}
+
 function calculateBackgroundColor (color) {
   let opacityMultiplier = 1
-  if (settings.get('transparentMode')) {
+  if (isSolidBreakTheme() && settings.get('transparentMode')) {
     opacityMultiplier = settings.get('opacity')
   }
   return color + Math.round(opacityMultiplier * 255).toString(16).padStart(2, '0')
+}
+
+function breakBackgroundColor (color) {
+  return isSolidBreakTheme() ? calculateBackgroundColor(color) : '#121611'
 }
 
 function recentWallpaperIds () {
@@ -1308,10 +1520,16 @@ function recentWallpaperIds () {
 }
 
 function wallpaperPaths () {
+  const defaultSaveDir = join(app.getPath('userData'), 'wallpapers', 'saved')
+  const customSaveDir = settings.get('wallpaperThemeSavePath')
   return {
     cacheDir: join(app.getPath('userData'), 'wallpapers', 'cache'),
-    saveDir: join(app.getPath('userData'), 'wallpapers', 'saved')
+    saveDir: customSaveDir || defaultSaveDir
   }
+}
+
+function defaultWallpaperSavePath () {
+  return join(app.getPath('userData'), 'wallpapers', 'saved')
 }
 
 function unsplashAccessKey () {
@@ -1456,7 +1674,7 @@ function loadIdeas () {
     miniBreakIdeasData = Object.keys(t('miniBreakIdeas',
       { returnObjects: true }))
       .map((item) => {
-        return { data: i18next.t(`miniBreakIdeas.${item}.text`), enabled: true }
+        return { data: [i18next.t(`miniBreakIdeas.${item}.title`), i18next.t(`miniBreakIdeas.${item}.text`)], enabled: true }
       })
 
     longBreakIdeasData = Object.keys(t('longBreakIdeas',
@@ -1546,16 +1764,21 @@ function updateTray () {
 
   if (settings.get('showTrayIcon')) {
     if (!appIcon) {
-      appIcon = new Tray(trayIconPath())
+      const helperPath = nativeMacTrayHelperPath()
+      appIcon = helperPath
+        ? new NativeMacTray(trayIconPath(), helperPath)
+        : new Tray(trayIconPath())
       appIcon.on('double-click', () => {
         createPreferencesWindow()
       })
-      appIcon.on('click', () => {
-        appIcon.popUpContextMenu(Menu.buildFromTemplate(currentTrayMenuTemplate))
-      })
+      if (appIcon instanceof Tray) {
+        appIcon.on('click', () => {
+          appIcon.popUpContextMenu(Menu.buildFromTemplate(currentTrayMenuTemplate))
+        })
+      }
     }
     if (!trayUpdateIntervalObj) {
-      trayUpdateIntervalObj = setInterval(updateTray, 1000)
+      trayUpdateIntervalObj = setInterval(updateTray, trayUpdateIntervalMs)
     }
 
     updateToolTip()
@@ -1566,16 +1789,14 @@ function updateTray () {
       currentTrayIconPath = newTrayIconPath
     }
 
-    const newTrayTitle = trayTitle()
-    if (newTrayTitle !== currentTrayTitle) {
-      appIcon.setTitle(newTrayTitle)
-      currentTrayTitle = newTrayTitle
-    }
-
     const newTrayMenuTemplate = getTrayMenuTemplate()
     if (JSON.stringify(newTrayMenuTemplate) !== JSON.stringify(currentTrayMenuTemplate)) {
-      const trayMenu = Menu.buildFromTemplate(newTrayMenuTemplate)
-      appIcon.setContextMenu(trayMenu)
+      if (appIcon instanceof NativeMacTray) {
+        appIcon.setMenuTemplate(newTrayMenuTemplate)
+      } else {
+        const trayMenu = Menu.buildFromTemplate(newTrayMenuTemplate)
+        appIcon.setContextMenu(trayMenu)
+      }
       currentTrayMenuTemplate = newTrayMenuTemplate
     }
   }
@@ -1829,7 +2050,7 @@ ipcMain.on('save-setting', function (event, key, value) {
     } else {
       clearInterval(trayUpdateIntervalObj)
       trayUpdateIntervalObj = null
-      appIcon.destroy()
+      appIcon?.destroy()
       appIcon = null
     }
   }
@@ -1984,6 +2205,20 @@ ipcMain.handle('settings-get', (event, key) => {
   return settings.get(key)
 })
 
+ipcMain.handle('default-wallpaper-save-path', () => {
+  return defaultWallpaperSavePath()
+})
+
+ipcMain.handle('select-wallpaper-save-path', async (event, currentPath) => {
+  const win = BrowserWindow.fromWebContents(event.sender)
+  const result = await dialog.showOpenDialog(win, {
+    properties: ['openDirectory', 'createDirectory'],
+    defaultPath: currentPath || settings.get('wallpaperThemeSavePath') || defaultWallpaperSavePath()
+  })
+  if (result.canceled || result.filePaths.length === 0) return null
+  return result.filePaths[0]
+})
+
 ipcMain.on('close-current-window', (event) => {
   const win = BrowserWindow.fromWebContents(event.sender)
   if (win) {
@@ -2011,15 +2246,32 @@ ipcMain.handle('resolve-local-image', (event, filename) => {
 })
 
 ipcMain.handle('save-current-wallpaper', () => {
-  return saveWallpaper(currentWallpaper, join(app.getPath('userData'), 'wallpapers', 'saved'))
+  return saveWallpaper(currentWallpaper, wallpaperPaths().saveDir)
 })
 
-ipcMain.handle('dislike-current-wallpaper', async () => {
+ipcMain.handle('dislike-current-wallpaper', async (event) => {
   if (settings.get('breakTheme') !== 'wallpaper') return null
   try {
-    return await nextWallpaperReplacement()
+    const wallpaper = await nextWallpaperReplacement()
+    if (!currentWallpaperBreak) return wallpaper
+
+    const themeOptions = buildWallpaperThemeOptions(currentWallpaperBreak.idea, wallpaper)
+    currentWallpaperBreak = {
+      ...currentWallpaperBreak,
+      themeOptions
+    }
+    broadcastWallpaperThemeOptions(themeOptions, currentWallpaperBreak.type, event.sender)
+    return themeOptions
   } catch (error) {
     log.warn('Stretchly: wallpaper replacement failed', error)
     return null
   }
+})
+
+ipcMain.handle('get-mini-break-wallpaper-state', () => {
+  return getCurrentWallpaperBreakState('mini')
+})
+
+ipcMain.handle('get-long-break-wallpaper-state', () => {
+  return getCurrentWallpaperBreakState('long')
 })

@@ -4,7 +4,7 @@ import { join } from 'path'
 import DndManager from '../app/utils/dndManager'
 import Store from 'electron-store'
 import defaultSettings from '../app/utils/defaultSettings'
-import { unlink } from 'node:fs'
+import { rm } from 'node:fs/promises'
 
 const timeout = process.env.CI ? 30000 : 10000
 
@@ -71,17 +71,25 @@ describe('dndManager', function () {
     resolve()
   }))
 
+  it('does not create a second timer when start() is called twice', () => {
+    dndManager.stop()
+    dndManager.start()
+    const timer = dndManager.timer
+    dndManager.start()
+    dndManager.timer.should.be.equal(timer)
+  })
+
   it('should return something for _desktopEnviroment', () => new Promise((resolve) => {
     dndManager._desktopEnviroment.should.not.be.equal(null)
     resolve()
   }))
 
-  afterEach(() => {
+  afterEach(async () => {
     dndManager.stop()
     dndManager = null
 
     if (settings) {
-      unlink(join(__dirname, '/test-settings-dndManager.json'), (_) => {})
+      await rm(join(__dirname, '/test-settings-dndManager.json'), { force: true })
       settings = null
     }
   })

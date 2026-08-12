@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stretchly Wallpaper Animation Preview</title>
+  <style>
+    :root {
+      --ink: #172018;
+      --paper: #fffaf0;
+      --muted: rgba(255, 250, 240, 0.74);
+      --rule: rgba(255, 250, 240, 0.48);
+      --panel: rgba(14, 18, 16, 0.54);
+      --panel-rule: rgba(255, 250, 240, 0.18);
+      --accent: #f4d28b;
+      color-scheme: dark;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      background: #121611;
+      color: var(--paper);
+      overflow: hidden;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .preview-shell {
+      display: grid;
+      min-height: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .wallpaper-stage {
+      background:
+        radial-gradient(circle at 18% 18%, rgba(222, 204, 162, 0.46), transparent 28%),
+        radial-gradient(circle at 72% 14%, rgba(168, 200, 184, 0.40), transparent 32%),
+        linear-gradient(145deg, #aebda8, #d8c08b 46%, #274139);
+      inset: 0;
+      overflow: hidden;
+      position: absolute;
+    }
+
+    .wallpaper-stage::after {
+      background:
+        linear-gradient(90deg, rgba(0, 0, 0, 0.34), transparent 32%, rgba(0, 0, 0, 0.24)),
+        linear-gradient(0deg, rgba(0, 0, 0, 0.42), transparent 34%, rgba(0, 0, 0, 0.12));
+      content: "";
+      inset: 0;
+      pointer-events: none;
+      position: absolute;
+      z-index: 2;
+    }
+
+    .scene-image {
+      background-image: var(--scene-image);
+      background-position: center;
+      background-size: cover;
+      filter: saturate(0.96) contrast(0.98);
+      inset: -3%;
+      position: absolute;
+      transform: scale(1.02);
+      will-change: transform, filter;
+    }
+
+    .scene-fallback {
+      background:
+        radial-gradient(circle at 20% 24%, rgba(239, 217, 166, 0.62), transparent 24%),
+        radial-gradient(circle at 82% 16%, rgba(167, 205, 189, 0.58), transparent 30%),
+        linear-gradient(152deg, #b7cbbd, #dec995 48%, #29473e);
+      inset: 0;
+      position: absolute;
+    }
+
+    .grain {
+      background-image:
+        linear-gradient(rgba(255, 250, 240, 0.038) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 250, 240, 0.028) 1px, transparent 1px);
+      background-size: 42px 42px, 42px 42px;
+      inset: 0;
+      mix-blend-mode: screen;
+      opacity: 0.42;
+      pointer-events: none;
+      position: absolute;
+      z-index: 3;
+    }
+
+    .light-sweep {
+      background: linear-gradient(104deg, transparent 38%, rgba(255, 244, 203, 0.25), transparent 62%);
+      filter: blur(10px);
+      inset: -20%;
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+      transform: translateX(-28%);
+      z-index: 4;
+    }
+
+    .focus-ring {
+      background: radial-gradient(circle at 50% 46%, transparent 0 22%, rgba(0, 0, 0, 0.34) 55%, rgba(0, 0, 0, 0.58));
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+      z-index: 4;
+    }
+
+    .rail-lines {
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+      z-index: 4;
+    }
+
+    .rail-lines::before,
+    .rail-lines::after {
+      background: rgba(255, 250, 240, 0.36);
+      content: "";
+      height: 1px;
+      left: clamp(32px, 7vw, 118px);
+      position: absolute;
+      right: clamp(32px, 7vw, 118px);
+    }
+
+    .rail-lines::before {
+      top: 30%;
+    }
+
+    .rail-lines::after {
+      bottom: 24%;
+    }
+
+    .paper-panel {
+      background: rgba(255, 250, 240, 0.10);
+      border-left: 1px solid rgba(255, 250, 240, 0.28);
+      bottom: clamp(116px, 16vh, 170px);
+      height: min(46vh, 390px);
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+      right: clamp(28px, 5vw, 76px);
+      transform: rotateY(-18deg) translateX(80px);
+      transform-origin: right center;
+      width: min(34vw, 430px);
+      z-index: 4;
+    }
+
+    .poster-copy {
+      bottom: clamp(112px, 15vh, 170px);
+      display: grid;
+      gap: clamp(12px, 2vh, 22px);
+      left: clamp(34px, 7vw, 112px);
+      max-width: min(780px, 72vw);
+      position: absolute;
+      z-index: 5;
+    }
+
+    .poster-label,
+    .poster-meta {
+      color: var(--muted);
+      font-size: clamp(10px, 1.2vw, 13px);
+      letter-spacing: 0.14em;
+      line-height: 1.35;
+      text-transform: uppercase;
+    }
+
+    .poster-title {
+      font-family: Georgia, "Times New Roman", "Noto Serif CJK SC", serif;
+      font-size: clamp(54px, 9.4vw, 132px);
+      font-weight: 400;
+      letter-spacing: 0;
+      line-height: 0.9;
+      margin: 0;
+      max-width: 9.5ch;
+      overflow-wrap: anywhere;
+      text-shadow: 0 16px 46px rgba(0, 0, 0, 0.34);
+    }
+
+    .poster-title span {
+      display: inline-block;
+      will-change: transform, opacity, filter;
+    }
+
+    .poster-body {
+      border-left: 2px solid var(--rule);
+      font-size: clamp(17px, 2.1vw, 27px);
+      font-weight: 300;
+      line-height: 1.38;
+      margin: 0;
+      max-width: 32em;
+      opacity: 0.88;
+      padding: 12px 0 12px 18px;
+      text-shadow: 0 10px 24px rgba(0, 0, 0, 0.34);
+    }
+
+    .preview-controls {
+      align-self: end;
+      display: grid;
+      gap: 8px;
+      justify-items: center;
+      justify-self: center;
+      margin-bottom: 18px;
+      max-width: calc(100vw - 36px);
+      position: relative;
+      z-index: 8;
+    }
+
+    .control-strip {
+      -webkit-backdrop-filter: blur(22px) saturate(125%);
+      align-items: center;
+      backdrop-filter: blur(22px) saturate(125%);
+      background: var(--panel);
+      border: 1px solid var(--panel-rule);
+      border-radius: 999px;
+      display: flex;
+      gap: 8px;
+      max-width: calc(100vw - 36px);
+      padding: 8px;
+    }
+
+    .loop-button,
+    .utility-button {
+      align-items: center;
+      background: transparent;
+      border: 0;
+      border-radius: 999px;
+      color: rgba(255, 250, 240, 0.76);
+      cursor: pointer;
+      display: inline-flex;
+      gap: 8px;
+      height: 36px;
+      justify-content: center;
+      min-width: 38px;
+      padding: 0 13px;
+      transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+      white-space: nowrap;
+    }
+
+    .loop-button:hover,
+    .utility-button:hover {
+      background: rgba(255, 250, 240, 0.10);
+      color: var(--paper);
+    }
+
+    .loop-button:focus-visible,
+    .utility-button:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .loop-button.is-active {
+      background: rgba(255, 250, 240, 0.16);
+      color: var(--paper);
+    }
+
+    .control-label {
+      color: rgba(255, 250, 240, 0.58);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      padding: 0 4px 0 8px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .utility-button {
+      padding: 0 11px;
+    }
+
+    .utility-button svg {
+      height: 17px;
+      width: 17px;
+    }
+
+    .stage-actions {
+      -webkit-backdrop-filter: blur(18px) saturate(125%);
+      align-items: center;
+      backdrop-filter: blur(18px) saturate(125%);
+      background: rgba(16, 20, 18, 0.34);
+      border: 1px solid rgba(255, 250, 240, 0.20);
+      border-radius: 999px;
+      bottom: 88px;
+      display: flex;
+      gap: 22px;
+      left: 50%;
+      padding: 13px 18px;
+      position: absolute;
+      transform: translateX(-50%);
+      z-index: 7;
+    }
+
+    .stage-actions span {
+      align-items: center;
+      color: rgba(255, 250, 240, 0.86);
+      display: inline-flex;
+      font-size: 14px;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .stage-actions svg {
+      height: 18px;
+      width: 18px;
+    }
+
+    .progress-time {
+      -webkit-backdrop-filter: blur(18px) saturate(125%);
+      backdrop-filter: blur(18px) saturate(125%);
+      background: rgba(16, 20, 18, 0.28);
+      border: 1px solid rgba(255, 250, 240, 0.18);
+      border-radius: 999px;
+      bottom: 22px;
+      color: rgba(255, 250, 240, 0.90);
+      font-size: 14px;
+      letter-spacing: 0.06em;
+      padding: 9px 13px;
+      position: absolute;
+      right: 22px;
+      text-transform: uppercase;
+      z-index: 7;
+    }
+
+    .progress-bar {
+      appearance: none;
+      bottom: 0;
+      height: 5px;
+      left: 0;
+      position: absolute;
+      width: 100%;
+      z-index: 7;
+    }
+
+    .progress-bar::-webkit-progress-bar {
+      background: rgba(255, 250, 240, 0.12);
+    }
+
+    .progress-bar::-webkit-progress-value {
+      background: linear-gradient(90deg, #fff4cb, #c7e7d4);
+    }
+
+    @media (max-width: 860px) {
+      .poster-copy {
+        bottom: 132px;
+        left: 22px;
+        max-width: calc(100vw - 44px);
+      }
+
+      .poster-title {
+        font-size: clamp(42px, 14vw, 76px);
+      }
+
+      .poster-body {
+        font-size: clamp(16px, 4vw, 20px);
+      }
+
+      .preview-controls {
+        margin-bottom: 12px;
+      }
+
+      .control-strip {
+        border-radius: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .stage-actions {
+        bottom: 82px;
+        gap: 14px;
+        max-width: calc(100vw - 34px);
+      }
+
+      .paper-panel {
+        display: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 1ms !important;
+        scroll-behavior: auto !important;
+        transition-duration: 1ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="preview-shell">
+    <section class="wallpaper-stage" aria-label="Stretchly wallpaper break preview">
+      <div class="scene-fallback"></div>
+      <div class="scene-image"></div>
+      <div class="grain"></div>
+      <div class="light-sweep"></div>
+      <div class="focus-ring"></div>
+      <div class="rail-lines"></div>
+      <div class="paper-panel"></div>
+
+      <div class="poster-copy">
+        <div class="poster-label">pause study / morning / clear</div>
+        <h1 class="poster-title">Leave A Little Sky</h1>
+        <p class="poster-body">Stand up, soften your shoulders, and let your eyes rest on a farther point.</p>
+        <div class="poster-meta">Stretchly Wallpaper Theme</div>
+      </div>
+
+      <div class="stage-actions" aria-hidden="true">
+        <span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m15 18-6-6 6-6"/>
+          </svg>
+          稍后
+        </span>
+        <span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"/>
+            <path d="m13 6 6 6-6 6"/>
+          </svg>
+          跳过
+        </span>
+        <span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 6 9 17l-5-5"/>
+          </svg>
+          完成
+        </span>
+      </div>
+
+      <div class="progress-time">04:12</div>
+      <progress class="progress-bar" max="100" value="62"></progress>
+    </section>
+
+    <div class="preview-controls">
+      <nav class="control-strip" aria-label="Loop animation choices">
+        <span class="control-label">正式组</span>
+        <button class="loop-button is-active" type="button" data-loop="pan">横移长镜头</button>
+        <button class="loop-button" type="button" data-loop="type">字组换气</button>
+        <button class="loop-button" type="button" data-loop="layout">版心游走</button>
+        <button class="loop-button" type="button" data-loop="burst">标题爆裂</button>
+        <button class="loop-button" type="button" data-loop="terrace">层板呼吸</button>
+      </nav>
+      <nav class="control-strip" aria-label="Candidate loop animation choices">
+        <span class="control-label">候选组</span>
+        <button class="loop-button" type="button" data-loop="horizon">地平线慢推</button>
+        <button class="loop-button" type="button" data-loop="glitch">故障脉冲</button>
+        <button class="loop-button" type="button" data-loop="ripple">柔焦涟漪</button>
+        <button class="loop-button" type="button" data-loop="margin">边界游移</button>
+        <button class="loop-button" type="button" data-loop="lantern">灯笼扫光</button>
+      </nav>
+    </div>
+  </main>
+
+  <script type="module" src="./animation-preview.js"></script>
+</body>
+</html>

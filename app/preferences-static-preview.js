@@ -57,6 +57,9 @@
     'preferences.theme.trayIconStyleDefault': 'Default',
     'preferences.theme.trayIconStyleTime': 'Time to break',
     'preferences.theme.trayIconStyleProgress': 'Progress to break',
+    'preferences.theme.wallpaperSavePath': 'Image save folder:',
+    'preferences.theme.chooseWallpaperSavePath': 'Choose',
+    'preferences.theme.resetWallpaperSavePath': 'Reset',
     'preferences.theme.colour': 'Colour',
     'preferences.theme.monochrome': 'Monochrome',
     'preferences.theme.invertedMonochrome': 'Inverted Monochrome',
@@ -99,6 +102,7 @@
     longBreakAudio: 'crystal-glass',
     mainColor: '#478484',
     breakTheme: 'solid',
+    wallpaperThemeSavePath: '',
     microbreak: true,
     microbreakDuration: 20000,
     microbreakInterval: 600000,
@@ -133,7 +137,8 @@
 
     const defaults = [
       ['#language', 'en'],
-      ['#trayIconStyle', 'default']
+      ['#trayIconStyle', 'default'],
+      ['#wallpaperSavePath', '/Users/preview/Library/Application Support/Stretchly/wallpapers/saved']
     ]
     defaults.forEach(([selector, value]) => {
       const element = document.querySelector(selector)
@@ -145,6 +150,7 @@
       '#showIdeas',
       '#enableMiniBreaks',
       '#enableLongBreaks',
+      '#solidBreakTheme',
       '#greenClouds',
       '#enableSounds',
       '#crystalGlass',
@@ -154,6 +160,8 @@
       const element = document.querySelector(selector)
       if (element) element.checked = true
     })
+    document.querySelector('.solid-appearance-settings')?.classList.toggle('hidden', mockSettings.breakTheme !== 'solid')
+    document.querySelector('.wallpaper-save-settings')?.classList.toggle('hidden', mockSettings.breakTheme !== 'wallpaper')
 
     const version = document.querySelector('.version')
     const latestVersion = document.querySelector('.latestVersion')
@@ -178,6 +186,14 @@
         event.preventDefault()
         const section = event.target.closest('[data-section]').getAttribute('data-section')
         showSection(section)
+      }
+    })
+
+    document.querySelectorAll('input[name="breakTheme"]').forEach(input => {
+      input.onchange = () => {
+        mockSettings.breakTheme = input.value
+        document.querySelector('.solid-appearance-settings')?.classList.toggle('hidden', input.value !== 'solid')
+        document.querySelector('.wallpaper-save-settings')?.classList.toggle('hidden', input.value !== 'wallpaper')
       }
     })
 
@@ -251,8 +267,10 @@
   }
 
   window.electronApi = {
+    defaultWallpaperSavePath: async () => '/Users/preview/Library/Application Support/Stretchly/wallpapers/saved',
     openExternal: () => {},
-    openPath: () => {}
+    openPath: () => {},
+    selectWallpaperSavePath: async () => '/Users/preview/Pictures/Stretchly'
   }
 
   if (document.readyState === 'loading') {

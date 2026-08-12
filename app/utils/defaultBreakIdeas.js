@@ -1,146 +1,146 @@
 export default [
   {
-    data: ['Not alone', 'Do you find it hard to take a break alone? Try to do it with a co-worker. Aside from making it easier to stick to breaks, you will have a chance to get to know them better. Taking breaks together increases productivity.'],
+    data: ['Take a real walk', 'Leave the desk and walk one full loop outside the room. Do not bring the phone unless you need it for safety.'],
     enabled: true
   },
   {
-    data: ['Step away', 'Do you ever notice how your brain can figure things out by itself? All it takes is to step away from the computer and take a break to think about something totally unrelated.'],
+    data: ['Let a problem cool', 'Write the problem in one sentence, step away for two minutes, then return and write the next action.'],
     enabled: true
   },
   {
-    data: ['Microbreaks', 'Rest is a key component in ensuring the performance of the musculoskeletal system. Frequent breaks can decrease the duration of a task and help lower the exposure to ergonomic injury risk.'],
+    data: ['Create desk distance', 'Move at least three meters away from the computer and keep both hands off devices for one minute.'],
     enabled: true
   },
   {
-    data: ['Meditation', 'Research studies suggest that mindfulness-based exercises help decrease anxiety, depression, stress, and pain, and help improve general health, mental health, and quality of life. Not sure how to start? There are numerous apps to help you out.'],
+    data: ['Do one mindful minute', 'Settle your feet, breathe normally, and notice breath, posture, and sound for one minute.'],
     enabled: true
   },
   {
-    data: ['Blink', 'Looking at screens for a long time causes you to blink less, thus exposing your eyes to the air. Blink rapidly for a few seconds to refresh the tear film and clear dust from the eye surface.'],
+    data: ['Refresh your eyes', 'Blink quickly for 10 seconds, then look far away for 30 seconds.'],
     enabled: true
   },
   {
-    data: ['Ergonomics', 'Improper height and angle of the keyboard, mouse, monitor or working surface can cause health problems. Take some time to read about desk ergonomics.'],
+    data: ['Check desk height', 'Set elbows near 90 degrees, lower your shoulders, and bring the screen top near eye level.'],
     enabled: true
   },
   {
-    data: ['Move', 'There are a lot of ways you can exercise within your office. Try marching in place or doing desk push-ups.'],
+    data: ['March in place', 'Stand and march in place for one minute. Lift knees only as high as feels comfortable.'],
     enabled: true
   },
   {
-    data: ['Change', 'Do you have a stability ball or standing work desk? Consider replacing your desk chair with them for a while.'],
+    data: ['Change work mode', 'If you can, raise the desk or move to a standing spot for the next work block.'],
     enabled: true
   },
   {
-    data: ['Notice', 'Are you daydreaming or having trouble focusing? It is a sign that you need to take a break.'],
+    data: ['Read your focus signal', 'If you were rereading the same line, write down the distraction and choose one next task.'],
     enabled: true
   },
   {
-    data: ['Tech', 'How about taking a no-tech walk?'],
+    data: ['Take a no-screen lap', 'Walk for two minutes without reading messages, notifications, or another screen.'],
     enabled: true
   },
   {
-    data: ['Metabolism', 'Emerging research shows that sitting for long periods of time contributes to risk of metabolic syndrome, heart attack and stroke risk and overall death risk, among others. Taking regular walking breaks can help your circulation, working to counteract some of those problems.'],
+    data: ['Restart circulation', 'Walk, climb one flight of stairs, or do calf raises for two minutes.'],
     enabled: true
   },
   {
-    data: ['Active Meetings', 'How about moving meetings from the conference room to the concourse? Walking not only burns calories but it may even foster a sense of collaboration.'],
+    data: ['Move one conversation', 'If a short conversation is pending, handle it while standing or walking.'],
     enabled: true
   },
   {
-    data: ['Fruit', 'Take your time and eat some fruit. Slowly. Notice the flavor, the texture, the freshness.'],
+    data: ['Eat one thing slowly', 'If you have fruit or a snack, take three slow bites and notice texture before returning.'],
     enabled: true
   },
   {
-    data: ['Bathrooms', 'Walk to the farthest bathroom in the worksite facility when going to the restroom.'],
+    data: ['Choose the farther route', 'Use the restroom, printer, or water source that makes you walk farther.'],
     enabled: true
   },
   {
-    data: ['Coffee break', 'Going on coffee break? Consider doing a 5-minute walk every time you go for one.'],
+    data: ['Add five minutes to coffee', 'If you are getting coffee or tea, add a five-minute walk before the first sip.'],
     enabled: true
   },
   {
-    data: ['Colleagues', 'Do not email or message office colleagues, walk to their desks to communicate with them.'],
+    data: ['Walk before messaging', 'For one nearby person, talk in person instead of sending a message.'],
     enabled: true
   },
   {
-    data: ['Learning', 'In a study of healthy volunteers, NIH researchers found that taking short breaks, early and often, may help our brains learn new skills.'],
+    data: ['Consolidate learning', 'After learning something new, look away and summarize it in one sentence from memory.'],
     enabled: true
   },
   {
-    data: ['Exercise', 'Evidence suggests small amounts of regular exercise can bring dramatic health benefits, including measurably reducing stress.'],
+    data: ['Do a small exercise set', 'Pick one: 10 wall push-ups, 10 squats, or 30 seconds of marching.'],
     enabled: true
   },
   {
-    data: ['Repeat', 'Have you found your stretch-ly-routine? Do not forget to repeat it for more than once to better fight effects of prolonged sitting.'],
+    data: ['Repeat the useful stretch', 'Choose the stretch that helped most today and repeat it twice slowly.'],
     enabled: true
   },
   {
-    data: ['Wrist and forearm', 'Extend your arms with the palms facing towards you, then slowly rotate the hands four times clockwise, then four times counter-clockwise.'],
+    data: ['Reset wrists and forearms', 'Extend arms, rotate wrists four times clockwise and four times counter-clockwise.'],
     enabled: true
   },
   {
-    data: ['Back stretching', 'Join your hands behind your head, then lift them together up above your head ending with your palms facing upward.'],
+    data: ['Lengthen your back', 'Interlace hands behind your head, lift elbows slightly, and breathe into your ribs.'],
     enabled: true
   },
   {
-    data: ['Mobilize', 'For every thirty minutes of stagnation, you should have at least one minute of stimulation.'],
+    data: ['Move for one minute', 'For the next minute, keep moving: walk, step, stretch, or tidy something nearby.'],
     enabled: true
   },
   {
-    data: ['7 Minute Workout', 'This workout packs in a full-body exercise routine in a fraction of the time. But as with any exercise, be careful. There are numerous apps to get you started.'],
+    data: ['Start a short workout', 'Open a short workout timer and complete only the first round if time is limited.'],
     enabled: true
   },
   {
-    data: ['Pulse', ' Raise your pulse rate to 120 beats per minute for 20 straight minutes four or five times a week doing anything you enjoy. Regularly raising your heart rate results in improved cardiovascular health.'],
+    data: ['Raise your pulse gently', 'Climb stairs or walk briskly until your breathing is slightly faster, then slow down.'],
     enabled: true
   },
   {
-    data: ['Take the stairs ', 'Studies have shown that stair climbing, which is considered vigorous-intensity physical activity, burns more calories per minute than jogging.'],
+    data: ['Use one staircase', 'Take one flight of stairs up or down, then walk back at an easy pace.'],
     enabled: true
   },
   {
-    data: ['Make art', 'Art therapy is known to have great mental health benefits, especially when it comes to stress management. How about writing a quick poem, taking a picture or painting something small?'],
+    data: ['Make a tiny sketch', 'Draw one object on your desk in 60 seconds. Accuracy does not matter.'],
     enabled: true
   },
   {
-    data: ['Declutter', 'A clean space helps your focus at work and is often linked to positive emotions like happiness.'],
+    data: ['Clear one surface', 'Remove five items from your desk or put them where they belong.'],
     enabled: true
   },
   {
-    data: ['Lunch outside', 'Nature is linked to positive emotions and decreased stress and anxiety. Whenever possible, try to take your daily lunch break outside, surrounded by some greenery.'],
+    data: ['Step into daylight', 'If daylight is available, stand near it or go outside for two minutes.'],
     enabled: true
   },
   {
-    data: ['Public transport', 'If you use public transport regularly, you can stand instead of sitting. If it is possible, try to replace as many of your daily trips as possible with walking or cycling.'],
+    data: ['Plan one active errand', 'Choose one later errand where you can stand, walk, bike, or take the longer path.'],
     enabled: true
   },
   {
-    data: ['Yawning', 'Yawning can be really helpful, as it produces tears to help moisten and lubricate the eyes.'],
+    data: ['Let yourself yawn', 'Relax your jaw and take a wide, slow yawn to moisten your eyes and face.'],
     enabled: true
   },
   {
-    data: ['Focus change', 'Hold one finger close to the eye and focus on it. Slowly move the finger away, focus far into the distance and then back to the finger. Bring the finger back and focus on something far away.'],
+    data: ['Shift near and far', 'Focus on one finger near your face, then an object far away. Repeat 5 times.'],
     enabled: true
   },
   {
-    data: ['Palming', 'While seated, brace elbows on the desk and close to the desk edge. Let your weight fall forward and cup hands over eyes. Close your eyes and inhale slowly through nose and hold for few seconds. Continue deep breathing.'],
+    data: ['Squeeze and release', 'Squeeze a soft object or rolled cloth for 5 seconds, release, and repeat 8 times.'],
     enabled: true
   },
   {
-    data: ['Hand squeezes', 'Squeeze a pair of balled-up socks or a soft rubber ball, hold for 5 seconds. Repeat whole process a few times.'],
+    data: ['Slow the exhale', 'Breathe in naturally, then make each exhale a little longer for one minute.'],
     enabled: true
   },
   {
-    data: ['Slow Breathing', 'Emerging research suggests potential for use of controlled slow breathing techniques as a means of optimising physiological parameters that appear to be associated with health and longevity.'],
+    data: ['Picture a calm place', 'Close your eyes and imagine one calm place with three concrete details.'],
     enabled: true
   },
   {
-    data: ['Imaginative visualization', 'Close your eyes and imagine yourself in a peaceful and calming place, such as a beach or a forest, focusing on the sights, sounds, and sensations of that environment.'],
+    data: ['Use 5-4-3-2-1', 'Name 5 things you see, 4 you feel, 3 you hear, 2 you smell, and 1 you taste.'],
     enabled: true
   },
   {
-    data: ['Overwhelmed?', 'Try the 5-4-3-2-1 Grounding Technique: Identify 5 things you can see, 4 things you can touch, 3 things you can hear, 2 things you can smell, and 1 thing you can taste.'],
+    data: ['Cover your eyes', 'Cup your palms over closed eyes, keep pressure off the eyelids, and breathe slowly.'],
     enabled: true
   }
 ]

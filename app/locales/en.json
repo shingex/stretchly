@@ -101,7 +101,10 @@
       "trayIconStyleLabel": "Style:",
       "trayIconStyleDefault": "Default",
       "trayIconStyleTime": "Time to break",
-      "trayIconStyleProgress": "Progress to break"
+      "trayIconStyleProgress": "Progress to break",
+      "wallpaperSavePath": "Image save folder:",
+      "chooseWallpaperSavePath": "Choose",
+      "resetWallpaperSavePath": "Reset"
     },
     "about": {
       "tagline": "The break time reminder app",
@@ -225,303 +228,354 @@
   },
   "miniBreakIdeas": {
     "aaa": {
-      "text": "Go grab a glass of water."
+      "title": "Refill your water",
+      "text": "Walk to the kitchen, fill a glass, and take three slow sips before you sit down."
     },
     "aab": {
-      "text": "Slowly look all the way left, then right."
+      "title": "Look left and right",
+      "text": "Keep your head still. Move only your eyes fully left, then fully right, five times."
     },
     "aac": {
-      "text": "Slowly look all the way up, then down."
+      "title": "Look up and down",
+      "text": "Keep your head still. Look up to the top edge of the screen, then down to the keyboard, five times."
     },
     "aad": {
-      "text": "Close your eyes and take few deep breaths."
+      "title": "Take three breaths",
+      "text": "Close your eyes and breathe in for 4 seconds, hold for 2, then breathe out for 6."
     },
     "aae": {
-      "text": "Close your eyes and relax."
+      "title": "Rest your eyes",
+      "text": "Close your eyes, relax your jaw, and let your shoulders drop for 20 seconds."
     },
     "aaf": {
-      "text": "Stretch your legs."
+      "title": "Straighten your legs",
+      "text": "Push your chair back, extend both legs, flex your toes toward you, and hold for 15 seconds."
     },
     "aag": {
-      "text": "Stretch your arms."
+      "title": "Reach overhead",
+      "text": "Interlace your fingers, turn palms upward, and reach toward the ceiling for 15 seconds."
     },
     "aah": {
-      "text": "Is your sitting posture correct?"
+      "title": "Reset your posture",
+      "text": "Put both feet flat, move your hips to the back of the chair, and lower your shoulders."
     },
     "aai": {
-      "text": "Slowly turn head to side and hold for 10 seconds."
+      "title": "Turn your neck",
+      "text": "Turn your head slowly to the left, hold for 8 seconds, then repeat to the right."
     },
     "aaj": {
-      "text": "Slowly tilt head to side and hold for 5-10 seconds."
+      "title": "Tilt your neck",
+      "text": "Tilt your right ear toward your right shoulder for 8 seconds, then switch sides."
     },
     "aak": {
-      "text": "Stand from your chair and stretch."
+      "title": "Stand and lengthen",
+      "text": "Stand up, lift your chest, and reach both hands behind your back for one breath."
     },
     "aal": {
-      "text": "Refocus your eyes on an object at least 20 meters away."
+      "title": "Focus far away",
+      "text": "Look at the farthest object you can see and keep your gaze there for 20 seconds."
     },
     "aam": {
-      "text": "Take a moment to think about something you appreciate."
+      "title": "Name one good thing",
+      "text": "Think of one specific thing that went well today, even if it was small."
     },
     "aan": {
-      "text": "Take a moment to smile at being alive."
+      "title": "Soften your face",
+      "text": "Unclench your jaw, relax your eyebrows, and make a small smile for 10 seconds."
     },
     "aao": {
-      "text": "A truly ergonomic workstation is one that you regularly push away from."
+      "title": "Move away from the desk",
+      "text": "Roll your chair back until your hands leave the keyboard, then rest there for 20 seconds."
     },
     "aap": {
-      "text": "Close your eyes and count your breaths."
+      "title": "Count five breaths",
+      "text": "Close your eyes and count five natural breaths without changing the pace."
     },
     "aaq": {
-      "text": "Close your eyes and name the things you hear."
+      "title": "Listen for three sounds",
+      "text": "Close your eyes and identify three separate sounds in the room or outside."
     },
     "aar": {
-      "text": "Place your fingertips on your shoulders. Roll your shoulders forward for 10 seconds, then backward."
+      "title": "Roll your shoulders",
+      "text": "Place fingertips on shoulders. Roll forward for 10 seconds, then backward for 10."
     },
     "aas": {
-      "text": "Raise your right arm, stretch it over your head to the left, and hold for 10 seconds. Repeat on the other side."
+      "title": "Reach to each side",
+      "text": "Raise your right arm overhead and lean left for 10 seconds, then switch sides."
     },
     "aat": {
-      "text": "With your right hand, grab each finger of your left hand in turn and squeeze. Repeat on the other side."
+      "title": "Squeeze each finger",
+      "text": "Use one hand to gently squeeze each finger of the other hand from base to tip."
     },
     "aau": {
-      "text": "Stand up and do a lunge. Hold for 10 seconds, then do the other leg."
+      "title": "Take one lunge",
+      "text": "Stand up, step one foot back, bend both knees slightly, hold for 8 seconds, then switch."
     },
     "aav": {
-      "text": "Close your eyes and simply notice whatever arises in current moment, without judgement."
+      "title": "Notice the moment",
+      "text": "Pause and name one body sensation, one thought, and one emotion without judging them."
     },
     "aaw": {
-      "text": "Focus every 20 minutes for 20 seconds on an object at 20 feet distance."
+      "title": "Use the 20-20 rule",
+      "text": "Look at something about 6 meters away for 20 seconds before returning to the screen."
     },
     "aax": {
-      "text": "If you need help, ask for it."
+      "title": "Ask for one thing",
+      "text": "If you are blocked, write the one question you need answered next."
     },
     "aay": {
-      "text": "Do one thing at a time."
+      "title": "Pick one task",
+      "text": "Choose the next single action you will do after this break and ignore the rest for now."
     },
     "aaz": {
-      "text": "Is your attention spent wisely?"
+      "title": "Check your attention",
+      "text": "Name what currently has your attention and decide whether to keep it there."
     },
     "aba": {
-      "text": "Change your sitting posture."
+      "title": "Change seat position",
+      "text": "Shift your hips, adjust your chair height if needed, and place both feet flat again."
     },
     "abb": {
-      "text": "Expose your eyes to natural light."
+      "title": "Find natural light",
+      "text": "Look toward a window or a bright wall and let your eyes rest there for 15 seconds."
     },
     "abc": {
-      "text": "With your eyes closed, slowly and gently raise your eyes to the ceiling and back down to the floor."
+      "title": "Move closed eyes up and down",
+      "text": "Close your eyes, slowly look upward, then downward, six times."
     },
     "abd": {
-      "text": "With your eyes closed, slowly and gently move your eyes to the left, then slowly to the right."
+      "title": "Move closed eyes left and right",
+      "text": "Close your eyes, slowly look left, then right, six times."
     },
     "abe": {
-      "text": "Shake your hands out to get some relief."
+      "title": "Shake out your hands",
+      "text": "Let your arms hang loose and shake your hands for 10 seconds."
     },
     "abf": {
-      "text": "One at a time, touch the tip of each finger to the tip of your thumb so they make an O-shape."
+      "title": "Touch thumb to fingers",
+      "text": "Touch thumb to each fingertip one by one, then reverse the order."
     },
     "abg": {
-      "text": "Make a fist and then slide your fingers up until they point toward the ceiling, like you're telling someone to stop."
+      "title": "Open your hands",
+      "text": "Make a fist, then open your fingers wide like a stop sign. Repeat 8 times."
     },
     "abh": {
-      "text": "Make a fist and then fan your fingers out and stretch them as far as you can."
+      "title": "Fan your fingers",
+      "text": "Make a loose fist, then spread your fingers as wide as possible. Repeat 8 times."
     },
     "abi": {
-      "text": "Sit tall, arms hanging at your sides, and slowly rotate neck in one direction in a large circle."
+      "title": "Draw a slow neck circle",
+      "text": "Sit tall and draw one slow circle with your nose. Reverse direction once."
     },
     "abj": {
-      "text": "Stand tall and slowly tilt your head toward the shoulder using the same hand until you feel a stretch."
+      "title": "Stretch neck to shoulder",
+      "text": "Use your right hand to guide your head gently toward the right shoulder, then switch."
     },
     "abk": {
-      "text": "Stand tall with your arms by your side. Squeeze your shoulder blades together and hold."
+      "title": "Squeeze shoulder blades",
+      "text": "Pull your shoulder blades together, hold for 5 seconds, release, and repeat 5 times."
     },
     "abl": {
-      "text": "Stand tall with your arms raised along your shoulders. Move hands slightly behind your back, hold for a second and return."
+      "title": "Open your chest",
+      "text": "Raise arms to shoulder height, move hands slightly behind you, hold one breath, return."
     },
     "abm": {
-      "text": "Sit on the edge of your chair, twist your torso to one side and hold for 10-15 seconds. Repeat on the other side."
+      "title": "Twist in your chair",
+      "text": "Sit at the chair edge, rotate your torso to the right for 10 seconds, then left."
     },
     "abn": {
-      "text": "Stand up and put one foot on a nearby object, like a chair or step stool. Keep your knee bent and hold for 10-15 seconds. Repeat with the other foot."
+      "title": "Prop one foot up",
+      "text": "Put one heel on a low object, keep the knee soft, and lean forward slightly."
     },
     "abo": {
-      "text": "Stand with your feet shoulder-width apart, lower your body down as if you were sitting back into a chair, then stand back up. Repeat several times."
+      "title": "Do chair squats",
+      "text": "Stand with feet shoulder-width apart, sit back toward the chair, then stand. Repeat 5 times."
     },
     "abp": {
-      "text": "Stand with your back and hands on a wall, then slowly move your arms up and down as if you were making snow angels."
+      "title": "Slide arms on the wall",
+      "text": "Stand with your back to a wall and slowly slide both arms up and down 5 times."
     },
     "abq": {
-      "text": "Stand facing a wall and place your hands on it, then do several push-ups."
+      "title": "Do wall push-ups",
+      "text": "Place hands on a wall and do 8 slow push-ups, keeping your body straight."
     },
     "abr": {
-      "text": "Sit on the edge of your chair and extend one leg straight out in front of you, holding for 10-15 seconds. Repeat with the other leg."
+      "title": "Extend one leg",
+      "text": "Sit at the chair edge, straighten one leg for 10 seconds, then switch."
     },
     "abs": {
-      "text": "Stand facing a wall, put one foot back and the other foot forward, then lean into the wall. Repeat with the other leg."
+      "title": "Stretch your calves",
+      "text": "Face a wall, step one foot back, press the heel down, then switch sides."
     },
     "abt": {
-      "text": "Hold one arm straight up, then use the other arm to gently push the elbow of the first arm towards your head. Hold for 10-15 seconds. Repeat with the other arm."
+      "title": "Stretch the back of your arm",
+      "text": "Lift one arm, bend the elbow, and gently guide it behind your head, then switch."
     },
     "abu": {
-      "text": "Tilt your head to one side, then to the other side, and then gently tilt it forward and backward."
+      "title": "Nod and tilt gently",
+      "text": "Slowly tilt your head left, right, forward, and back. Keep each movement small."
     },
     "abv": {
-      "text": "Reach one arm across your chest, hold onto the elbow with the other hand, and gently pull it in towards your chest. Repeat with the other arm."
+      "title": "Cross-body shoulder stretch",
+      "text": "Bring one arm across your chest and hold it with the other arm for 10 seconds."
     },
     "abw": {
-      "text": "Stand up, put one foot on a nearby object, like a chair or step stool, and reach down to touch your toes. Repeat with the other leg."
+      "title": "Reach toward toes",
+      "text": "Put one foot on a low object and reach toward your toes without forcing the stretch."
     },
     "abx": {
-      "text": "Stand in a doorway and place one arm on each side of the doorway, then gently lean forward until you feel a stretch in your chest."
+      "title": "Use the doorway",
+      "text": "Place forearms on both sides of a doorway and lean forward until your chest opens."
     },
     "aby": {
-      "text": "Sit on the edge of a chair or on the floor, and place the soles of your feet together, gently pressing down with your elbows to stretch your inner thighs."
+      "title": "Stretch inner thighs",
+      "text": "Sit with soles together and gently press your knees downward with your elbows."
     }
   },
   "longBreakIdeas": {
     "aaa": {
-      "title": "Not alone",
-      "text": "Do you find it hard to take a break alone? Try to do it with a co-worker. Aside from making it easier to stick to breaks, you will have a chance to get to know them better. Taking breaks together increases productivity."
+      "title": "Take a real walk",
+      "text": "Leave the desk and walk one full loop outside the room. Do not bring the phone unless you need it for safety."
     },
     "aab": {
-      "title": "Step away",
-      "text": "Do you ever notice how your brain can figure things out by itself? All it takes is to step away from the computer and take a break to think about something totally unrelated."
+      "title": "Let a problem cool",
+      "text": "Write the problem in one sentence, step away for two minutes, then return and write the next action."
     },
     "aac": {
-      "title": "Microbreaks",
-      "text": "Rest is a key component in ensuring the performance of the musculoskeletal system. Frequent breaks can decrease the duration of a task and help lower the exposure to ergonomic injury risk."
+      "title": "Create desk distance",
+      "text": "Move at least three meters away from the computer and keep both hands off devices for one minute."
     },
     "aad": {
-      "title": "Meditation",
-      "text": "Research studies suggest that mindfulness-based exercises help decrease anxiety, depression, stress, and pain, and help improve general health, mental health, and quality of life. Not sure how to start? There are numerous apps to help you out."
+      "title": "Do one mindful minute",
+      "text": "Settle your feet, breathe normally, and notice breath, posture, and sound for one minute."
     },
     "aae": {
-      "title": "Blink",
-      "text": "Looking at screens for a long time causes you to blink less, thus exposing your eyes to the air. Blink rapidly for a few seconds to refresh the tear film and clear dust from the eye surface."
+      "title": "Refresh your eyes",
+      "text": "Blink quickly for 10 seconds, then look far away for 30 seconds."
     },
     "aaf": {
-      "title": "Ergonomics",
-      "text": "Improper height and angle of the keyboard, mouse, monitor or working surface can cause health problems. Take some time to read about desk ergonomics."
+      "title": "Check desk height",
+      "text": "Set elbows near 90 degrees, lower your shoulders, and bring the screen top near eye level."
     },
     "aag": {
-      "title": "Move",
-      "text": "There are a lot of ways you can exercise within your office. Try marching in place or doing desk push-ups."
+      "title": "March in place",
+      "text": "Stand and march in place for one minute. Lift knees only as high as feels comfortable."
     },
     "aah": {
-      "title": "Change",
-      "text": "Do you have a stability ball or standing work desk? Consider replacing your desk chair with them for a while."
+      "title": "Change work mode",
+      "text": "If you can, raise the desk or move to a standing spot for the next work block."
     },
     "aai": {
-      "title": "Notice",
-      "text": "Are you daydreaming or having trouble focusing? It is a sign that you need to take a break."
+      "title": "Read your focus signal",
+      "text": "If you were rereading the same line, write down the distraction and choose one next task."
     },
     "aaj": {
-      "title": "Tech",
-      "text": "How about taking a no-tech walk?"
+      "title": "Take a no-screen lap",
+      "text": "Walk for two minutes without reading messages, notifications, or another screen."
     },
     "aak": {
-      "title": "Metabolism",
-      "text": "Emerging research shows that sitting for long periods of time contributes to risk of metabolic syndrome, heart attack and stroke risk and overall death risk, among others. Taking regular walking breaks can help your circulation, working to counteract some of those problems."
+      "title": "Restart circulation",
+      "text": "Walk, climb one flight of stairs, or do calf raises for two minutes."
     },
     "aal": {
-      "title": "Active Meetings",
-      "text": "How about moving meetings from the conference room to the concourse? Walking not only burns calories but it may even foster a sense of collaboration."
+      "title": "Move one conversation",
+      "text": "If a short conversation is pending, handle it while standing or walking."
     },
     "aam": {
-      "title": "Fruit",
-      "text": "Take your time and eat some fruit. Slowly. Notice the flavor, the texture, the freshness."
+      "title": "Eat one thing slowly",
+      "text": "If you have fruit or a snack, take three slow bites and notice texture before returning."
     },
     "aan": {
-      "title": "Bathrooms",
-      "text": "Walk to the farthest bathroom in the worksite facility when going to the restroom."
+      "title": "Choose the farther route",
+      "text": "Use the restroom, printer, or water source that makes you walk farther."
     },
     "aao": {
-      "title": "Coffee break",
-      "text": "Going on coffee break? Consider doing a 5-minute walk every time you go for one."
+      "title": "Add five minutes to coffee",
+      "text": "If you are getting coffee or tea, add a five-minute walk before the first sip."
     },
     "aap": {
-      "title": "Colleagues",
-      "text": "Do not email or message office colleagues, walk to their desks to communicate with them."
+      "title": "Walk before messaging",
+      "text": "For one nearby person, talk in person instead of sending a message."
     },
     "aaq": {
-      "title": "Learning",
-      "text": "In a study of healthy volunteers, NIH researchers found that taking short breaks, early and often, may help our brains learn new skills."
+      "title": "Consolidate learning",
+      "text": "After learning something new, look away and summarize it in one sentence from memory."
     },
     "aar": {
-      "title": "Exercise",
-      "text": "Evidence suggests small amounts of regular exercise can bring dramatic health benefits, including measurably reducing stress."
+      "title": "Do a small exercise set",
+      "text": "Pick one: 10 wall push-ups, 10 squats, or 30 seconds of marching."
     },
     "aas": {
-      "title": "Repeat",
-      "text": "Have you found your stretch-ly-routine? Do not forget to repeat it for more than once to better fight effects of prolonged sitting."
+      "title": "Repeat the useful stretch",
+      "text": "Choose the stretch that helped most today and repeat it twice slowly."
     },
     "aat": {
-      "title": "Wrist and forearm",
-      "text": "Extend your arms with the palms facing towards you, then slowly rotate the hands four times clockwise, then four times counter-clockwise."
+      "title": "Reset wrists and forearms",
+      "text": "Extend arms, rotate wrists four times clockwise and four times counter-clockwise."
     },
     "aau": {
-      "title": "Back stretching",
-      "text": "Join your hands behind your head, then lift them together up above your head ending with your palms facing upward."
+      "title": "Lengthen your back",
+      "text": "Interlace hands behind your head, lift elbows slightly, and breathe into your ribs."
     },
     "aav": {
-      "title": "Mobilize",
-      "text": "For every thirty minutes of stagnation, you should have at least one minute of stimulation."
+      "title": "Move for one minute",
+      "text": "For the next minute, keep moving: walk, step, stretch, or tidy something nearby."
     },
     "aaw": {
-      "title": "7 Minute Workout",
-      "text": "This workout packs in a full-body exercise routine in a fraction of the time. But as with any exercise, be careful. There are numerous apps to get you started."
+      "title": "Start a short workout",
+      "text": "Open a short workout timer and complete only the first round if time is limited."
     },
     "aax": {
-      "title": "Pulse",
-      "text": "Raise your pulse rate to 120 beats per minute for 20 straight minutes four or five times a week doing anything you enjoy. Regularly raising your heart rate results in improved cardiovascular health."
+      "title": "Raise your pulse gently",
+      "text": "Climb stairs or walk briskly until your breathing is slightly faster, then slow down."
     },
     "aay": {
-      "title": "Take the stairs",
-      "text": "Studies have shown that stair climbing, which is considered vigorous-intensity physical activity, burns more calories per minute than jogging."
+      "title": "Use one staircase",
+      "text": "Take one flight of stairs up or down, then walk back at an easy pace."
     },
     "aaz": {
-      "title": "Make art",
-      "text": "Art therapy is known to have great mental health benefits, especially when it comes to stress management. How about writing a quick poem, taking a picture or painting something small?"
+      "title": "Make a tiny sketch",
+      "text": "Draw one object on your desk in 60 seconds. Accuracy does not matter."
     },
     "aba": {
-      "title": "Declutter",
-      "text": "A clean space helps your focus at work and is often linked to positive emotions like happiness."
+      "title": "Clear one surface",
+      "text": "Remove five items from your desk or put them where they belong."
     },
     "abb": {
-      "title": "Lunch outside",
-      "text": "Nature is linked to positive emotions and decreased stress and anxiety. Whenever possible, try to take your daily lunch break outside, surrounded by some greenery."
+      "title": "Step into daylight",
+      "text": "If daylight is available, stand near it or go outside for two minutes."
     },
     "abc": {
-      "title": "Public transport",
-      "text": "If you use public transport regularly, you can stand instead of sitting. If it is possible, try to replace as many of your daily trips as possible with walking or cycling."
+      "title": "Plan one active errand",
+      "text": "Choose one later errand where you can stand, walk, bike, or take the longer path."
     },
     "abd": {
-      "title": "Yawning",
-      "text": "Yawning can be really helpful, as it produces tears to help moisten and lubricate the eyes."
+      "title": "Let yourself yawn",
+      "text": "Relax your jaw and take a wide, slow yawn to moisten your eyes and face."
     },
     "abe": {
-      "title": "Focus change",
-      "text": "Hold one finger close to the eye and focus on it. Slowly move the finger away, focus far into the distance and then back to the finger. Bring the finger back and focus on something far away."
+      "title": "Shift near and far",
+      "text": "Focus on one finger near your face, then an object far away. Repeat 5 times."
     },
     "abf": {
-      "title": "Palming",
-      "text": "While seated, brace elbows on the desk and close to the desk edge. Let your weight fall forward and cup hands over eyes. Close your eyes and inhale slowly through nose and hold for few seconds. Continue deep breathing."
+      "title": "Squeeze and release",
+      "text": "Squeeze a soft object or rolled cloth for 5 seconds, release, and repeat 8 times."
     },
     "abg": {
-      "title": "Hand squeezes",
-      "text": "Squeeze a pair of balled-up socks or a soft rubber ball, hold for 5 seconds. Repeat whole process a few times."
+      "title": "Slow the exhale",
+      "text": "Breathe in naturally, then make each exhale a little longer for one minute."
     },
     "abh": {
-      "title": "Slow Breathing",
-      "text": "Emerging research suggests potential for use of controlled slow breathing techniques as a means of optimising physiological parameters that appear to be associated with health and longevity."
+      "title": "Picture a calm place",
+      "text": "Close your eyes and imagine one calm place with three concrete details."
     },
     "abi": {
-      "title": "Imaginative visualization",
-      "text": "Close your eyes and imagine yourself in a peaceful and calming place, such as a beach or a forest, focusing on the sights, sounds, and sensations of that environment."
+      "title": "Use 5-4-3-2-1",
+      "text": "Name 5 things you see, 4 you feel, 3 you hear, 2 you smell, and 1 you taste."
     },
     "abj": {
-      "title": "Overwhelmed?",
-      "text": "Try the 5-4-3-2-1 Grounding Technique: Identify 5 things you can see, 4 things you can touch, 3 things you can hear, 2 things you can smell, and 1 thing you can taste."
+      "title": "Cover your eyes",
+      "text": "Cup your palms over closed eyes, keep pressure off the eyelids, and breathe slowly."
     }
   }
 }

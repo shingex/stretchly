@@ -1,206 +1,206 @@
 export default [
   {
-    data: 'Go grab a glass of water.',
+    data: ['Refill your water', 'Walk to the kitchen, fill a glass, and take three slow sips before you sit down.'],
     enabled: true
   },
   {
-    data: 'Slowly look all the way left, then right.',
+    data: ['Look left and right', 'Keep your head still. Move only your eyes fully left, then fully right, five times.'],
     enabled: true
   },
   {
-    data: 'Slowly look all the way up, then down.',
+    data: ['Look up and down', 'Keep your head still. Look up to the top edge of the screen, then down to the keyboard, five times.'],
     enabled: true
   },
   {
-    data: 'Close your eyes and take few deep breaths.',
+    data: ['Take three breaths', 'Close your eyes and breathe in for 4 seconds, hold for 2, then breathe out for 6.'],
     enabled: true
   },
   {
-    data: 'Close your eyes and relax.',
+    data: ['Rest your eyes', 'Close your eyes, relax your jaw, and let your shoulders drop for 20 seconds.'],
     enabled: true
   },
   {
-    data: 'Stretch your legs.',
+    data: ['Straighten your legs', 'Push your chair back, extend both legs, flex your toes toward you, and hold for 15 seconds.'],
     enabled: true
   },
   {
-    data: 'Stretch your arms.',
+    data: ['Reach overhead', 'Interlace your fingers, turn palms upward, and reach toward the ceiling for 15 seconds.'],
     enabled: true
   },
   {
-    data: 'Is your sitting posture correct?',
+    data: ['Reset your posture', 'Put both feet flat, move your hips to the back of the chair, and lower your shoulders.'],
     enabled: true
   },
   {
-    data: 'Slowly turn head to side and hold for 10 seconds.',
+    data: ['Turn your neck', 'Turn your head slowly to the left, hold for 8 seconds, then repeat to the right.'],
     enabled: true
   },
   {
-    data: 'Slowly tilt head to side and hold for 5-10 seconds.',
+    data: ['Tilt your neck', 'Tilt your right ear toward your right shoulder for 8 seconds, then switch sides.'],
     enabled: true
   },
   {
-    data: 'Stand from your chair and stretch.',
+    data: ['Stand and lengthen', 'Stand up, lift your chest, and reach both hands behind your back for one breath.'],
     enabled: true
   },
   {
-    data: 'Refocus your eyes on an object at least 20 meters away.',
+    data: ['Focus far away', 'Look at the farthest object you can see and keep your gaze there for 20 seconds.'],
     enabled: true
   },
   {
-    data: 'Take a moment to think about something you appreciate.',
+    data: ['Name one good thing', 'Think of one specific thing that went well today, even if it was small.'],
     enabled: true
   },
   {
-    data: 'Take a moment to smile at being alive.',
+    data: ['Soften your face', 'Unclench your jaw, relax your eyebrows, and make a small smile for 10 seconds.'],
     enabled: true
   },
   {
-    data: 'A truly ergonomic workstation is one that you regularly push away from.',
+    data: ['Move away from the desk', 'Roll your chair back until your hands leave the keyboard, then rest there for 20 seconds.'],
     enabled: true
   },
   {
-    data: 'Close your eyes and count your breaths.',
+    data: ['Count five breaths', 'Close your eyes and count five natural breaths without changing the pace.'],
     enabled: true
   },
   {
-    data: 'Close your eyes and name the things you hear.',
+    data: ['Listen for three sounds', 'Close your eyes and identify three separate sounds in the room or outside.'],
     enabled: true
   },
   {
-    data: 'Place your fingertips on your shoulders. Roll your shoulders forward for 10 seconds, then backward.',
+    data: ['Roll your shoulders', 'Place fingertips on shoulders. Roll forward for 10 seconds, then backward for 10.'],
     enabled: true
   },
   {
-    data: 'Raise your right arm, stretch it over your head to the left, and hold for 10 seconds. Repeat on the other side.',
+    data: ['Reach to each side', 'Raise your right arm overhead and lean left for 10 seconds, then switch sides.'],
     enabled: true
   },
   {
-    data: 'With your right hand, grab each finger of your left hand in turn and squeeze. Repeat on the other side.',
+    data: ['Squeeze each finger', 'Use one hand to gently squeeze each finger of the other hand from base to tip.'],
     enabled: true
   },
   {
-    data: 'Stand up and do a lunge. Hold for 10 seconds, then do the other leg.',
+    data: ['Take one lunge', 'Stand up, step one foot back, bend both knees slightly, hold for 8 seconds, then switch.'],
     enabled: true
   },
   {
-    data: 'Close your eyes and simply notice whatever arises in current moment, without judgement.',
+    data: ['Notice the moment', 'Pause and name one body sensation, one thought, and one emotion without judging them.'],
     enabled: true
   },
   {
-    data: 'Focus every 20 minutes for 20 seconds on an object at 20 feet distance.',
+    data: ['Use the 20-20 rule', 'Look at something about 6 meters away for 20 seconds before returning to the screen.'],
     enabled: true
   },
   {
-    data: 'If you need help, ask for it.',
+    data: ['Ask for one thing', 'If you are blocked, write the one question you need answered next.'],
     enabled: true
   },
   {
-    data: 'Do one thing at a time.',
+    data: ['Pick one task', 'Choose the next single action you will do after this break and ignore the rest for now.'],
     enabled: true
   },
   {
-    data: 'Is your attention spent wisely?',
+    data: ['Check your attention', 'Name what currently has your attention and decide whether to keep it there.'],
     enabled: true
   },
   {
-    data: 'Change your sitting posture.',
+    data: ['Change seat position', 'Shift your hips, adjust your chair height if needed, and place both feet flat again.'],
     enabled: true
   },
   {
-    data: 'Expose your eyes to natural light.',
+    data: ['Find natural light', 'Look toward a window or a bright wall and let your eyes rest there for 15 seconds.'],
     enabled: true
   },
   {
-    data: 'With your eyes closed, slowly and gently raise your eyes to the ceiling and back down to the floor.',
+    data: ['Move closed eyes up and down', 'Close your eyes, slowly look upward, then downward, six times.'],
     enabled: true
   },
   {
-    data: 'With your eyes closed, slowly and gently move your eyes to the left, then slowly to the right.',
+    data: ['Move closed eyes left and right', 'Close your eyes, slowly look left, then right, six times.'],
     enabled: true
   },
   {
-    data: 'Shake your hands out to get some relief.',
+    data: ['Shake out your hands', 'Let your arms hang loose and shake your hands for 10 seconds.'],
     enabled: true
   },
   {
-    data: 'One at a time, touch the tip of each finger to the tip of your thumb so they make an O-shape.',
+    data: ['Touch thumb to fingers', 'Touch thumb to each fingertip one by one, then reverse the order.'],
     enabled: true
   },
   {
-    data: 'Make a fist and then slide your fingers up until they point toward the ceiling, like you\'re telling someone to stop.',
+    data: ['Open your hands', 'Make a fist, then open your fingers wide like a stop sign. Repeat 8 times.'],
     enabled: true
   },
   {
-    data: 'Make a fist and then fan your fingers out and stretch them as far as you can.',
+    data: ['Fan your fingers', 'Make a loose fist, then spread your fingers as wide as possible. Repeat 8 times.'],
     enabled: true
   },
   {
-    data: 'Sit tall, arms hanging at your sides, and slowly rotate neck in one direction in a large circle.',
+    data: ['Draw a slow neck circle', 'Sit tall and draw one slow circle with your nose. Reverse direction once.'],
     enabled: true
   },
   {
-    data: 'Stand tall and slowly tilt your head toward the shoulder using the same hand until you feel a stretch.',
+    data: ['Stretch neck to shoulder', 'Use your right hand to guide your head gently toward the right shoulder, then switch.'],
     enabled: true
   },
   {
-    data: 'Stand tall with your arms by your side. Squeeze your shoulder blades together and hold.',
+    data: ['Squeeze shoulder blades', 'Pull your shoulder blades together, hold for 5 seconds, release, and repeat 5 times.'],
     enabled: true
   },
   {
-    data: 'Stand tall with your arms raised along your shoulders. Move hands slightly behind your back, hold for a second and return.',
+    data: ['Open your chest', 'Raise arms to shoulder height, move hands slightly behind you, hold one breath, return.'],
     enabled: true
   },
   {
-    data: 'Sit on the edge of your chair, twist your torso to one side and hold for 10-15 seconds. Repeat on the other side.',
+    data: ['Twist in your chair', 'Sit at the chair edge, rotate your torso to the right for 10 seconds, then left.'],
     enabled: true
   },
   {
-    data: 'Stand up and put one foot on a nearby object, like a chair or step stool. Keep your knee bent and hold for 10-15 seconds. Repeat with the other foot.',
+    data: ['Prop one foot up', 'Put one heel on a low object, keep the knee soft, and lean forward slightly.'],
     enabled: true
   },
   {
-    data: 'Stand with your feet shoulder-width apart, lower your body down as if you were sitting back into a chair, then stand back up. Repeat several times.',
+    data: ['Do chair squats', 'Stand with feet shoulder-width apart, sit back toward the chair, then stand. Repeat 5 times.'],
     enabled: true
   },
   {
-    data: 'Stand with your back and hands on a wall, then slowly move your arms up and down as if you were making snow angels.',
+    data: ['Slide arms on the wall', 'Stand with your back to a wall and slowly slide both arms up and down 5 times.'],
     enabled: true
   },
   {
-    data: 'Stand facing a wall and place your hands on it, then do several push-ups.',
+    data: ['Do wall push-ups', 'Place hands on a wall and do 8 slow push-ups, keeping your body straight.'],
     enabled: true
   },
   {
-    data: 'Sit on the edge of your chair and extend one leg straight out in front of you, holding for 10-15 seconds. Repeat with the other leg.',
+    data: ['Extend one leg', 'Sit at the chair edge, straighten one leg for 10 seconds, then switch.'],
     enabled: true
   },
   {
-    data: 'Stand facing a wall, put one foot back and the other foot forward, then lean into the wall. Repeat with the other leg.',
+    data: ['Stretch your calves', 'Face a wall, step one foot back, press the heel down, then switch sides.'],
     enabled: true
   },
   {
-    data: 'Hold one arm straight up, then use the other arm to gently push the elbow of the first arm towards your head. Hold for 10-15 seconds. Repeat with the other arm.',
+    data: ['Stretch the back of your arm', 'Lift one arm, bend the elbow, and gently guide it behind your head, then switch.'],
     enabled: true
   },
   {
-    data: 'Tilt your head to one side, then to the other side, and then gently tilt it forward and backward.',
+    data: ['Nod and tilt gently', 'Slowly tilt your head left, right, forward, and back. Keep each movement small.'],
     enabled: true
   },
   {
-    data: 'Reach one arm across your chest, hold onto the elbow with the other hand, and gently pull it in towards your chest. Repeat with the other arm.',
+    data: ['Cross-body shoulder stretch', 'Bring one arm across your chest and hold it with the other arm for 10 seconds.'],
     enabled: true
   },
   {
-    data: 'Stand up, put one foot on a nearby object, like a chair or step stool, and reach down to touch your toes. Repeat with the other leg.',
+    data: ['Reach toward toes', 'Put one foot on a low object and reach toward your toes without forcing the stretch.'],
     enabled: true
   },
   {
-    data: 'Stand in a doorway and place one arm on each side of the doorway, then gently lean forward until you feel a stretch in your chest.',
+    data: ['Use the doorway', 'Place forearms on both sides of a doorway and lean forward until your chest opens.'],
     enabled: true
   },
   {
-    data: 'Sit on the edge of a chair or on the floor, and place the soles of your feet together, gently pressing down with your elbows to stretch your inner thighs.',
+    data: ['Stretch inner thighs', 'Sit with soles together and gently press your knees downward with your elbows.'],
     enabled: true
   }
 ]

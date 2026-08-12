@@ -10,7 +10,9 @@ function exposeElectronApi () {
     openPath: (path) => shell.openPath(path),
     resolveLocalImage: (filename) => ipcRenderer.invoke('resolve-local-image', filename),
     saveCurrentWallpaper: () => ipcRenderer.invoke('save-current-wallpaper'),
-    dislikeCurrentWallpaper: () => ipcRenderer.invoke('dislike-current-wallpaper')
+    dislikeCurrentWallpaper: () => ipcRenderer.invoke('dislike-current-wallpaper'),
+    defaultWallpaperSavePath: () => ipcRenderer.invoke('default-wallpaper-save-path'),
+    selectWallpaperSavePath: (currentPath) => ipcRenderer.invoke('select-wallpaper-save-path', currentPath)
   })
 }
 
@@ -34,6 +36,7 @@ function exposeBreaks (type) {
     finishBreak: (manualAwaiting) => ipcRenderer.send(`finish-${type}-break`, false, manualAwaiting),
     postponeBreak: () => ipcRenderer.send(`postpone-${type}-break`),
     signalLoaded: () => ipcRenderer.send(`${type}-break-loaded`),
+    getWallpaperState: () => ipcRenderer.invoke(`get-${type}-break-wallpaper-state`),
     onWallpaperChanged: (callback) => ipcRenderer.on(`${type}-break-wallpaper`, (_e, wallpaper) => callback(wallpaper)),
     onEnterManualAwait: (callback) => ipcRenderer.on('enter-manual-await', (_e, which) => callback(which)),
     sanitizeIdea: (value) => sanitizeIdea(value)
